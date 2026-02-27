@@ -95,7 +95,7 @@ volatility_adjustment = st.Page(
 chain_ladder = st.Page(
     "modules/provisionnement_IARD.py",
     title="Chain-Ladder",
-    icon="�"
+    icon="📊"
 )
 
 scr_taux = st.Page(

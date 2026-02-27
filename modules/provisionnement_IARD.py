@@ -147,9 +147,8 @@ df_res = pd.DataFrame(results)
 
 # KPIs Globaux
 total_ibnr = df_res["Provisions (IBNR)"].sum()
-col1, col2 = st.columns(2)
-col1.metric("Total Provisions (IBNR)", f"{total_ibnr:,.0f} €", delta="Réserve à constituer")
-col2.dataframe(df_res.style.format({"Dernier Connu": "{:,.0f}", "Facteur Projection": "{:.3f}", "Charge Ultime": "{:,.0f}", "Provisions (IBNR)": "{:,.0f}"}))
+metric("Total Provisions (IBNR)", f"{total_ibnr:,.0f} €", delta="Réserve à constituer")
+dataframe(df_res.style.format({"Dernier Connu": "{:,.0f}", "Facteur Projection": "{:.3f}", "Charge Ultime": "{:,.0f}", "Provisions (IBNR)": "{:,.0f}"}))
 
 # Graphique
 fig_res = go.Figure(go.Bar(x=df_res["Année"], y=df_res["Provisions (IBNR)"], text=df_res["Provisions (IBNR)"], texttemplate='%{text:,.0f}', marker_color='indianred'))
