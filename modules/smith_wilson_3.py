@@ -88,11 +88,11 @@ check_col1, check_col2, check_col3 = st.columns(3)
 with check_col1:
     # Test d'interpolation sur le point 10 ans
     val_10y = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market, t_target=t_target, ufr=ufr_val, alpha=alpha_val)[33] 
-    st.metric("Taux à 10 ans (Calculé)", f"{y_target[32]*100:.4f}%")
+    st.metric("Taux à 10 ans (Calculé)", f"{y_target[32]*100:.2f}%")
     st.caption("Doit être strictement égal au taux d'entrée.")
 
 with check_col2:
-    st.metric("Convergence à 60 ans", f"{y_target[-1]*100:.3f}%")
+    st.metric("Convergence à 60 ans", f"{y_target[-1]*100:.2f}%")
     st.caption(f"Cible UFR : {ufr_val*100:.2f}%")
 
 with check_col3:
