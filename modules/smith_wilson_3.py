@@ -52,7 +52,7 @@ with col_in2:
 
         fig = go.Figure()
 
-        st.table(y_target[:,0])
+        st.table(np.array([0.025, 0.030, 0.035]))
         
         # Zone Liquide vs Extrapolation
         fig.add_vrect(x0=0, x1=llp, fillcolor="green", opacity=0.05, line_width=0, annotation_text="Zone Liquide")
