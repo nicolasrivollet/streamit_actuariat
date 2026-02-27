@@ -92,12 +92,18 @@ volatility_adjustment = st.Page(
     icon="🛡️"
 )
 
+scr_taux = st.Page(
+    "modules/scr_taux.py",
+    title="SCR Taux (Standard)",
+    icon="📉"
+)
+
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
-    "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment],
+    "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
 
 # --- 4. EXÉCUTION ---
