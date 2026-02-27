@@ -49,7 +49,6 @@ st.header("1️⃣ Caractéristiques de l'Actif")
 col_a, col_b = st.columns(2)
 
 with col_a:
-    asset_name = st.text_input("Désignation de l'actif", "Obligation Corporate BBB+")
     asset_type = st.selectbox("Classe d'actif", ["Actions", "Obligations", "Immobilier"])
     nominal = st.number_input("Montant de l'investissement (€)", min_value=0, value=1000000, step=100000)
 
