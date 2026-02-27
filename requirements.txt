@@ -3,3 +3,6 @@ pandas
 numpy
 plotly
 smithwilson
+chainladder
+seaborn
+matplotlib.pyplot

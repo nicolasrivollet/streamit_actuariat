@@ -104,11 +104,17 @@ scr_taux = st.Page(
     icon="📉"
 )
 
+scr_bootstrap = st.Page(
+    "modules/scr_bootstrap.py",
+    title="SCR Bootstrap",
+    icon="📉"
+)
+
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
-    "Provisionnement": [chain_ladder],
+    "Provisionnement": [chain_ladder, scr_bootstrap],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
