@@ -144,7 +144,7 @@ with check_col3:
     st.caption("Début de l'extrapolation.")
 
 # --- FOOTER TECHNIQUE ---
-with st.expander("📚 Détails méthodologiques et mathématiques"):
+with st.expander("📚 Détails méthodologiques et mathématiques", expanded=True):
     st.write("""
     Le modèle Smith-Wilson est une méthode d'ajustement de la structure par terme des taux qui minimise une fonction de rugosité sous contraintes d'interpolation.
     
