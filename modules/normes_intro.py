@@ -37,7 +37,11 @@ with tab1:
     2.  **Provision pour Participation aux Bénéfices (PPB) :** Spécificité française cruciale.
         *   L'assureur a l'obligation légale de redistribuer une part des bénéfices financiers et techniques aux assurés.
         *   Il peut stocker ces bénéfices en PPB et a **8 ans** pour les redistribuer. C'est un outil majeur de lissage des taux servis.
-    3.  **Provisions de Sécurité :**
+    3.  **Réserve de Capitalisation (RC) :** Spécifique aux obligations.
+        *   Les **plus-values réalisées** sur les ventes d'obligations ne vont pas en résultat mais alimentent cette réserve.
+        *   Les **moins-values réalisées** sont compensées par une reprise sur cette réserve.
+        *   *But :* Lisser le rendement obligataire et éviter les arbitrages opportunistes liés aux taux.
+    4.  **Provisions de Sécurité :**
         *   **PRE (Risque d'Exigibilité) :** Dotée si la valeur de marché des actifs < valeur comptable (krach obligataire/actions).
         *   **PGG (Gestion Globale) :** Dotée si les chargements sur primes futurs ne couvrent pas les frais de gestion.
     """)
@@ -108,4 +112,3 @@ data = {
 
 df = pd.DataFrame(data)
 st.table(df)
-
