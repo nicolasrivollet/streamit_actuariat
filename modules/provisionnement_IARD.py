@@ -16,10 +16,23 @@ Elle repose sur l'hypothèse de stabilité des cadences de règlement des sinist
 **Objectif :** Compléter le "Triangle de Liquidation" (partie inférieure) pour estimer les montants futurs à payer.
 """)
 
+st.info("""
+**Concept Clé :** En assurance IARD, le coût total d'un sinistre n'est pas connu immédiatement (ex: indemnisation corporelle longue). 
+L'assureur doit donc provisionner le montant restant à payer. On distingue :
+*   **Sinistres connus :** Montants déjà payés ou provisionnés dossier par dossier.
+*   **IBNR (Incurred But Not Reported) :** Provision pour les sinistres tardifs ou la réévaluation des dossiers existants.
+""")
+
 st.divider()
 
 # --- 1. DONNÉES (TRIANGLE CUMULÉ) ---
 st.header("1. Triangle de Liquidation (Cumulé)")
+st.markdown("""
+Ce tableau présente l'historique des paiements.
+*   **En ligne :** L'année de survenance du sinistre.
+*   **En colonne :** L'année de développement (1 = année de l'accident, 2 = année suivante, etc.).
+*   **La diagonale :** Représente la vision à date (dernier bilan). Tout ce qui est en bas à droite est inconnu (le futur).
+""")
 
 # Génération d'un triangle exemple (Années de survenance x Années de développement)
 # Données fictives mais réalistes (en k€)
@@ -50,6 +63,12 @@ st.plotly_chart(fig_heat, use_container_width=True)
 
 # --- 2. CALCUL DES FACTEURS DE DÉVELOPPEMENT (LINK RATIOS) ---
 st.header("2. Facteurs de Développement (Link Ratios)")
+st.markdown("""
+Pour projeter le futur, nous devons comprendre la vitesse de liquidation passée.
+On calcule un **Link Ratio** $f_j$ pour chaque année de développement $j$ :
+$$ f_j = \\frac{\\sum C_{i, j+1}}{\\sum C_{i, j}} $$
+C'est le coefficient multiplicateur moyen pour passer d'une année à l'autre.
+""")
 
 # Calcul des facteurs individuels (Moyenne pondérée par les volumes)
 factors = []
@@ -87,8 +106,19 @@ df_factors = pd.DataFrame([factors + [tail_factor]], columns=[f"{i}-{i+1}" for i
 st.write("Facteurs de passage moyens (Link Ratios) :")
 st.dataframe(df_factors.style.format("{:.3f}"))
 
+st.info("""
+**Lecture :** Un facteur de 1.500 signifie que les paiements augmentent en moyenne de 50% entre ces deux années. 
+Le **Facteur de Queue (Tail)** capture tout ce qui se passe après la fin du triangle (ex: réouvertures tardives).
+""")
+
 # --- 3. PROJECTION ET RÉSULTATS ---
 st.header("3. Projection de la Charge Ultime & IBNR")
+st.markdown("""
+On applique les facteurs cumulés aux derniers montants connus (la diagonale) pour estimer le coût final (**Charge Ultime**).
+La provision **IBNR** est simplement la différence entre cette estimation finale et ce qui est déjà payé.
+
+$$ IBNR = Charge Ultime - Payé $$
+""")
 
 results = []
 for i, year in enumerate(years):

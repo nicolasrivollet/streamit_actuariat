@@ -98,18 +98,11 @@ scr_taux = st.Page(
     icon="📉"
 )
 
-provisionnement = st.Page(
-    "modules/provisionnement_IARD.py",
-    title="Provisionnement (Chain-Ladder)",
-    icon="🔺"
-)
-
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
-    "Assurance Non-Vie": [provisionnement],
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
 
