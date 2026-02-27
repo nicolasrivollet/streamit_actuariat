@@ -51,6 +51,12 @@ smith_wilson = st.Page(
     icon="📏"
 )
 
+smith_wilson_2 = st.Page(
+    "modules/smith_wilson_2.py", 
+    title="Calculateur Smith-Wilson", 
+    icon="📏"
+)
+
 s2_review = st.Page(
     "modules/reforme_s2.py", 
     title="Réforme Solvabilité II", 
@@ -61,7 +67,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], # Ajouté ici
+    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, smith_wilson_2], # Ajouté ici
     "Réglementation & ESG": [s2_review],
 })
 
