@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Nicolas Rivollet | Portfolio Actuariat", layout="wide")
 
-st.title("🚀 Nicolas Rivollet zbozf")
+st.title("🚀 Nicolas Rivollet")
 st.subheader("Expertise Actuarielle & Risk Management")
 
 st.markdown("""
