@@ -104,14 +104,18 @@ scr_taux = st.Page(
     icon="📉"
 )
 
-
+pilotage_reass = st.Page(
+    "modules/pilotage_reass.py",
+    title="Pilotage Réassurance",
+    icon="📉"
+)
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
     "Provisionnement": [chain_ladder],
-    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
+    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
 
