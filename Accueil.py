@@ -125,7 +125,7 @@ lee_carter = st.Page(
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    ":dog: Général": [home_page, normes_intro],
+    "🌱 Général": [home_page, normes_intro],
     "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
