@@ -20,13 +20,17 @@ $$ VA = 65\% \times (Spread_{Portefeuille} - Spread_{Fondamental} - Correction_{
 st.divider()
 
 # --- PARAMÈTRES ---
-st.sidebar.header("Paramètres du Portefeuille")
+st.header("Paramètres du Portefeuille")
 
-# Paramètres de marché
-spread_market = st.sidebar.slider("Spread de Crédit du Portefeuille (bps)", 0, 500, 150, step=10)
-fundamental_spread = st.sidebar.slider("Spread Fondamental (bps)", 0, 100, 30, step=5, help="Partie du spread liée au risque de défaut réel (long terme)")
-risk_correction = st.sidebar.slider("Correction de Risque (bps)", 0, 100, 20, step=5)
-va_ratio = st.sidebar.slider("Ratio d'application", 0.0, 1.0, 0.65, help="Standard S2 = 65%")
+col_p1, col_p2 = st.columns(2)
+
+with col_p1:
+    spread_market = st.slider("Spread de Crédit du Portefeuille (bps)", 0, 500, 150, step=10)
+    fundamental_spread = st.slider("Spread Fondamental (bps)", 0, 100, 30, step=5, help="Partie du spread liée au risque de défaut réel (long terme)")
+
+with col_p2:
+    risk_correction = st.slider("Correction de Risque (bps)", 0, 100, 20, step=5)
+    va_ratio = st.slider("Ratio d'application", 0.0, 1.0, 0.65, help="Standard S2 = 65%")
 
 # --- CALCUL DU VA ---
 # Calcul en points de base puis conversion en %

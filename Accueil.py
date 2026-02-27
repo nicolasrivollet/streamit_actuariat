@@ -97,7 +97,6 @@ volatility_adjustment = st.Page(
 pg = st.navigation({
     "Général": [home_page],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
-    "Réglementation & ESG": [s2_review, scr_screener],
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment],
 })
 
