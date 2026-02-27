@@ -71,9 +71,7 @@ def show_home():
     
     st.info("💡 **Note technique :** Cette plateforme est développée en Python avec Streamlit pour garantir une interactivité totale avec les modèles mathématiques.")
 
-# Logique d'exécution
-if st.experimental_user.get("email"): # Juste pour s'assurer que l'app tourne
-    pass
+
 
 # Lancement du moteur de navigation
 # Si la page actuelle est l'accueil, on affiche le contenu show_home()
