@@ -43,8 +43,9 @@ with tab1:
         *   Les **moins-values réalisées** sont compensées par une reprise sur cette réserve.
         *   *But :* Lisser le rendement obligataire et éviter les arbitrages opportunistes liés aux taux.
     4.  **Provisions de Sécurité :**
+        *   **PDD (Dépréciation Durable) :** Concerne les actifs non amortissables (Actions, Immo). Si la valeur de marché reste durablement inférieure au prix d'achat, la moins-value latente est provisionnée.
         *   **PRE (Risque d'Exigibilité) :** Dotée si la valeur de marché des actifs < valeur comptable (krach obligataire/actions).
-        *   **PGG (Gestion Globale) :** Dotée si les chargements sur primes futurs ne couvrent pas les frais de gestion.
+        *   **PAF (Aléas Financiers) :** Dotée si l'assureur anticipe que le rendement futur de ses actifs sera insuffisant pour servir les taux garantis aux assurés.
     """)
     st.info("💡 **Enjeu Actuel :** Avec la remontée des taux, le stock de plus-values latentes obligataires fond, rendant la dotation de la PRE potentiellement nécessaire pour certains acteurs.")
 
