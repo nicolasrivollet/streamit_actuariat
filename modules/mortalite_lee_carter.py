@@ -10,20 +10,30 @@ st.title("💀 Modélisation de la Mortalité : Lee-Carter")
 st.subheader("Projection stochastique de l'espérance de vie")
 
 st.markdown("""
-Le modèle de **Lee-Carter (1992)** est le standard actuariel pour projeter les taux de mortalité futurs.
-Il décompose le logarithme des taux de mortalité $m_{x,t}$ (à l'âge $x$ et l'année $t$) en trois composantes :
+### 💡 Pourquoi ce modèle est-il crucial ?
+Le risque de **longévité** (le fait que les assurés vivent plus longtemps que prévu) est un enjeu majeur pour les régimes de retraite et les assureurs versant des rentes viagères. 
+Le modèle de **Lee-Carter (1992)** est devenu le standard de marché car il permet de transformer des données historiques en une projection probabiliste cohérente.
+
+### 📐 La mécanique du modèle
+Il décompose le logarithme des taux de mortalité $m_{x,t}$ (à l'âge $x$ et l'année $t$) en trois composantes interprétables :
 
 $$ \ln(m_{x,t}) = a_x + b_x k_t + \epsilon_{x,t} $$
 
-*   **$a_x$** : La structure par âge moyenne de la mortalité.
-*   **$k_t$** : L'indice de mortalité temporel (tendance générale, souvent décroissante).
-*   **$b_x$** : La sensibilité de chaque âge aux variations de $k_t$.
+1.  **$a_x$ (Profil Moyen)** : La forme "standard" de la courbe de mortalité par âge (mortalité infantile, accidentelle chez les jeunes, vieillissement exponentiel).
+2.  **$k_t$ (Indice Temporel)** : Un indice unique qui résume le niveau général de mortalité une année donnée. S'il baisse, la mortalité s'améliore.
+3.  **$b_x$ (Sensibilité)** : Indique à quel point l'âge $x$ réagit à la baisse de $k_t$. Historiquement, les jeunes ont vu leur mortalité baisser plus vite que les centenaires.
 """)
 
 st.divider()
 
 # --- 1. GÉNÉRATION DE DONNÉES SYNTHÉTIQUES ---
-st.header("1. Données Historiques (Simulées)")
+st.header("1. Visualisation de la Surface de Mortalité")
+st.markdown("""
+Avant de modéliser, il est essentiel de visualiser les données brutes sous forme de **surface 3D**.
+On observe généralement une "vallée" qui se creuse avec le temps, signe de l'amélioration des conditions de vie et de la médecine.
+
+*Note : Les données ci-dessous sont simulées pour l'exercice, mais reproduisent les caractéristiques réelles d'une population européenne (loi de Gompertz).*
+""")
 
 @st.cache_data
 def generate_mortality_data(years, ages):
@@ -73,7 +83,11 @@ with col2:
     st.plotly_chart(fig_surface, use_container_width=True)
 
 # --- 2. CALIBRATION (SVD) ---
-st.header("2. Calibration du Modèle (SVD)")
+st.header("2. Calibration : Extraction des Paramètres")
+st.markdown("""
+Pour isoler les paramètres $a_x, b_x$ et $k_t$, nous utilisons une méthode d'algèbre linéaire : la **Décomposition en Valeurs Singulières (SVD)**.
+Cela revient à chercher la tendance principale (1ère composante) qui explique le mieux la déformation historique de la surface de mortalité.
+""")
 
 # 1. Calcul de ax (moyenne temporelle du log mortalité)
 log_mx_matrix = np.log(df_mx.values)
@@ -100,20 +114,24 @@ col_p1, col_p2, col_p3 = st.columns(3)
 with col_p1:
     fig_ax = px.line(x=ages, y=ax, title="Paramètre a_x (Niveau moyen)", labels={'x': 'Âge', 'y': 'a_x'})
     st.plotly_chart(fig_ax, use_container_width=True)
-    st.caption("Profil de mortalité moyen : faible mortalité infantile, puis croissance exponentielle (Gompertz).")
+    st.info("**Profil statique ($a_x$)** : On retrouve la forme classique 'en crosse de hockey'. La mortalité est élevée à la naissance, minimale vers 10 ans, puis croît exponentiellement.")
 
 with col_p2:
     fig_bx = px.line(x=ages, y=bx, title="Paramètre b_x (Sensibilité)", labels={'x': 'Âge', 'y': 'b_x'})
     st.plotly_chart(fig_bx, use_container_width=True)
-    st.caption("Indique quels âges bénéficient le plus de l'amélioration de la mortalité.")
+    st.info("**Sensibilité ($b_x$)** : Les pics indiquent les âges où les progrès médicaux ont été les plus rapides historiquement (souvent l'enfance et les âges moyens).")
 
 with col_p3:
     fig_kt = px.line(x=years, y=kt, title="Paramètre k_t (Tendance)", labels={'x': 'Année', 'y': 'k_t'})
     st.plotly_chart(fig_kt, use_container_width=True)
-    st.caption("Indice de mortalité : une pente négative indique une amélioration globale.")
+    st.info("**Tendance ($k_t$)** : La pente négative confirme l'amélioration continue de l'espérance de vie sur la période observée.")
 
 # --- 3. PROJECTION ---
-st.header("3. Projection Future")
+st.header("3. Projection et Impact Actuariel")
+st.markdown("""
+C'est ici que l'actuariat prédictif entre en jeu. Nous modélisons l'indice $k_t$ comme une **Marche Aléatoire avec Dérive (Random Walk with Drift)**.
+L'hypothèse est que la vitesse moyenne d'amélioration observée dans le passé va se poursuivre, avec une certaine volatilité.
+""")
 
 horizon = st.slider("Horizon de projection (années)", 10, 50, 30)
 
@@ -139,4 +157,9 @@ fig_e0.add_trace(go.Scatter(x=future_years, y=e0_proj, name="Projection Lee-Cart
 fig_e0.update_layout(title="Projection de l'Espérance de Vie à la naissance (e0)", xaxis_title="Année", yaxis_title="Espérance de vie (ans)")
 st.plotly_chart(fig_e0, use_container_width=True)
 
-st.success(f"Gain d'espérance de vie projeté sur {horizon} ans : +{e0_proj[-1] - e0_hist[-1]:.1f} ans")
+st.success(f"📈 **Résultat :** Le modèle projette un gain d'espérance de vie de **+{e0_proj[-1] - e0_hist[-1]:.1f} ans** sur les {horizon} prochaines années.")
+
+st.info("""
+**Impact Bilan :** Pour un assureur, cette augmentation mécanique de l'espérance de vie signifie que les rentes devront être versées plus longtemps. 
+Si cette dérive n'est pas anticipée dans le provisionnement (via des tables de mortalité prospectives), le bilan risque d'être sous-provisionné.
+""")
