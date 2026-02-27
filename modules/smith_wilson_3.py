@@ -117,4 +117,27 @@ with st.expander("📚 Détails méthodologiques et mathématiques", expanded=Tr
     C'est le paramètre de tension. S'il est trop faible, la courbe mettra trop de temps à rejoindre l'UFR. S'il est trop élevé, la courbe peut présenter des oscillations brutales des taux 'Forward' juste après le LLP.
     """)
 
+st.header("Mécanisme de calcul")
+
+tab1, tab2 = st.tabs(["L'algorithme", "L'importance des Forwards"])
+
+with tab1:
+    st.markdown("""
+    L'algorithme se décompose en trois étapes :
+    1. **Sourcing** : Récupération des taux zéro-coupon jusqu'au LLP (ex: Swaps 20 ans).
+    2. **Système Matriciel** : Résolution d'un système pour trouver les coefficients qui permettent de passer par chaque point de marché.
+    3. **Extrapolation** : Utilisation de la fonction de noyau de Wilson pour projeter les taux au-delà du LLP.
+    """)
+    st.latex(r"W(t, u) = e^{-UFR(t+u)} \left( \alpha \min(t,u) - \frac{1 - e^{-\alpha \max(t,u)}}{2} e^{-\alpha |t-u|} \right)")
+
+with tab2:
+    st.write("""
+    Le véritable test de robustesse d'un modèle Smith-Wilson ne se voit pas sur les taux **Spot** (courbe bleue ci-dessus), 
+    mais sur les taux **Forward**. 
+    
+    Une mauvaise calibration de l'Alpha peut entraîner des taux forwards aberrants juste après le LLP, 
+    ce qui fausserait la valorisation des produits de couverture ou des options de rachat.
+    """)
+
+
 st.info("💡 **Conformité S2** : Pour les assureurs européens, cette courbe est fournie mensuellement par l'EIOPA. L'enjeu pour l'actuaire n'est pas de la recréer, mais de comprendre sa sensibilité aux changements de paramètres réglementaires.")
