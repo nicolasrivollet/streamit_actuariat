@@ -12,6 +12,10 @@ st.markdown("""
 Ce module démontre la modélisation paramétrique de la Structure par Terme des Taux d'Intérêt (TSIR). 
 La maîtrise de la dynamique de la courbe des taux est essentielle pour la Gestion Actif-Passif (ALM), 
 les exigences de capital de solvabilité réglementaire (SCR) et l'allocation stratégique d'actifs.
+
+**Pourquoi Nelson-Siegel ?**
+C'est le modèle standard utilisé par de nombreuses banques centrales et départements de risques. 
+Il permet de résumer une courbe de taux complexe (des centaines de points) en seulement **4 paramètres** interprétables économiquement. Contrairement à une interpolation linéaire, il garantit une courbe lisse et continue.
 """)
 
 # --- MATHEMATICAL FOUNDATION ---
@@ -24,7 +28,7 @@ st.divider()
 
 # --- PARAMETERS IN THE MAIN PAGE ---
 st.markdown("### 2. Simulateur de Paramètres")
-st.write("Ajustez les curseurs pour observer les déformations de la courbe en temps réel.")
+st.info("👈 **Expérimentation :** Ajustez les curseurs pour observer comment $\\beta_1$ fait pivoter la courbe (Pente) et comment $\\beta_2$ crée une bosse (Courbure).")
 
 # Organisation des sliders en colonnes pour gagner de l'espace
 col_param1, col_param2 = st.columns(2)
@@ -63,15 +67,10 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.info("""
-**Note :** Le modèle Nelson-Siegel est une approche parcimonieuse qui décrit la courbe des taux 
-à l'aide de quatre paramètres clés, reflétant les anticipations du marché en matière d'inflation, de croissance et de liquidité.
-""")
-
-
-
 # --- PARAMETERS INTERPRETATION ---
 st.markdown("### 3. Décomposition des Facteurs")
+st.write("Chaque paramètre joue un rôle précis dans la forme de la courbe :")
+
 col_a, col_b = st.columns(2)
 
 with col_a:
@@ -91,21 +90,16 @@ with col_b:
     **$\\tau$ - Le Facteur d'Échelle :** Positionne le sommet de la courbure sur l'axe du temps.
     """)
 
-# --- RISK MANAGEMENT INSIGHTS ---
-st.divider()
-st.markdown("### 4. Perspectives de Gestion des Risques")
-
-st.write("""
-Le pilotage de ces paramètres permet de quantifier :
-1. **Analyse de Scénarios :** Impact des "Twists" et "Butterflies" sur la valeur actuelle.
-2. **Stress Testing :** Sensibilité du bilan aux chocs non-parallèles.
-3. **Optimisation :** Ajustement du gap de duration actif-passif.
-""")
 
 # --- CALIBRATION SECTION ---
 st.divider()
 st.markdown("### 5. Calibration Automatique (Fitting)")
-st.write("Cette section permet de trouver les paramètres optimaux $\\beta_0, \\beta_1, \\beta_2, \\tau$ minimisant l'écart avec des données de marché observées (Moindres Carrés).")
+st.markdown("""
+Dans la pratique, l'actuaire ne "choisit" pas les paramètres au hasard. Il cherche les paramètres qui permettent à la courbe théorique de passer le plus près possible des taux réellement observés sur le marché (OAT, Swaps).
+
+**Comment ça marche ?**
+L'algorithme ci-dessous utilise une méthode d'optimisation (Nelder-Mead) pour minimiser la somme des écarts au carré (MSE) entre le modèle et les points de marché saisis. C'est cette étape qui permet de passer des cotations de marché (discrètes) à une courbe continue utilisable pour valoriser n'importe quel flux financier.
+""")
 
 col_calib1, col_calib2 = st.columns([1, 2])
 
@@ -145,7 +139,7 @@ with col_calib2:
     # Résultats
     b0_opt, b1_opt, b2_opt, tau_opt = res.x
     
-    st.success(f"Calibration automatique (MSE : {res.fun:.2e})")
+    st.info(f"Calibration automatique (MSE : {res.fun:.2e})")
     
     # Affichage des paramètres calibrés
     c1, c2, c3, c4 = st.columns(4)
