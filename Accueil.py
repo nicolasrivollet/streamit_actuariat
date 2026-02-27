@@ -86,12 +86,19 @@ s2_review = st.Page(
     icon="⚖️"
 )
 
+volatility_adjustment = st.Page(
+    "modules/volatility_adjustment.py",
+    title="Volatility Adjustment",
+    icon="🛡️"
+)
+
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
     "Réglementation & ESG": [s2_review, scr_screener],
+    "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment],
 })
 
 # --- 4. EXÉCUTION ---
