@@ -5,7 +5,7 @@ import plotly.express as px
 st.set_page_config(page_title="Réforme Solvabilité II | Analyse Globale", layout="wide")
 
 # --- HEADER ---
-st.title("⚖️ Analyse de la Révision de la Directive Solvabilité II")
+st.title("⚖️ Révision de la Directive Solvabilité II")
 st.markdown("""
 La révision de la directive (souvent appelée 'Solvency II Review') constitue l'évolution la plus importante du cadre réglementaire depuis son entrée en vigueur en 2016. 
 L'objectif est de recalibrer le système pour mieux refléter l'environnement de taux bas (à l'époque du lancement), encourager le financement de l'économie et intégrer les risques émergents.
@@ -74,19 +74,6 @@ with tab3:
 
 st.divider()
 
-# --- SECTION 4 : RÉCAPITULATIF DES IMPACTS ---
-st.header("4. Synthèse des impacts attendus")
 
-impact_data = {
-    "Domaine": ["Fonds Propres", "Volatilité du Bilan", "Charge Opérationnelle", "Investissements"],
-    "Effet": ["Hausse (via baisse RM)", "Baisse (via nouvelle VA)", "Hausse (via ESG/Macro)", "Incitations (via LTE/Pente)"],
-    "Intensité": [80, 60, 50, 70]
-}
-df_impact = pd.DataFrame(impact_data)
-
-fig_impact = px.bar(df_impact, x="Domaine", y="Intensité", color="Effet", 
-                   title="Intensité relative des changements par domaine",
-                   color_discrete_sequence=px.colors.qualitative.Pastel)
-st.plotly_chart(fig_impact, use_container_width=True)
 
 st.caption("Document de synthèse basé sur les textes de la Commission Européenne et du Parlement - 2026")
