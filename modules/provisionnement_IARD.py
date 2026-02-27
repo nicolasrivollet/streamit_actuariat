@@ -40,16 +40,13 @@ df_triangle.index.name = "Année Survenance"
 df_triangle.columns.name = "Année Développement"
 
 # Affichage interactif avec Heatmap
-col1, col2 = st.columns([1, 2])
 
-with col1:
-    st.write("Données historiques (Paiements cumulés) :")
-    st.dataframe(df_triangle.style.format("{:,.0f}", na_rep="-"))
+st.write("Données historiques (Paiements cumulés) :")
+st.dataframe(df_triangle.style.format("{:,.0f}", na_rep="-"))
 
-with col2:
-    # Heatmap pour visualiser la "masse" des paiements
-    fig_heat = px.imshow(df_triangle, text_auto=True, aspect="auto", color_continuous_scale="Blues", title="Heatmap des Paiements Cumulés")
-    st.plotly_chart(fig_heat, use_container_width=True)
+# Heatmap pour visualiser la "masse" des paiements
+fig_heat = px.imshow(df_triangle, text_auto=True, aspect="auto", color_continuous_scale="Blues", title="Heatmap des Paiements Cumulés")
+st.plotly_chart(fig_heat, use_container_width=True)
 
 # --- 2. CALCUL DES FACTEURS DE DÉVELOPPEMENT (LINK RATIOS) ---
 st.header("2. Facteurs de Développement (Link Ratios)")
