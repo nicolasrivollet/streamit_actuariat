@@ -57,7 +57,7 @@ home_page = st.Page(show_home, title="Présentation", icon="🏠", default=True)
 
 normes_intro = st.Page(
     "modules/normes_intro.py",
-    title="Panorama des Normes",
+    title="Panorama des Normes Comptables",
     icon="📚"
 )
 
@@ -125,7 +125,7 @@ lee_carter = st.Page(
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "Général": [home_page, normes_intro],
+    ":dog: Général": [home_page, normes_intro],
     "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 

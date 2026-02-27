@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Normes Actuarielles", layout="wide")
+st.set_page_config(page_title="Normes Comptables", layout="wide")
 
-st.title("📚 Panorama des Normes Actuarielles")
+st.title("📚 Panorama des Normes Comptables")
 st.subheader("Comprendre la cohabitation des référentiels : French GAAP, Solvabilité II, IFRS 17")
 
 st.markdown("""
