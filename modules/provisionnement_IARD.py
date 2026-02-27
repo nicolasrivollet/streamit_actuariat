@@ -63,6 +63,15 @@ st.plotly_chart(fig_heat, use_container_width=True)
 
 # --- 2. CALCUL DES FACTEURS DE DÉVELOPPEMENT (LINK RATIOS) ---
 st.header("2. Facteurs de Développement (Link Ratios)")
+
+# Contrôles de sensibilité
+with st.expander("🛠️ Paramètres de Sensibilité (Actuariat)", expanded=True):
+    col_sens1, col_sens2 = st.columns(2)
+    with col_sens1:
+        method_avg = st.radio("Méthode de projection", ["Moyenne Historique (Tout)", "Moyenne 3 dernières années (Last 3)"], index=0, help="Permet de capturer les tendances récentes.")
+    with col_sens2:
+        inflation_load = st.slider("Choc Inflation Future (%)", 0.0, 15.0, 0.0, step=0.5, help="Surcharge appliquée aux flux futurs (IBNR).") / 100
+
 st.markdown("""
 Pour projeter le futur, nous devons comprendre la vitesse de liquidation passée.
 On calcule un **Link Ratio** $f_j$ pour chaque année de développement $j$ :
@@ -73,14 +82,20 @@ C'est le coefficient multiplicateur moyen pour passer d'une année à l'autre.
 # Calcul des facteurs individuels (Moyenne pondérée par les volumes)
 factors = []
 for col in range(len(dev_years)-1):
-    sum_next = 0
-    sum_curr = 0
+    # Identification des lignes valides pour ce développement
+    valid_rows = []
     for row in range(len(years)):
-        val_curr = df_triangle.iloc[row, col]
-        val_next = df_triangle.iloc[row, col+1]
-        if not np.isnan(val_curr) and not np.isnan(val_next):
-            sum_next += val_next
-            sum_curr += val_curr
+        if not np.isnan(df_triangle.iloc[row, col]) and not np.isnan(df_triangle.iloc[row, col+1]):
+            valid_rows.append(row)
+            
+    # Filtrage selon la méthode choisie (Sensibilité)
+    if "Last 3" in method_avg:
+        selected_rows = valid_rows[-3:]
+    else:
+        selected_rows = valid_rows
+        
+    sum_next = df_triangle.iloc[selected_rows, col+1].sum()
+    sum_curr = df_triangle.iloc[selected_rows, col].sum()
     
     if sum_curr > 0:
         factors.append(sum_next / sum_curr)
@@ -139,9 +154,11 @@ for i, year in enumerate(years):
     projection_factor = cdf[i] # cdf[0] applique tous les facteurs pour l'année la plus récente (2023)
     
     ultimate = current_amount * projection_factor
-    ibnr = ultimate - current_amount
+    ibnr_brut = ultimate - current_amount
+    ibnr = ibnr_brut * (1 + inflation_load) # Application du choc d'inflation
+    ultimate_final = current_amount + ibnr
     
-    results.append({"Année": year, "Dernier Connu": current_amount, "Facteur Projection": projection_factor, "Charge Ultime": ultimate, "Provisions (IBNR)": ibnr})
+    results.append({"Année": year, "Dernier Connu": current_amount, "Facteur Projection": projection_factor, "Charge Ultime": ultimate_final, "Provisions (IBNR)": ibnr})
 
 df_res = pd.DataFrame(results)
 
