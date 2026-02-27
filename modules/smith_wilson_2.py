@@ -155,4 +155,3 @@ with st.expander("📚 Détails méthodologiques et mathématiques"):
     C'est le paramètre de tension. S'il est trop faible, la courbe mettra trop de temps à rejoindre l'UFR. S'il est trop élevé, la courbe peut présenter des oscillations brutales des taux 'Forward' juste après le LLP.
     """)
 
-st.caption("Implémentation Actuarielle Réelle - Nicolas Rivollet - 2026")
