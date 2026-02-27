@@ -2,82 +2,91 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(page_title="Solvency II Review | Insights", layout="wide")
+st.set_page_config(page_title="Réforme Solvabilité II | Analyse Globale", layout="wide")
 
 # --- HEADER ---
-st.title("⚖️ Solvency II Modernization (2024/2025 Review)")
-st.subheader("Strategic Implications for European Insurers")
-
+st.title("⚖️ Analyse de la Révision de la Directive Solvabilité II")
 st.markdown("""
-The ongoing revision of the Solvency II Directive aims to unlock capital for long-term investments while refining the sensitivity of the framework. 
-As a **Head of Risk**, understanding these shifts is critical for capital planning and dividend policy.
+La révision de la directive (souvent appelée 'Solvency II Review') constitue l'évolution la plus importante du cadre réglementaire depuis son entrée en vigueur en 2016. 
+L'objectif est de recalibrer le système pour mieux refléter l'environnement de taux bas (à l'époque du lancement), encourager le financement de l'économie et intégrer les risques émergents.
 """)
 
 st.divider()
 
-# --- KEY PILLARS OF THE REFORM ---
-st.header("1. The Three Strategic Pillars")
+# --- SECTION 1 : PILIER 1 - CALCUL DU CAPITAL ---
+st.header("1. Évolutions du Pilier 1 : Méthodologies de calcul")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown("#### 🚀 Capital Relief")
+    st.subheader("Marge de Risque (RM)")
     st.write("""
-    * **Risk Margin (RM):** Significant reduction via a new cost-of-capital rate (lowered from 6% to 4.75%) and a floor mechanism.
-    * **Impact:** Direct boost to Tier 1 Own Funds, especially for long-tail life business.
+    C'est l'un des changements les plus significatifs pour les assureurs Vie.
+    * **Baisse du Coût du Capital (CoC) :** Passage de 6% à 4,75%.
+    * **Facteur de réduction lambda ($\lambda$) :** Introduction d'un mécanisme de réduction dépendant de la durée des engagements (méthode exponentielle), permettant d'atténuer la sensibilité de la RM aux taux d'intérêt.
+    * **Impact :** Réduction globale estimée de la RM entre 15% et 25%, libérant des fonds propres.
     """)
 
 with col2:
-    st.markdown("#### 🛡️ Macro-Prudential Tools")
+    st.subheader("Ajustement pour Volatilité (VA)")
     st.write("""
-    * **New Powers:** Supervisors will have tools to address systemic liquidity risks and concentration.
-    * **Impact:** Higher reporting burden and potential soft capital buffers during crises.
+    Le mécanisme est affiné pour être plus réactif aux spreads de crédit locaux.
+    * **Composante nationale :** Renforcement de l'ajustement spécifique à chaque pays pour éviter les effets de pro-cyclicité.
+    * **Seuil d'activation :** Simplification des critères de déclenchement pour mieux protéger le bilan en cas de crise systémique sur les marchés obligataires.
     """)
 
-with col3:
-    st.markdown("#### 🌿 Sustainability (ESG)")
-    st.write("""
-    * **Article 44:** Integration of climate change transition risk into the ORSA.
-    * **Impact:** Pillar 1 could eventually see 'green' supporting or 'brown' penalizing factors.
-    """)
-
-st.divider()
-
-# --- INTERACTIVE IMPACT SIMULATOR ---
-st.header("2. Risk Margin Sensitivity Simulator")
-st.write("Estimate the potential release of capital from the new Risk Margin formula.")
-
-c_col1, c_col2 = st.columns([1, 2])
-
-with c_col1:
-    current_rm = st.number_input("Current Risk Margin (€M)", value=100)
-    reduction_pct = st.slider("Expected Reduction (%)", 15, 30, 20)
-    
-    new_rm = current_rm * (1 - reduction_pct/100)
-    capital_release = current_rm - new_rm
-
-with c_col2:
-    df_impact = pd.DataFrame({
-        "Status": ["Current", "Post-Review"],
-        "Risk Margin (€M)": [current_rm, new_rm]
-    })
-    fig = px.bar(df_impact, x="Status", y="Risk Margin (€M)", color="Status", 
-                 color_discrete_map={"Current": "#EF553B", "Post-Review": "#00CC96"})
-    st.plotly_chart(fig, use_container_width=True)
-
-st.success(f"Estimated Capital Release: **€{capital_release:.2f}M** (This directly increases the Solvency Ratio).")
-
-st.divider()
-
-# --- CRO PERSPECTIVE ---
-st.header("3. CRO Strategic Action Plan")
-st.markdown("""
-To navigate this transition, the Risk Function must prioritize:
-1. **Volatility Adjustment (VA) Re-calibration:** Reviewing the impact of the new 'local component' in the VA formula.
-2. **Long-Term Equity (LTE):** Assessing the relaxed criteria for LTE to optimize the SCR Equity charge (22% vs 39%/49%).
-3. **Proportionality:** Leveraging simplified rules for 'Low-Risk Profile' undertakings to reduce administrative costs.
+st.markdown("#### Taux d'intérêt et Extrapolation (Smith-Wilson)")
+st.write("""
+La révision modifie la méthode d'extrapolation de la courbe des taux. L'introduction d'une approche plus graduelle vers le **Taux Long Terme (UFR)** vise à mieux refléter les prix de marché au-delà du dernier point liquide (LLP), tout en évitant des sauts brutaux de valorisation des engagements.
 """)
 
-st.info("💡 **Did you know?** The review also introduces a more phased-in approach for the transition to the new UFR (Ultimate Forward Rate) extrapolated via the Smith-Wilson model.")
+st.divider()
 
-st.caption("Strategic Analysis by Nicolas Rivollet - Expert in Insurance Risk Governance")
+# --- SECTION 2 : ESG ET RISQUES DURABLES ---
+st.header("2. Intégration des risques de durabilité")
+
+st.markdown("""
+La réforme grave dans le marbre réglementaire la prise en compte du changement climatique.
+* **Analyses de scénarios :** Obligation pour les assureurs d'inclure des scénarios de changement climatique à long terme (5 à 10 ans et +30 ans) dans leur évaluation interne (ORSA).
+* **Double matérialité :** Évaluation de l'impact de l'entreprise sur l'environnement et de l'environnement sur l'entreprise.
+* **Pillar 1 'Green' :** Mandat donné à l'EIOPA pour explorer des traitements prudentiels différenciés pour les actifs exposés aux risques environnementaux ou sociaux.
+""")
+
+st.divider()
+
+# --- SECTION 3 : MACRO-PRUDENCE ET SURVEILLANCE ---
+st.header("3. Nouveau cadre Macro-Prudentiel")
+
+st.write("""
+Au-delà de la solvabilité individuelle, les autorités de contrôle (ACPR, EIOPA) reçoivent de nouveaux mandats pour surveiller le risque systémique.
+""")
+
+tab1, tab2, tab3 = st.tabs(["Liquidité", "Proportionnalité", "Reporting"])
+
+with tab1:
+    st.markdown("**Gestion de la liquidité :** Les superviseurs pourront exiger des plans de gestion de la liquidité plus stricts et, dans des cas extrêmes, suspendre temporairement les droits de rachat des assurés.")
+
+with tab2:
+    st.markdown("**Principe de proportionnalité :** Création d'une catégorie d'entreprises à 'faible profil de risque' bénéficiant d'allègements automatiques sur le reporting et la gouvernance, réduisant les coûts de conformité.")
+
+with tab3:
+    st.markdown("**Reporting (Pilier 3) :** Révision des QRT (Quantitative Reporting Templates) pour rationaliser les informations demandées et améliorer la comparabilité des rapports publics (SFCR).")
+
+st.divider()
+
+# --- SECTION 4 : RÉCAPITULATIF DES IMPACTS ---
+st.header("4. Synthèse des impacts attendus")
+
+impact_data = {
+    "Domaine": ["Fonds Propres", "Volatilité du Bilan", "Charge Opérationnelle", "Investissements"],
+    "Effet": ["Hausse (via baisse RM)", "Baisse (via nouvelle VA)", "Hausse (via ESG/Macro)", "Incitations (via LTE/Pente)"],
+    "Intensité": [80, 60, 50, 70]
+}
+df_impact = pd.DataFrame(impact_data)
+
+fig_impact = px.bar(df_impact, x="Domaine", y="Intensité", color="Effet", 
+                   title="Intensité relative des changements par domaine",
+                   color_discrete_sequence=px.colors.qualitative.Pastel)
+st.plotly_chart(fig_impact, use_container_width=True)
+
+st.caption("Document de synthèse basé sur les textes de la Commission Européenne et du Parlement - 2026")
