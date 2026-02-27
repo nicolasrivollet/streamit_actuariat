@@ -3,38 +3,98 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
-st.set_page_config(page_title="Comparatif Modèles de Taux", layout="wide")
+st.set_page_config(page_title="Expertise Modèles de Taux", layout="wide")
 
-st.title("🔬 Comparatif des Méthodologies de Modélisation")
+st.title("🔬 Analyse Approfondie des Méthodologies de Courbe")
 st.markdown("""
-Le choix d'un modèle de courbe des taux dépend de l'objectif visé : 
-précision locale, stabilité économique ou conformité réglementaire.
+En actuariat, la courbe des taux n'est pas qu'une simple ligne ; c'est le socle de la valorisation du bilan. 
+Chaque modèle repose sur une hypothèse différente concernant la structure du marché.
 """)
 
 st.divider()
 
-# --- SECTION 1 : LES TROIS FAMILLES ---
-st.header("1. Les Familles de Modèles")
+# --- MODÈLE 1 : NELSON-SIEGEL ---
+with st.expander("1. Modèles Paramétriques : L'approche Nelson-Siegel & Svensson", expanded=True):
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.write("""
+        **Concept :** Ces modèles utilisent une fonction mathématique continue pour lisser l'ensemble de la courbe. 
+        Le modèle **Nelson-Siegel** décompose le taux en trois composantes économiques :
+        * **Le Niveau (Long Terme) :** Une constante $\\beta_0$.
+        * **La Pente (Court Terme) :** Une fonction décroissante liée à $\\beta_1$.
+        * **La Courbure (Moyen Terme) :** Une fonction en forme de bosse liée à $\\beta_2$.
+        
+        **L'extension de Svensson** ajoute un quatrième terme (deuxième courbure) pour capturer les anomalies ou les politiques monétaires complexes.
+        """)
+        st.success("**Usage idéal :** Pilotage ALM, Stress-testing interne, Analyse de scénarios économiques.")
+    with col2:
+        st.latex(r"y(t) = \beta_0 + \beta_1 f_1(t) + \beta_2 f_2(t)")
+        st.warning("**Point de vigilance :** Ce modèle peut présenter des 'erreurs de fitting' (résidus) sur certaines maturités car il privilégie le lissage à la précision ponctuelle.")
 
-col1, col2, col3 = st.columns(3)
+st.divider()
 
-with col1:
-    st.subheader("Paramétriques")
-    st.write("**Philosophie :** Décrire la courbe par une fonction mathématique globale.")
-    st.info("Exemples : Nelson-Siegel, Svensson.")
-    st.markdown("- ✅ Interprétable\n- ✅ Lisse\n- ❌ Ne colle pas parfaitement au marché")
+# --- MODÈLE 2 : SMITH-WILSON ---
+with st.expander("2. Modèles de Convergence : L'approche Smith-Wilson (EIOPA)", expanded=False):
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.write("""
+        **Concept :** C'est le standard de **Solvabilité II**. Ce modèle est conçu pour résoudre le problème de l'absence de marché liquide pour les très longues maturités (au-delà de 20 ans).
+        
+        **Fonctionnement :**
+        * **Partie Liquide :** Le modèle utilise des noyaux mathématiques pour passer *exactement* par les points de marché observés.
+        * **Point d'Extrapolation (LLP) :** À partir du *Last Liquid Point*, la courbe commence à converger.
+        * **Cible (UFR) :** La courbe rejoint de manière "lisse" le *Ultimate Forward Rate*, un taux théorique de long terme défini par le régulateur.
+        """)
+        st.success("**Usage idéal :** Calcul du Best Estimate (BEL), valorisation des provisions techniques Vie de longue durée.")
+    with col2:
+        st.write("**Paramètres clés :**")
+        st.markdown("- **LLP :** 20 ans (Zone Euro)\n- **UFR :** ~3.45%\n- **Alpha :** Vitesse de convergence")
 
-with col2:
-    st.subheader("Interpolation / Splines")
-    st.write("**Philosophie :** Relier les points de marché par des segments de polynômes.")
-    st.info("Exemples : Splines Cubiques, B-Splines.")
-    st.markdown("- ✅ Précision maximale\n- ✅ Zéro résidu\n- ❌ Risque d'instabilité (courbe nerveuse)")
 
-with col3:
-    st.subheader("Convergence (Hybrides)")
-    st.write("**Philosophie :** Interpolation sur la partie liquide, puis extrapolation vers une cible.")
-    st.info("Exemple : Smith-Wilson (EIOPA).")
-    st.markdown("- ✅ Standard réglementaire\n- ✅ Extrapolation longue durée\n- ❌ Complexité de calcul")
+
+st.divider()
+
+# --- MODÈLE 3 : SPLINES CUBIQUES ---
+with st.expander("3. Interpolation Locale : Les Splines Cubiques", expanded=False):
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.write("""
+        **Concept :** Au lieu d'une seule formule globale, on divise la courbe en petits segments (entre chaque maturité de marché). Sur chaque segment, on ajuste un polynôme de degré 3.
+        
+        **Avantages :**
+        * **Zéro erreur :** La courbe passe mathématiquement par tous les points.
+        * **Flexibilité :** Capable de reproduire n'importe quelle forme de courbe, même les plus erratiques.
+        """)
+        st.success("**Usage idéal :** Trading, Arbitrage, Pricing de produits dérivés où chaque point de base compte.")
+    with col2:
+        st.error("**Risque majeur :** L'instabilité des taux 'Forward'. Entre deux points, la courbe peut avoir des oscillations non-économiques.")
+
+st.divider()
+
+# --- MODÈLE 4 : MODÈLES STOCHASTIQUES ---
+with st.expander("4. Modèles Dynamiques : Hull-White & Vasicek", expanded=False):
+    st.write("""
+    **Concept :** Contrairement aux modèles précédents qui sont des "photos" à un instant T, ces modèles sont des "vidéos". Ils modélisent la diffusion du taux dans le temps.
+    
+    * **Retour à la moyenne (Mean Reversion) :** L'idée que si le taux s'écarte trop de sa moyenne historique, il finira par y revenir.
+    * **Volatilité :** Intègre le risque de mouvement brusque des taux.
+    """)
+    st.success("**Usage idéal :** Calcul de la valeur Temps des options (TVOG), ESG (Economic Scenario Generators), simulations de trajectoires de taux pour l'ORSA.")
+
+
+
+st.divider()
+
+# --- SYNTHÈSE DES IMPACTS BILANTIELS ---
+st.header("🎯 Synthèse de l'Impact Actuariel")
+st.table(pd.DataFrame({
+    "Critère": ["Précision Marché", "Interprétabilité", "Réglementation", "Stabilité"],
+    "Nelson-Siegel": ["Moyenne", "Maximale", "Interne uniquement", "Élevée"],
+    "Smith-Wilson": ["Élevée", "Faible (Boîte noire)", "Standard S2", "Moyenne"],
+    "Splines": ["Parfaite", "Nulle", "Non recommandée", "Faible"]
+}))
+
+st.info("💡 **Conseil du Risk Manager :** Pour un pilotage efficace, il est souvent recommandé de suivre Nelson-Siegel pour comprendre les tendances de fond, tout en produisant les chiffres officiels en Smith-Wilson.")
 
 st.divider()
 
