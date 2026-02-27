@@ -52,7 +52,8 @@ with col_in2:
 
         fig = go.Figure()
 
-        
+        st.dataframe(y_target)
+
         # Zone Liquide vs Extrapolation
         fig.add_vrect(x0=0, x1=llp, fillcolor="green", opacity=0.05, line_width=0, annotation_text="Zone Liquide")
         fig.add_vrect(x0=llp, x1=60, fillcolor="blue", opacity=0.05, line_width=0, annotation_text="Extrapolation")
