@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Expertise Modèles de Taux", layout="wide")
 
-st.title("🔬 Analyse Approfondie des Méthodologies de Courbe")
+st.title("🔬 Analyse des Méthodologies de Courbe")
 st.markdown("""
 En actuariat, la courbe des taux n'est pas qu'une simple ligne ; c'est le socle de la valorisation du bilan. 
 Chaque modèle repose sur une hypothèse différente concernant la structure du marché.
