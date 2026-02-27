@@ -62,7 +62,7 @@ with col_math:
     """)
 
 # --- STRATEGIC ANALYSIS SECTIONS ---
-st.separator()
+st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
