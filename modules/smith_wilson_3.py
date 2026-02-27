@@ -51,6 +51,8 @@ with col_in2:
                                                 alpha=alpha_val)  # Optional
 
         fig = go.Figure()
+
+        st.table(y_target)
         
         # Zone Liquide vs Extrapolation
         fig.add_vrect(x0=0, x1=llp, fillcolor="green", opacity=0.05, line_width=0, annotation_text="Zone Liquide")
