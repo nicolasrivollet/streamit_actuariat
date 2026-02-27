@@ -9,14 +9,19 @@ st.set_page_config(page_title="Actuarial Strategy Dashboard", layout="wide")
 st.title("📊 Pilotage Stratégique : Optimisation Solvabilité & Réassurance")
 st.markdown("---")
 
-# --- SIDEBAR : INPUTS STRATÉGIQUES ---
-st.sidebar.header("Paramètres du Portefeuille")
-prime_brute = st.sidebar.number_input("Primes Émises Brutes (M€)", value=100.0)
-frais_gestion = st.sidebar.slider("Chargement de frais (%)", 5, 30, 15) / 100
+# --- INPUTS STRATÉGIQUES ---
+st.header("Paramètres de Simulation")
+col_p1, col_p2 = st.columns(2)
 
-st.sidebar.header("Structure de Réassurance (XL)")
-priorite = st.sidebar.slider("Priorité (Rétention) (M€)", 0.5, 10.0, 2.0)
-portee = st.sidebar.slider("Portée du Traité (M€)", 1.0, 50.0, 10.0)
+with col_p1:
+    st.subheader("Paramètres du Portefeuille")
+    prime_brute = st.number_input("Primes Émises Brutes (M€)", value=100.0)
+    frais_gestion = st.slider("Chargement de frais (%)", 5, 30, 15) / 100
+
+with col_p2:
+    st.subheader("Structure de Réassurance (XL)")
+    priorite = st.slider("Priorité (Rétention) (M€)", 0.5, 10.0, 2.0)
+    portee = st.slider("Portée du Traité (M€)", 1.0, 50.0, 10.0)
 
 # --- ENGINE : SIMULATION MONTE CARLO ---
 @st.cache_data
