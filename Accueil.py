@@ -92,6 +92,12 @@ volatility_adjustment = st.Page(
     icon="🛡️"
 )
 
+chain_ladder = st.Page(
+    "modules/provisionnement_IARD.py",
+    title="Chain-Ladder",
+    icon="�"
+)
+
 scr_taux = st.Page(
     "modules/scr_taux.py",
     title="SCR Taux (Standard)",
@@ -102,6 +108,7 @@ scr_taux = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
+    "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
