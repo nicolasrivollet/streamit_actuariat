@@ -46,11 +46,9 @@ with col_in2:
     try:
         # y_target = compute_smith_wilson(t_target, t_market, r_market, alpha_val, ufr_val)
         
-        y_target = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market,
+        y_target = np.array(sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market,
                                                 t_target=t_target, ufr=ufr_val,
-                                                alpha=alpha_val)  # Optional
-        st.write(type(y_target[33]))
-
+                                                alpha=alpha_val)).flatten()  # Optional
 
         fig = go.Figure()
 
