@@ -77,6 +77,12 @@ with col_in2:
     except Exception as e:
         st.error(f"Erreur de calcul : {e}. Assurez-vous que les maturités sont positives et croissantes.")
 
+st.markdown(f"""
+    * **UFR ({ufr_val}%)** : Le taux vers lequel la courbe doit converger à l'infini. Il reflète les anticipations de croissance et d'inflation de long terme.
+    * **LLP ({df_market['Maturité'].max()} ans)** : La maturité maximale où le marché est considéré comme profond et liquide.
+    * **Alpha ({alpha_val})** : Détermine la vitesse à laquelle la courbe rejoint l'UFR après le LLP. Un alpha élevé signifie une convergence rapide.
+    """)
+
 st.divider()
 
 # --- ANALYSE DE ROBUSTESSE ---
@@ -111,3 +117,4 @@ with st.expander("📚 Détails méthodologiques et mathématiques", expanded=Tr
     C'est le paramètre de tension. S'il est trop faible, la courbe mettra trop de temps à rejoindre l'UFR. S'il est trop élevé, la courbe peut présenter des oscillations brutales des taux 'Forward' juste après le LLP.
     """)
 
+st.info("💡 **Conformité S2** : Pour les assureurs européens, cette courbe est fournie mensuellement par l'EIOPA. L'enjeu pour l'actuaire n'est pas de la recréer, mais de comprendre sa sensibilité aux changements de paramètres réglementaires.")

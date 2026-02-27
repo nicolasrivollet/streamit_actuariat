@@ -51,11 +51,6 @@ smith_wilson = st.Page(
     icon="📏"
 )
 
-smith_wilson_2 = st.Page(
-    "modules/smith_wilson_2.py", 
-    title="Calculateur Smith-Wilson", 
-    icon="📏"
-)
 
 smith_wilson_3 = st.Page(
     "modules/smith_wilson_3.py", 
@@ -73,7 +68,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, smith_wilson_2, smith_wilson_3], # Ajouté ici
+    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, smith_wilson_3], # Ajouté ici
     "Réglementation & ESG": [s2_review],
 })
 
