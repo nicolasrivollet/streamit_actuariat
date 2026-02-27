@@ -11,7 +11,7 @@ st.subheader("The Nelson-Siegel Framework")
 
 st.markdown("""
 This module demonstrates the parametric modeling of the Term Structure of Interest Rates (TSIR). 
-As a **Head of Risk**, mastering yield curve dynamics is essential for Asset-Liability Management (ALM), 
+Mastering yield curve dynamics is essential for Asset-Liability Management (ALM), 
 regulatory solvency capital requirements (SCR), and strategic asset allocation.
 """)
 
