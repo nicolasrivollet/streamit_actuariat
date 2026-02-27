@@ -84,6 +84,8 @@ st.header("🔬 Analyse de la Calibration")
 
 check_col1, check_col2, check_col3 = st.columns(3)
 
+st.write(y_target[33])
+
 with check_col1:
     # Test d'interpolation sur le point 10 ans
     val_10y = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market, t_target=t_target, ufr=ufr_val, alpha=alpha_val)[33] 
