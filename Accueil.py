@@ -45,6 +45,12 @@ comparatif_modeles = st.Page(
     icon="🔬"
 )
 
+comparatif_modeles = st.Page(
+    "modules/scr_screener.py", 
+    title="SCR Asset Screener", 
+    icon="🔬"
+)
+
 smith_wilson = st.Page(
     "modules/smith_wilson.py", 
     title="Modèle Smith-Wilson", 
