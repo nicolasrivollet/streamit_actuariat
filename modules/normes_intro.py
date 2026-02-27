@@ -33,7 +33,7 @@ with tab1:
     #### 🧱 Les Briques du Passif
     1.  **Provisions Mathématiques (PM) :** C'est la valeur actuelle des engagements de l'assureur vis-à-vis des assurés.
         *   *Définition (Art. R331-3) :* Différence entre les valeurs actuelles des engagements de l'assureur et des assurés.
-        *   *Méthodes :* **Prospective** ($\text{V.A. Prestations} - \text{V.A. Primes}$) ou **Rétrospective** (Capitalisation des primes passées, usuel en Épargne).
+        *   *Méthodes :* **Prospective** (V.A. Prestations - V.A. Primes) ou **Rétrospective** (Capitalisation des primes passées, usuel en Épargne).
         *   *Taux :* Taux technique garanti (fixé à la souscription).
     2.  **Provision pour Participation aux Bénéfices (PPB) :** Spécificité française cruciale.
         *   L'assureur a l'obligation légale de redistribuer une part des bénéfices financiers et techniques aux assurés.
