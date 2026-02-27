@@ -8,8 +8,20 @@ st.subheader("Modèle de Nelson-Siegel")
 
 st.markdown(r"""
 Le modèle de Nelson-Siegel permet de reconstruire la structure par terme des taux d'intérêt via la formule :
-$$y(t) = \beta_0 + \beta_1 \left( \frac{1 - e^{-t/\tau}}{t/\tau} \right) + \beta_2 \left( \frac{1 - e^{-t/\tau}}{t/\tau} - e^{-t/\tau} \right)$$
 """)
+
+st.latex(r"""
+y(t) = \beta_0 + \beta_1 \left( \frac{1 - e^{-t/\tau}}{t/\tau} \right) + \beta_2 \left( \frac{1 - e^{-t/\tau}}{t/\tau} - e^{-t/\tau} \right)
+""")
+
+st.write("Où :")
+col_a, col_b = st.columns(2)
+with col_a:
+    st.write("- $\\beta_0$ : Niveau (Long terme)")
+    st.write("- $\\beta_1$ : Pente (Court terme)")
+with col_b:
+    st.write("- $\\beta_2$ : Courbure")
+    st.write("- $\\tau$ : Facteur d'échelle")
 
 # Barre latérale pour les paramètres
 st.sidebar.header("Paramètres du Modèle")
