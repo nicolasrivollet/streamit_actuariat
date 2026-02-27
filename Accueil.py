@@ -41,7 +41,7 @@ yield_curve = st.Page(
 
 comparatif_modeles = st.Page(
     "modules/comparatif_modeles.py", 
-    title="Comparatif des Méthodes", 
+    title="Modélisation Courbe de Taux (intro)", 
     icon="🔬"
 )
 
