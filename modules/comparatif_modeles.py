@@ -48,7 +48,7 @@ with st.expander("2. Modèles de Convergence : L'approche Smith-Wilson (EIOPA)",
         st.success("**Usage idéal :** Calcul du Best Estimate (BEL), valorisation des provisions techniques Vie de longue durée.")
     with col2:
         st.write("**Paramètres clés :**")
-        st.markdown("- **LLP :** 20 ans (Zone Euro)\n- **UFR :** ~3.45%\n- **Alpha :** Vitesse de convergence")
+        st.markdown("- **LLP :** 20 ans (Zone Euro)\n- **UFR :** ~3.30% (2026)\n- **Alpha :** Vitesse de convergence")
 
 
 
@@ -153,5 +153,3 @@ Le choix du modèle n'est pas neutre :
 2. **Pour le pilotage de la stratégie d'investissement**, on préférera **Nelson-Siegel** car il permet de décomposer le risque en 'mouvements de niveau' ou 'mouvements de pente'.
 3. **Pour du Hedging**, on utilisera les **Splines** pour s'assurer que l'instrument de couverture est valorisé exactement comme au marché.
 """)
-
-st.caption("Analyse comparative - Nicolas Rivollet | Portfolio Actuariat")
