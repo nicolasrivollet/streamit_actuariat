@@ -35,7 +35,7 @@ home_page = st.Page(show_home, title="Présentation", icon="🏠", default=True)
 
 yield_curve = st.Page(
     "modules/courbe_taux.py", 
-    title="Modélisation Courbe de Taux", 
+    title="Modèle Nelson-Siegel", 
     icon="📉"
 )
 
@@ -55,7 +55,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [yield_curve, comparatif_modeles], # Ajouté ici
+    "Finance & ALM": [comparatif_modeles, yield_curve], # Ajouté ici
     "Réglementation & ESG": [s2_review],
 })
 
