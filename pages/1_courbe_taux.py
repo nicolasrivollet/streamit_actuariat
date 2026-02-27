@@ -3,25 +3,60 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-st.title("Modélisation de la Courbe de Taux")
-st.subheader("Modèle de Nelson-Siegel")
+import streamlit as st
 
-st.markdown(r"""
-Le modèle de Nelson-Siegel permet de reconstruire la structure par terme des taux d'intérêt via la formule :
+# --- HEADER SECTION ---
+st.title("Yield Curve Modeling")
+st.subheader("The Nelson-Siegel Framework")
+
+st.markdown("""
+This module demonstrates the parametric modeling of the Term Structure of Interest Rates (TSIR). 
+As a **Head of Risk**, mastering yield curve dynamics is essential for Asset-Liability Management (ALM), 
+regulatory solvency capital requirements (SCR), and strategic asset allocation.
 """)
 
+# --- MATHEMATICAL FOUNDATION ---
+st.markdown("### 1. Mathematical Framework")
 st.latex(r"""
 y(t) = \beta_0 + \beta_1 \left( \frac{1 - e^{-t/\tau}}{t/\tau} \right) + \beta_2 \left( \frac{1 - e^{-t/\tau}}{t/\tau} - e^{-t/\tau} \right)
 """)
 
-st.write("Où :")
+st.info("""
+**Note:** The Nelson-Siegel model is a parsimonious approach that describes the yield curve 
+using four key parameters, reflecting the market's expectations of inflation, growth, and liquidity.
+""")
+
+# --- PARAMETERS INTERPRETATION ---
+st.markdown("### 2. Factor Decomposition")
 col_a, col_b = st.columns(2)
+
 with col_a:
-    st.write("- $\\beta_0$ : Niveau (Long terme)")
-    st.write("- $\\beta_1$ : Pente (Court terme)")
+    st.markdown(f"""
+    **$\\beta_0$ - The Level (Long-Term Rate):** Represents the value of the yield as maturity approaches infinity. 
+    A change in $\\beta_0$ indicates a parallel shift in the curve.
+
+    **$\\beta_1$ - The Slope (Short-Term Decay):** Determines the speed at which the curve reaches its long-term level. 
+    A negative $\\beta_1$ typically signifies a normal upward-sloping curve.
+    """)
+
 with col_b:
-    st.write("- $\\beta_2$ : Courbure")
-    st.write("- $\\tau$ : Facteur d'échelle")
+    st.markdown(f"""
+    **$\\beta_2$ - The Curvature (Medium-Term Hump):** Captures the specific 'bulge' in the 2-to-5-year sector. 
+    This is critical for valuing mid-term insurance liabilities.
+
+    **$\\tau$ - The Scale Factor:** Specifies the maturity at which the loading on the curvature is maximized.
+    """)
+
+# --- RISK MANAGEMENT INSIGHTS ---
+st.markdown("---")
+st.markdown("### 3. Risk Management Perspectives")
+
+st.write("""
+From a Chief Risk Officer (CRO) perspective, monitoring these parameters allows for:
+1. **Scenario Analysis:** Assessing the impact of "Twists" (Slope changes) and "Butterflies" (Curvature changes) on the Net Internal Value.
+2. **Stress Testing:** Quantifying the sensitivity of the Solvency II balance sheet to non-parallel shifts.
+3. **ALM Steering:** Fine-tuning the duration gap between assets and liabilities.
+""")
 
 # Barre latérale pour les paramètres
 st.sidebar.header("Paramètres du Modèle")
