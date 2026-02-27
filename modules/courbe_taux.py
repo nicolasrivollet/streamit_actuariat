@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+from scipy.optimize import minimize
 
 # --- HEADER SECTION ---
 st.title("Modélisation de la Courbe des Taux")
@@ -100,3 +101,66 @@ Le pilotage de ces paramètres permet de quantifier :
 2. **Stress Testing :** Sensibilité du bilan aux chocs non-parallèles.
 3. **Optimisation :** Ajustement du gap de duration actif-passif.
 """)
+
+# --- CALIBRATION SECTION ---
+st.divider()
+st.markdown("### 5. Calibration Automatique (Fitting)")
+st.write("Cette section permet de trouver les paramètres optimaux $\\beta_0, \\beta_1, \\beta_2, \\tau$ minimisant l'écart avec des données de marché observées (Moindres Carrés).")
+
+col_calib1, col_calib2 = st.columns([1, 2])
+
+with col_calib1:
+    st.markdown("**Données de Marché (Input)**")
+    # Données par défaut
+    input_data = pd.DataFrame({
+        "Maturité (Ans)": [1, 2, 5, 10, 20],
+        "Taux (%)": [2.50, 2.75, 3.10, 3.45, 3.85]
+    })
+    # Éditeur interactif
+    edited_df = st.data_editor(input_data, num_rows="dynamic", hide_index=True)
+
+with col_calib2:
+    if st.button("🚀 Lancer la Calibration"):
+        # Préparation des données
+        t_obs = edited_df["Maturité (Ans)"].values
+        y_obs = edited_df["Taux (%)"].values / 100
+        
+        # Fonction Nelson-Siegel pour l'optimiseur
+        def ns_curve(t, params):
+            b0, b1, b2, tau = params
+            term1 = (1 - np.exp(-t/tau)) / (t/tau)
+            term2 = term1 - np.exp(-t/tau)
+            return b0 + b1*term1 + b2*term2
+            
+        # Fonction Objectif (Somme des Carrés des Écarts)
+        def objective(params):
+            # Contrainte : Tau doit être strictement positif pour éviter la division par zéro
+            if params[3] <= 0.1: return 1e6
+            y_pred = ns_curve(t_obs, params)
+            return np.sum((y_pred - y_obs)**2)
+            
+        # Optimisation (Nelder-Mead est robuste pour ce type de problème non-linéaire)
+        x0 = [0.03, -0.01, 0.0, 2.0] # Initial guess
+        res = minimize(objective, x0, method='Nelder-Mead')
+        
+        # Résultats
+        b0_opt, b1_opt, b2_opt, tau_opt = res.x
+        
+        st.success(f"Calibration réussie ! Erreur résiduelle (MSE) : {res.fun:.2e}")
+        
+        # Affichage des paramètres calibrés
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Beta 0 (Niveau)", f"{b0_opt:.4f}")
+        c2.metric("Beta 1 (Pente)", f"{b1_opt:.4f}")
+        c3.metric("Beta 2 (Courbure)", f"{b2_opt:.4f}")
+        c4.metric("Tau", f"{tau_opt:.4f}")
+        
+        # Visualisation Comparative
+        t_plot = np.linspace(0.1, max(t_obs)+5, 100)
+        y_fit = ns_curve(t_plot, res.x)
+        
+        fig_fit = go.Figure()
+        fig_fit.add_trace(go.Scatter(x=t_plot, y=y_fit*100, name="Courbe Calibrée (NS)", line=dict(color='green', width=3)))
+        fig_fit.add_trace(go.Scatter(x=t_obs, y=y_obs*100, mode='markers', name="Points Marché", marker=dict(color='red', size=12, symbol='x')))
+        fig_fit.update_layout(title="Résultat du Fitting", xaxis_title="Maturité (Années)", yaxis_title="Taux (%)", template="plotly_white")
+        st.plotly_chart(fig_fit, use_container_width=True)
