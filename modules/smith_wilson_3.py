@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import smithwilson
+import smithwilson as sw
 
 # --- CONFIGURATION DE LA PAGE ---
 # Note : st.set_page_config est géré par Accueil.py, ne pas le remettre ici si intégré au multipage.
