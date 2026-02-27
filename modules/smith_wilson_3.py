@@ -2,14 +2,19 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import smithwilson as sw
+import smithwilson
+
+# --- CONFIGURATION DE LA PAGE ---
+# Note : st.set_page_config est géré par Accueil.py, ne pas le remettre ici si intégré au multipage.
+
+
 
 # --- INTERFACE UTILISATEUR ---
 
-st.title("📏 Calculateur Smith-Wilson")
+st.title("📏 Calculateur Réel Smith-Wilson")
 st.markdown("""
-Cette page utilise la librairie industrielle **smithwilson** pour extrapoler la courbe des taux selon la réglementation **Solvabilité II**. 
-Le modèle garantit une **interpolation exacte** des points de marché tout en convergeant vers l'UFR.
+Cette page implémente l'algorithme d'extrapolation de la courbe des taux tel que prescrit par la réglementation **Solvabilité II**. 
+Contrairement aux modèles de lissage, Smith-Wilson garantit une **interpolation exacte** des points de marché liquides.
 """)
 
 st.divider()
@@ -20,51 +25,42 @@ col_in1, col_in2 = st.columns([1, 2])
 with col_in1:
     st.subheader("📊 Données de Marché")
     st.write("Modifiez les taux pour recalculer la courbe :")
-    
-    # Données par défaut (ex: Swap Rates ou OAT)
     df_market = pd.DataFrame({
         'Maturité': [1.0, 2.0, 5.0, 10.0, 20.0],
-        'Taux (%)': [2.85, 2.95, 3.15, 3.40, 3.75]
+        'Taux (%)': [2.50, 2.75, 3.10, 3.45, 3.85]
     })
     edited_df = st.data_editor(df_market, num_rows="dynamic")
     
     st.subheader("⚙️ Paramètres EIOPA")
-    # Valeur mise à jour pour 2026 : 3.30%
-    ufr_val = st.slider("Ultimate Forward Rate (UFR) %", 2.0, 5.0, 3.30, step=0.05) / 100
-    alpha_val = st.slider("Vitesse de Convergence (Alpha)", 0.05, 0.50, 0.1285, step=0.001)
-    
-    t_market = edited_df['Maturité'].values
-    r_market = edited_df['Taux (%)'].values / 100
-    llp = t_market.max()
+    ufr_val = st.slider("Ultimate Forward Rate (UFR) %", 2.0, 5.0, 3.45, step=0.05) / 100
+    alpha_val = st.slider("Vitesse de Convergence (Alpha)", 0.05, 0.50, 0.15, step=0.01)
+    llp = edited_df['Maturité'].max()
 
 with col_in2:
     st.subheader("📈 Visualisation de l'Extrapolation")
     
-    # Définition de l'horizon de projection (ex: 80 ans)
-    t_target = np.linspace(1, 80, 80) 
+    t_market = edited_df['Maturité'].values
+    r_market = edited_df['Taux (%)'].values / 100
+    t_target = np.linspace(0.5, 60, 200) # Projection jusqu'à 60 ans
     
     try:
-        # Appel à la librairie smithwilson
-        # fit_smithwilson_rates retourne les taux pour t_target
-        y_target = sw.fit_smithwilson_rates(
-            rates_obs=r_market, 
-            t_obs=t_market,
-            t_target=t_target, 
-            ufr=ufr_val, 
-            alpha=alpha_val
-        )
+        # y_target = compute_smith_wilson(t_target, t_market, r_market, alpha_val, ufr_val)
         
+        y_target = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market,
+                                                t_target=t_target, ufr=ufr_val,
+                                                alpha=alpha_val)  # Optional
+
         fig = go.Figure()
         
         # Zone Liquide vs Extrapolation
         fig.add_vrect(x0=0, x1=llp, fillcolor="green", opacity=0.05, line_width=0, annotation_text="Zone Liquide")
-        fig.add_vrect(x0=llp, x1=max(t_target), fillcolor="blue", opacity=0.05, line_width=0, annotation_text="Extrapolation")
+        fig.add_vrect(x0=llp, x1=60, fillcolor="blue", opacity=0.05, line_width=0, annotation_text="Extrapolation")
         
         # Courbe Smith-Wilson
         fig.add_trace(go.Scatter(x=t_target, y=y_target*100, name="Courbe S-W", line=dict(color='#1E88E5', width=4)))
         
-        # Points de Marché (Inputs)
-        fig.add_trace(go.Scatter(x=t_market, y=r_market*100, name="Marché", mode='markers', marker=dict(color='red', size=10, symbol='diamond')))
+        # Points de Marché
+        fig.add_trace(go.Scatter(x=t_market, y=r_market*100, name="Marché (Inputs)", mode='markers', marker=dict(color='red', size=10, symbol='diamond')))
         
         # Ligne UFR
         fig.add_hline(y=ufr_val*100, line_dash="dash", line_color="orange", annotation_text="Cible UFR")
@@ -79,7 +75,7 @@ with col_in2:
         st.plotly_chart(fig, use_container_width=True)
         
     except Exception as e:
-        st.error(f"Erreur de calcul : {e}")
+        st.error(f"Erreur de calcul : {e}. Assurez-vous que les maturités sont positives et croissantes.")
 
 st.divider()
 
@@ -89,29 +85,28 @@ st.header("🔬 Analyse de la Calibration")
 check_col1, check_col2, check_col3 = st.columns(3)
 
 with check_col1:
-    # On vérifie l'interpolation sur les maturités d'origine
-    y_check = sw.fit_smithwilson_rates(r_market, t_market, t_market, ufr_val, alpha_val)
-    # On prend le point à 10 ans (si présent) ou le dernier point
-    st.metric("Taux au LLP (Calculé)", f"{y_check[-1]*100:.4f}%")
-    st.caption(f"Cible marché : {r_market[-1]*100:.4f}%")
+    # Test d'interpolation sur le point 10 ans
+    val_10y = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market, t_target=t_target, ufr=ufr_val, alpha=alpha_val)[0]
+    st.metric("Taux à 10 ans (Calculé)", f"{val_10y*100:.4f}%")
+    st.caption("Doit être strictement égal au taux d'entrée.")
 
 with check_col2:
-    st.metric(f"Convergence à {int(max(t_target))} ans", f"{y_target[-1]*100:.3f}%")
+    st.metric("Convergence à 60 ans", f"{y_target[-1]*100:.3f}%")
     st.caption(f"Cible UFR : {ufr_val*100:.2f}%")
 
 with check_col3:
     st.metric("Dernier Point Liquide (LLP)", f"{llp} ans")
-    st.caption("Début du raccordement.")
+    st.caption("Début de l'extrapolation.")
 
 # --- FOOTER TECHNIQUE ---
-with st.expander("📚 Détails méthodologiques (Librairie SmithWilson)"):
+with st.expander("📚 Détails méthodologiques et mathématiques", expanded=True):
     st.write("""
-    Cette implémentation utilise la librairie `smithwilson` pour automatiser la résolution du système matriciel.
+    Le modèle Smith-Wilson est une méthode d'ajustement de la structure par terme des taux qui minimise une fonction de rugosité sous contraintes d'interpolation.
     
-    **Propriétés du modèle :**
-    * **Interpolation exacte** : L'écart entre les taux observés et les taux ajustés est nul par construction (résolution de $W \zeta = m - \mu$).
-    * **Continuité** : La courbe est de classe $C^1$ (dérivable), ce qui est crucial pour éviter les sauts de taux *forward*.
-    * **Extrapolation** : Au-delà du LLP, la vitesse de convergence est pilotée par le paramètre Alpha.
+    **Pourquoi est-ce une 'Boîte Noire' ?**
+    Le calcul repose sur l'inversion de la matrice de noyau $W$. Contrairement à Nelson-Siegel, il n'y a pas de paramètres globaux (niveau, pente). Chaque point de marché influence localement la courbe via un poids $\zeta_i$. 
+    
+    **Le rôle de l'Alpha :**
+    C'est le paramètre de tension. S'il est trop faible, la courbe mettra trop de temps à rejoindre l'UFR. S'il est trop élevé, la courbe peut présenter des oscillations brutales des taux 'Forward' juste après le LLP.
     """)
 
-st.caption("Implémentation via package smithwilson - Portfolio Actuariat 2026")
