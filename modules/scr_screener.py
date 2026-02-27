@@ -50,7 +50,7 @@ col_a, col_b = st.columns(2)
 
 with col_a:
     asset_type = st.selectbox("Classe d'actif", ["Actions", "Obligations", "Immobilier"])
-    nominal = st.number_input("Montant de l'investissement (€)", min_value=0, value=1000000, step=100000)
+    nominal = st.number_input("Montant de l'investissement (M€)", min_value=0, value=10, step=10)
 
 with col_b:
     yield_expected = st.number_input("Rendement annuel attendu (%)", value=4.50, step=0.1) / 100
@@ -114,6 +114,42 @@ c1, c2, c3 = st.columns(3)
 c1.metric("SCR Diversifié", f"{scr_div:,.0f} €")
 c2.metric("Gain de Diversification", f"{diversification_gain:,.0f} €", delta_color="normal")
 c3.metric("RAROC", f"{raroc:.2%}")
+
+# --- AJOUT DANS LA SECTION 3 DU CODE ---
+
+st.subheader("💰 Impact sur les Fonds Propres")
+
+# Calcul de la marge de risque théorique (le "coût" du blocage)
+risk_cost_amount = scr_div * k_cost 
+net_solvency_contribution = net_profit - risk_cost_amount
+
+c1, c2 = st.columns(2)
+
+with c1:
+    st.write(f"**Revenu annuel brut :** {net_profit:,.0f} €")
+    st.write(f"**Coût du capital (au taux de {k_cost:.0%}) :** -{risk_cost_amount:,.0f} €")
+    st.markdown(f"**Contribution nette au surplus :** \n ### {net_solvency_contribution:,.0f} €")
+
+with c2:
+    # Graphique de jauge pour la rentabilité
+    fig_gauge = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = raroc * 100,
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        title = {'text': "RAROC vs Target (6%)", 'font': {'size': 18}},
+        gauge = {
+            'axis': {'range': [None, 15], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'bar': {'color': "#1E88E5"},
+            'steps': [
+                {'range': [0, 6], 'color': "#FFCDD2"},
+                {'range': [6, 15], 'color': "#C8E6C9"}],
+            'threshold': {
+                'line': {'color': "red", 'width': 4},
+                'thickness': 0.75,
+                'value': 6}}))
+    
+    fig_gauge.update_layout(height=250, margin=dict(l=10, r=10, t=40, b=10))
+    st.plotly_chart(fig_gauge, use_container_width=True)
 
 # --- CONCLUSION POUR LE COMITÉ ---
 st.subheader("📋 Avis de la Gestion des Risques")
