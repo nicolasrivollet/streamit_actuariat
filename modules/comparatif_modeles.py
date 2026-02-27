@@ -34,7 +34,7 @@ with st.expander("1. Modèles Paramétriques : L'approche Nelson-Siegel & Svenss
 st.divider()
 
 # --- MODÈLE 2 : SMITH-WILSON ---
-with st.expander("2. Modèles de Convergence : L'approche Smith-Wilson (EIOPA)", expanded=False):
+with st.expander("2. Modèles de Convergence : L'approche Smith-Wilson (EIOPA)", expanded=True):
     col1, col2 = st.columns([2, 1])
     with col1:
         st.write("""
@@ -55,7 +55,7 @@ with st.expander("2. Modèles de Convergence : L'approche Smith-Wilson (EIOPA)",
 st.divider()
 
 # --- MODÈLE 3 : SPLINES CUBIQUES ---
-with st.expander("3. Interpolation Locale : Les Splines Cubiques", expanded=False):
+with st.expander("3. Interpolation Locale : Les Splines Cubiques", expanded=True):
     col1, col2 = st.columns([2, 1])
     with col1:
         st.write("""
@@ -72,7 +72,7 @@ with st.expander("3. Interpolation Locale : Les Splines Cubiques", expanded=Fals
 st.divider()
 
 # --- MODÈLE 4 : MODÈLES STOCHASTIQUES ---
-with st.expander("4. Modèles Dynamiques : Hull-White & Vasicek", expanded=False):
+with st.expander("4. Modèles Dynamiques : Hull-White & Vasicek", expanded=True):
     st.write("""
     **Concept :** Contrairement aux modèles précédents qui sont des "photos" à un instant T, ces modèles sont des "vidéos". Ils modélisent la diffusion du taux dans le temps.
     
