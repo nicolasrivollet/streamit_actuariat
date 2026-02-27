@@ -109,4 +109,3 @@ data = {
 df = pd.DataFrame(data)
 st.table(df)
 
-st.caption("Ce portfolio se concentre principalement sur l'axe **Solvabilité II** et les techniques actuarielles sous-jacentes.")
