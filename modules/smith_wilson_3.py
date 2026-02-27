@@ -50,6 +50,8 @@ with col_in2:
                                                 t_target=t_target, ufr=ufr_val,
                                                 alpha=alpha_val)  # Optional
 
+        st.write(t_target)
+
         fig = go.Figure()
 
         # Zone Liquide vs Extrapolation
