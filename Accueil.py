@@ -53,7 +53,7 @@ def show_home():
 
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
-home_page = st.Page(show_home, title="Présentation", icon="🏠", default=True)
+home_page = st.Page(show_home, title="Présentation",  default=True)
 
 normes_intro = st.Page(
     "modules/normes_intro.py",
