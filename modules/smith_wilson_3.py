@@ -50,7 +50,7 @@ with col_in2:
                                                 t_target=t_target, ufr=ufr_val,
                                                 alpha=alpha_val)  # Optional
 
-        st.write(len(t_target), len(y_target))
+        st.write(y_target*100)
 
         fig = go.Figure()
 
