@@ -49,9 +49,7 @@ with col_in2:
         y_target = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market,
                                                 t_target=t_target, ufr=ufr_val,
                                                 alpha=alpha_val)  # Optional
-
-        st.write(y_target*100)
-
+        
         fig = go.Figure()
 
         # Zone Liquide vs Extrapolation
@@ -88,7 +86,7 @@ check_col1, check_col2, check_col3 = st.columns(3)
 
 with check_col1:
     # Test d'interpolation sur le point 10 ans
-    val_10y = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market, t_target=t_target, ufr=ufr_val, alpha=alpha_val)[:] 
+    val_10y = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market, t_target=t_target, ufr=ufr_val, alpha=alpha_val)[10] 
     st.metric("Taux à 10 ans (Calculé)", f"{val_10y*100:.4f}%")
     st.caption("Doit être strictement égal au taux d'entrée.")
 
