@@ -31,7 +31,7 @@ def show_home():
 
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
-home_page = st.Page(show_home,  icon="🏠", default=True)
+home_page = st.Page(show_home, title="Présentation", icon="🏠", default=True)
 
 yield_curve = st.Page(
     "modules/courbe_taux.py", 
