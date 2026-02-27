@@ -93,7 +93,7 @@ with check_col1:
 
 with check_col2:
     st.metric("Convergence à 60 ans", f"{y_target[-1]*100:.2f}%")
-    st.caption(f"Cible UFR : {ufr_val*100:.2f}%")
+    st.caption(f"Cible UFR : {ufr_val*100:.0f}%")
 
 with check_col3:
     st.metric("Dernier Point Liquide (LLP)", f"{llp} ans")
