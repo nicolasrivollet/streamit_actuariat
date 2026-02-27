@@ -110,10 +110,17 @@ pilotage_reass = st.Page(
     icon="📉"
 )
 
+lee_carter = st.Page(
+    "modules/mortalite_lee_carter.py",
+    title="Mortalité (Lee-Carter)",
+    icon="💀"
+)
+
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général": [home_page],
+    "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
