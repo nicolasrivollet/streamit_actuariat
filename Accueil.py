@@ -39,6 +39,12 @@ yield_curve = st.Page(
     icon="📉"
 )
 
+comparatif_modeles = st.Page(
+    "modules/comparatif_modeles.py", 
+    title="Comparatif des Méthodes", 
+    icon="🔬"
+)
+
 s2_review = st.Page(
     "modules/reforme_s2.py", 
     title="Réforme Solvabilité II", 
@@ -49,7 +55,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [yield_curve],
+    "Finance & ALM": [yield_curve, comparatif_modeles], # Ajouté ici
     "Réglementation & ESG": [s2_review],
 })
 
