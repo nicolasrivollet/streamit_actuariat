@@ -24,11 +24,35 @@ st.latex(r"""
 y(t) = \beta_0 + \beta_1 \left( \frac{1 - e^{-t/\tau}}{t/\tau} \right) + \beta_2 \left( \frac{1 - e^{-t/\tau}}{t/\tau} - e^{-t/\tau} \right)
 """)
 
+# --- PARAMETERS INTERPRETATION ---
+st.markdown("### 3. Décomposition des Facteurs")
+st.write("Chaque paramètre joue un rôle précis dans la forme de la courbe :")
+
+col_a, col_b = st.columns(2)
+
+with col_a:
+    st.markdown(f"""
+    **$\\beta_0$ - Le Niveau :** Représente la valeur asymptotique. 
+    Un changement de $\\beta_0$ indique un déplacement parallèle.
+
+    **$\\beta_1$ - La Pente :** Détermine la vitesse de convergence. 
+    Un $\\beta_1$ négatif signifie une courbe normale (ascendante).
+    """)
+
+with col_b:
+    st.markdown(f"""
+    **$\\beta_2$ - La Courbure :** Capture la 'bosse' dans le secteur 2-5 ans. 
+    Crucial pour l'ALM sur les passifs de durée moyenne.
+
+    **$\\tau$ - Le Facteur d'Échelle :** Positionne le sommet de la courbure sur l'axe du temps.
+    """)
+
+
 st.divider()
 
 # --- PARAMETERS IN THE MAIN PAGE ---
 st.markdown("### 2. Simulateur de Paramètres")
-st.info("👈 **Expérimentation :** Ajustez les curseurs pour observer comment $\\beta_1$ fait pivoter la courbe (Pente) et comment $\\beta_2$ crée une bosse (Courbure).")
+st.info("**Expérimentation :** Ajustez les curseurs pour observer comment $\\beta_1$ fait pivoter la courbe (Pente) et comment $\\beta_2$ crée une bosse (Courbure).")
 
 # Organisation des sliders en colonnes pour gagner de l'espace
 col_param1, col_param2 = st.columns(2)
@@ -67,28 +91,6 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-# --- PARAMETERS INTERPRETATION ---
-st.markdown("### 3. Décomposition des Facteurs")
-st.write("Chaque paramètre joue un rôle précis dans la forme de la courbe :")
-
-col_a, col_b = st.columns(2)
-
-with col_a:
-    st.markdown(f"""
-    **$\\beta_0$ - Le Niveau :** Représente la valeur asymptotique. 
-    Un changement de $\\beta_0$ indique un déplacement parallèle.
-
-    **$\\beta_1$ - La Pente :** Détermine la vitesse de convergence. 
-    Un $\\beta_1$ négatif signifie une courbe normale (ascendante).
-    """)
-
-with col_b:
-    st.markdown(f"""
-    **$\\beta_2$ - La Courbure :** Capture la 'bosse' dans le secteur 2-5 ans. 
-    Crucial pour l'ALM sur les passifs de durée moyenne.
-
-    **$\\tau$ - Le Facteur d'Échelle :** Positionne le sommet de la courbure sur l'axe du temps.
-    """)
 
 
 # --- CALIBRATION SECTION ---
