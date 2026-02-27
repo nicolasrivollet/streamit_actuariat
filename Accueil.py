@@ -33,7 +33,7 @@ def show_home():
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
 home_page = st.Page(show_home, title="Présentation", icon="🏠", default=True)
 
-yield_curve = st.Page(
+nelsonSiegel = st.Page(
     "modules/courbe_taux.py", 
     title="Modèle Nelson-Siegel", 
     icon="📉"
@@ -43,6 +43,12 @@ comparatif_modeles = st.Page(
     "modules/comparatif_modeles.py", 
     title="Modélisation Courbe de Taux (intro)", 
     icon="🔬"
+)
+
+smith_wilson = st.Page(
+    "modules/smith_wilson.py", 
+    title="Focus : Smith-Wilson", 
+    icon="📏"
 )
 
 s2_review = st.Page(
@@ -55,7 +61,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [comparatif_modeles, yield_curve], # Ajouté ici
+    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], # Ajouté ici
     "Réglementation & ESG": [s2_review],
 })
 
