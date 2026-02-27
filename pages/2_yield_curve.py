@@ -13,7 +13,7 @@ st.markdown("""
 In insurance and risk management, the yield curve is the heartbeat of the balance sheet, governing the valuation of **Best Estimate Liabilities (BEL)** and the calibration of **Asset-Liability Management (ALM)** strategies.
 """)
 
-st.separator()
+st.divider()
 
 # --- SIDEBAR: CONTROLS ---
 st.sidebar.header("🕹️ Model Parameters")
