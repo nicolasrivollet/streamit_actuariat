@@ -13,21 +13,35 @@ st.set_page_config(
 # Pour éviter la répétition, nous allons définir une fonction pour le contenu de l'accueil
 def show_home():
     st.title("Système de Pilotage des Risques & Actuariat")
+    st.caption("🚀 Portfolio Technique - Nicolas Rivollet")
+    
     st.markdown("""
     ### Bienvenue sur mon Portfolio d'Expertise
     
     Ce site regroupe mes travaux de modélisation et mes analyses stratégiques dans le secteur de l'assurance et de la finance. 
-    Il est structuré autour de **4 thématiques clés** :
+    Il a été conçu pour démontrer l'application de **Python** aux problématiques actuarielles modernes.
     
-    1.  **Finance & ALM** : Modélisation des taux et adossement actif-passif.
-    2.  **Réglementation & ESG** : Veille et impact des réformes (Solvabilité II, IFRS 17).
-    3.  **Expertise Technique** : Provisionnement et tarification.
-    4.  **Data Science** : Automatisation et analyses prédictives.
+    #### 🎯 Objectifs du projet
+    1.  **Finance & ALM** : Modélisation interactive des taux (Nelson-Siegel, Smith-Wilson).
+    2.  **Réglementation** : Outils de calcul et de visualisation pour Solvabilité II (SCR, Best Estimate).
+    3.  **Data Science** : Automatisation des processus actuariels via des dashboards web.
     
     ---
-    **Utilisez le menu à gauche pour naviguer entre les modules.**
+    #### 🛠 Stack Technique
+    *   **Langage :** Python 3.10+
+    *   **Interface :** Streamlit
+    *   **Calculs :** NumPy, Pandas, Scipy
+    *   **Visualisation :** Plotly Interactive
     """)
-    st.info("💡 **Note technique :** Cette plateforme est développée en Python avec Streamlit pour garantir une interactivité totale.")
+    
+    st.info("👈 **Utilisez le menu latéral pour naviguer à travers les différents modules de modélisation.**")
+
+    # Ajout d'une section contact dans la sidebar pour le recrutement
+    with st.sidebar:
+        st.header("📬 Contact & Profil")
+        st.markdown("Si ce profil vous intéresse pour une opportunité :")
+        st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolas-rivollet/") # Remplacez par votre vrai lien si besoin
+        st.link_button("Code Source (GitHub)", "https://github.com/nicolasrivollet")
 
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
@@ -68,7 +82,7 @@ s2_review = st.Page(
 
 pg = st.navigation({
     "Général": [home_page],
-    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], # Ajouté ici
+    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], 
     "Réglementation & ESG": [s2_review, scr_screener],
 })
 
