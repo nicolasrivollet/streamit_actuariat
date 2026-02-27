@@ -45,9 +45,10 @@ comparatif_modeles = st.Page(
     icon="🔬"
 )
 
-comparatif_modeles = st.Page(
+scr_screener = st.Page(
     "modules/scr_screener.py", 
-    title="SCR Asset Screener"
+    title="SCR Asset Screener",
+    icon="🔬"
 )
 
 smith_wilson = st.Page(
@@ -68,7 +69,7 @@ s2_review = st.Page(
 pg = st.navigation({
     "Général": [home_page],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson], # Ajouté ici
-    "Réglementation & ESG": [s2_review],
+    "Réglementation & ESG": [s2_review, scr_screener],
 })
 
 # --- 4. EXÉCUTION ---
