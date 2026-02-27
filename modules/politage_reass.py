@@ -24,7 +24,7 @@ def simulate_claims(n=10000):
     # Simulation d'une sinistralité avec queue de distribution (Lognormale)
     return np.random.lognormal(mean=0.5, sigma=0.8, size=n)
 
-claims = simulate_claims()
+claims = simulate_claims() 
 
 # Application du traité XL
 claims_net = np.where(claims > priorite, 
