@@ -49,7 +49,7 @@ with col_in2:
         y_target = sw.fit_smithwilson_rates(rates_obs=r_market, t_obs=t_market,
                                                 t_target=t_target, ufr=ufr_val,
                                                 alpha=alpha_val)  # Optional
-        st.write(y_target[33])
+        st.write(type(y_target[33]))
 
 
         fig = go.Figure()
