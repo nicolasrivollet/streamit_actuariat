@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from utils import calculate_nelson_siegel
 
 st.set_page_config(page_title="SCR Taux - Formule Standard", layout="wide")
 
@@ -42,7 +41,9 @@ with col_param2:
 
 # --- 2. CALCULS DES COURBES ---
 t = np.linspace(0.1, 40, 100)
-r_base = calculate_nelson_siegel(t, b0, b1, b2, tau)
+term1 = (1 - np.exp(-t/tau)) / (t/tau)
+term2 = term1 - np.exp(-t/tau)
+r_base = b0 + b1*term1 + b2*term2
 
 # Fonction d'approximation des chocs S2 (Simplification pédagogique des vecteurs officiels)
 def get_s2_shocks(t_arr):
