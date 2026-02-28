@@ -15,7 +15,7 @@ Le **Best Estimate (BEL)** correspond à la valeur actuelle probable des flux de
 st.latex(r"BEL = \sum_{t=1}^{T} \frac{E[Flux_{Sortants}(t)] - E[Flux_{Entrants}(t)]}{(1 + r_t)^t}")
 
 st.markdown("""
-Ce module simule la projection d'un portefeuille d'épargne standard (Fonds Euros) sur 40 ans.
+Ce module simule la projection d'un portefeuille d'épargne standard (Fonds Euros) sur 60 ans.
 Les **primes futures** sont projetées en déduction des engagements (Flux Entrants), sous réserve des frontières de contrat.
 """)
 
@@ -43,8 +43,10 @@ with col3:
     taux_tech = st.number_input("Taux Revalorisation (PB) (%)", 0.0, 5.0, 2.0, 0.1) / 100
     taux_actualisation = st.slider("Taux d'Actualisation (Plat) (%)", 0.0, 6.0, 2.5, 0.1) / 100
 
+st.caption("ℹ️ **Hypothèse de modélisation :** Les primes futures sont projetées sur une durée limitée de **20 ans** (phase d'épargne active), tandis que les prestations (décès, rachats) sont modélisées jusqu'à l'extinction du portefeuille (60 ans).")
+
 # --- 2. MOTEUR DE CALCUL ---
-horizon = 40
+horizon = 60
 years = np.arange(1, horizon + 1)
 
 # Loi de mortalité simplifiée (Gompertz-Makeham)
