@@ -35,10 +35,21 @@ with col2:
     * **Seuil d'activation :** Simplification des critères de déclenchement pour mieux protéger le bilan en cas de crise systémique sur les marchés obligataires.
     """)
 
-st.markdown("#### Taux d'intérêt et Extrapolation (Smith-Wilson)")
-st.write("""
-La révision modifie la méthode d'extrapolation de la courbe des taux. L'introduction d'une approche plus graduelle vers le **Taux Long Terme (UFR)** vise à mieux refléter les prix de marché au-delà du dernier point liquide (LLP), tout en évitant des sauts brutaux de valorisation des engagements.
-""")
+col_rates, col_sa = st.columns(2)
+
+with col_rates:
+    st.subheader("Taux d'intérêt & Extrapolation (Smith-Wilson)")
+    st.write("""
+    La révision modifie la méthode d'extrapolation de la courbe des taux. L'introduction d'une approche plus graduelle vers le **Taux Long Terme (UFR)** vise à mieux refléter les prix de marché au-delà du dernier point liquide (LLP), tout en évitant des sauts brutaux de valorisation des engagements.
+    """)
+
+with col_sa:
+    st.subheader("Ajustement Symétrique (Actions)")
+    st.write("""
+    Le mécanisme contracyclique (Symmetric Adjustment) sur le risque Actions est renforcé pour mieux absorber les chocs.
+    * **Élargissement du corridor :** La fourchette d'ajustement passe de **[-10%; +10%]** à **[-13%; +13%]**.
+    * **Objectif :** En cas de krach boursier, la charge en capital baisse davantage (jusqu'à -13%), incitant les assureurs à conserver leurs actions (investisseur de long terme).
+    """)
 
 st.divider()
 
