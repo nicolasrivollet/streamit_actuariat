@@ -104,6 +104,12 @@ scr_standard = st.Page(
     icon="🧮"
 )
 
+cat_nat_climat = st.Page(
+    "modules/cat_nat_climat.py",
+    title="Risque Climatique (Cat Nat)",
+    icon="🌍"
+)
+
 volatility_adjustment = st.Page(
     "modules/volatility_adjustment.py",
     title="Volatility Adjustment",
@@ -141,7 +147,7 @@ pg = st.navigation({
     "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
-    "Réglementation & ESG": [s2_architecture, s2_review, scr_standard, scr_screener, volatility_adjustment, scr_taux],
+    "Réglementation & ESG": [s2_architecture, s2_review, scr_standard, scr_screener, volatility_adjustment, scr_taux, cat_nat_climat],
 })
 
 # --- 4. EXÉCUTION ---
