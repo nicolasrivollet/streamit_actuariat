@@ -143,11 +143,11 @@ lee_carter = st.Page(
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "🌱 Général": [home_page, normes_intro],
-    "Assurance Vie": [lee_carter],
-    "Provisionnement": [chain_ladder],
-    "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
-    "Réglementation & ESG": [s2_architecture, s2_review, scr_standard, scr_screener, volatility_adjustment, scr_taux, cat_nat_climat],
+    "🏠 Général & Contexte": [home_page, normes_intro, s2_architecture],
+    "📈 Finance & Marchés": [comparatif_modeles, nelsonSiegel, smith_wilson],
+    "🛡️ Passif & Réassurance": [lee_carter, chain_ladder, pilotage_reass],
+    "⚖️ Solvabilité II (Outils)": [scr_standard, scr_taux, volatility_adjustment, scr_screener],
+    "🌍 Prospective & ESG": [s2_review, cat_nat_climat],
 })
 
 # --- 4. EXÉCUTION ---
