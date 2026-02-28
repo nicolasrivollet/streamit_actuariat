@@ -129,7 +129,7 @@ scr_taux = st.Page(
 )
 
 pilotage_reass = st.Page(
-    "modules/politage_reassu.py",
+    "modules/pilotage_reassu.py",
     title="Pilotage Réassurance",
     icon="📉"
 )
