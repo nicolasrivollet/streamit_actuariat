@@ -54,20 +54,20 @@ def show_home():
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
 home        = st.Page(show_home, title="Présentation",  default=True)
-normes      = st.Page("modules/normes_intro.py", title="Panorama des Normes Comptables", icon="📚")
-nelson      = st.Page("modules/courbe_taux.py", title="Modèle Nelson-Siegel", icon="📉")
-comparat    = st.Page("modules/comparatif_modeles.py", title="Modélisation Courbe de Taux (intro)", icon="🔬")
-scr_screen  = st.Page("modules/scr_screener.py", title="SCR Asset Screener", icon="🔬")
-smith       = st.Page("modules/smith_wilson.py", title="Modèle Smith-Wilson", icon="📏")
+normes      = st.Page("modules/normes_intro.py", title="Panorama des Normes Comptables", icon="📖")
+nelson      = st.Page("modules/courbe_taux.py", title="Modèle Nelson-Siegel", icon="📈")
+comparat    = st.Page("modules/comparatif_modeles.py", title="Modélisation Courbe de Taux (intro)", icon="📊")
+scr_screen  = st.Page("modules/scr_screener.py", title="SCR Asset Screener", icon="🔍")
+smith       = st.Page("modules/smith_wilson.py", title="Modèle Smith-Wilson", icon="📐")
 reform_s2   = st.Page("modules/reforme_s2.py", title="Réforme Solvabilité II", icon="⚖️")
-archi_s2    = st.Page("modules/s2_architecture.py", title="Architecture Réglementaire", icon="🏛️")
-scr_global  = st.Page("modules/scr_standard.py", title="SCR Global (Agrégation)", icon="🧮")
-cat_climat  = st.Page("modules/cat_nat_climat.py", title="Risque Climatique (Cat Nat)", icon="🌍")
-volat_adj   = st.Page("modules/volatility_adjustment.py", title="Volatility Adjustment", icon="🛡️")
-chain_lad   = st.Page("modules/provisionnement_IARD.py", title="Chain-Ladder", icon="📊")
-scr_taux    = st.Page("modules/scr_taux.py", title="SCR Taux (Standard)", icon="📉")
-reass_pilot = st.Page("modules/pilotage_reassu.py", title="Pilotage Réassurance", icon="📉")
-lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-Carter)", icon="💀")
+archi_s2    = st.Page("modules/s2_architecture.py", title="Architecture Réglementaire", icon="🏢")
+scr_global  = st.Page("modules/scr_standard.py", title="SCR Global (Agrégation)", icon="🔗")
+cat_climat  = st.Page("modules/cat_nat_climat.py", title="Risque Climatique (Cat Nat)", icon="🌡️")
+volat_adj   = st.Page("modules/volatility_adjustment.py", title="Volatility Adjustment", icon="⚙️")
+chain_lad   = st.Page("modules/provisionnement_IARD.py", title="Chain-Ladder", icon="🔗")
+scr_taux    = st.Page("modules/scr_taux.py", title="SCR Taux (Standard)", icon="💱")
+reass_pilot = st.Page("modules/pilotage_reassu.py", title="Pilotage Réassurance", icon="🎯")
+lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-Carter)", icon="📉")
 
 # --- 3. NAVIGATION ---
 
