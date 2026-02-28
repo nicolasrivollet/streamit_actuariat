@@ -43,7 +43,6 @@ with col3:
     taux_tech = st.number_input("Taux Revalorisation (PB) (%)", 0.0, 5.0, 2.0, 0.1) / 100
     taux_actualisation = st.slider("Taux d'Actualisation (Plat) (%)", 0.0, 6.0, 2.5, 0.1) / 100
 
-st.caption("ℹ️ **Hypothèse de modélisation :** Les primes futures sont projetées sur une durée limitée de **20 ans** (phase d'épargne active), tandis que les prestations (décès, rachats) sont modélisées jusqu'à l'extinction du portefeuille (60 ans).")
 
 # --- 2. MOTEUR DE CALCUL ---
 horizon = 60
@@ -117,13 +116,8 @@ fig.add_hline(y=0, line_width=1, line_color="black", line_dash="dot")
 fig.update_layout(title="Projection des Flux de Trésorerie (Non actualisés)", barmode='relative', xaxis_title="Année de projection", yaxis_title="Montant (M€)", height=500)
 st.plotly_chart(fig, use_container_width=True)
 
-st.info("""
-💡 **Lecture du Graphique (ALM) :**
-*   **Barres :** Décomposition des flux entrants (Vert) et sortants (Rouge/Orange).
-*   **Ligne Noire (Flux Net) :** C'est la courbe critique pour la gestion de trésorerie. 
-    *   Tant qu'elle est **négative** (sous 0), l'assureur est en phase de **collecte nette** (cash à investir).
-    *   Dès qu'elle devient **positive** (au-dessus de 0), le portefeuille est en **décaissement net** (besoin de vendre des actifs pour payer les prestations).
-""")
+st.caption("ℹ️ **Hypothèse de modélisation :** Les primes futures sont projetées sur une durée limitée de **20 ans** (phase d'épargne active), tandis que les prestations (décès, rachats) sont modélisées jusqu'à l'extinction du portefeuille (60 ans).")
+
 
 with st.expander("🔎 Point Technique : Frontières de Contrat (Contract Boundaries)", expanded=True):
     st.markdown("""
