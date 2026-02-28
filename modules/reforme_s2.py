@@ -72,16 +72,14 @@ st.write("""
 Au-delà de la solvabilité individuelle, les autorités de contrôle (ACPR, EIOPA) reçoivent de nouveaux mandats pour surveiller le risque systémique.
 """)
 
-tab1, tab2, tab3 = st.tabs(["Liquidité", "Proportionnalité", "Reporting"])
+st.subheader("🔹 Gestion de la liquidité")
+st.markdown("Les superviseurs pourront exiger des plans de gestion de la liquidité plus stricts et, dans des cas extrêmes, suspendre temporairement les droits de rachat des assurés.")
 
-with tab1:
-    st.markdown("**Gestion de la liquidité :** Les superviseurs pourront exiger des plans de gestion de la liquidité plus stricts et, dans des cas extrêmes, suspendre temporairement les droits de rachat des assurés.")
+st.subheader("🔹 Principe de proportionnalité")
+st.markdown("Création d'une catégorie d'entreprises à 'faible profil de risque' bénéficiant d'allègements automatiques sur le reporting et la gouvernance, réduisant les coûts de conformité.")
 
-with tab2:
-    st.markdown("**Principe de proportionnalité :** Création d'une catégorie d'entreprises à 'faible profil de risque' bénéficiant d'allègements automatiques sur le reporting et la gouvernance, réduisant les coûts de conformité.")
-
-with tab3:
-    st.markdown("**Reporting (Pilier 3) :** Révision des QRT (Quantitative Reporting Templates) pour rationaliser les informations demandées et améliorer la comparabilité des rapports publics (SFCR).")
+st.subheader("🔹 Reporting (Pilier 3)")
+st.markdown("Révision des QRT (Quantitative Reporting Templates) pour rationaliser les informations demandées et améliorer la comparabilité des rapports publics (SFCR).")
 
 st.divider()
 
