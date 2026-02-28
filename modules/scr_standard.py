@@ -12,14 +12,23 @@ st.markdown("""
 Le **Capital de Solvabilité Requis (SCR)** est calculé par une approche modulaire "Bottom-Up". 
 Les risques sont calculés individuellement, puis agrégés via des **matrices de corrélation** pour tenir compte de la diversification (le fait que tous les risques ne se réalisent pas simultanément).
 
-$$ SCR_{Global} = BSCR - Adj + SCR_{Op} $$
+### 📐 La Formule d'Agrégation
+$$ SCR_{Global} = \sqrt{\sum_{i,j} Corr_{i,j} \cdot SCR_i \cdot SCR_j} - Adj + SCR_{Op} $$
+
+1.  **BSCR (Basic SCR) :** C'est la somme vectorielle des risques, tenant compte des corrélations.
+2.  **Ajustements (LAC) :** La capacité d'absorption des pertes par les provisions techniques (baisse de la participation aux bénéfices) et les impôts différés.
+3.  **SCR Opérationnel :** Ajouté de manière forfaitaire à la fin (non diversifié avec les autres risques).
 """)
 
 st.divider()
 
 # --- 1. SAISIE DES RISQUES (MODULES) ---
 st.header("1. Saisie des Risques par Module")
-st.info("Entrez les montants de capital requis pour chaque module de risque (avant diversification inter-modules).")
+st.markdown("""
+Ajustez les curseurs ci-dessous pour simuler le profil de risque d'une compagnie d'assurance.
+*   **Profil Vie :** Dominante SCR Marché et SCR Vie.
+*   **Profil Non-Vie :** Dominante SCR Non-Vie et SCR Cat Nat.
+""")
 
 col1, col2, col3 = st.columns(3)
 
@@ -39,7 +48,8 @@ with col3:
 st.header("2. Agrégation (BSCR)")
 st.markdown("""
 Les modules sont agrégés selon la matrice de corrélation définie par le Règlement Délégué (Annexe IV).
-On remarque que la corrélation entre **Vie** et **Non-Vie** est nulle (0%), offrant une forte diversification pour les assureurs composites.
+*   **Corrélation Faible (0% - 25%) :** Offre un fort gain de diversification (ex: Vie vs Non-Vie).
+*   **Corrélation Forte (50% - 100%) :** Peu de gain de diversification (ex: Marché vs Défaut en crise).
 """)
 
 # Vecteur des risques
@@ -76,6 +86,11 @@ col_res2.metric("BSCR (Après Diversification)", f"{bscr_total:,.0f} €", delta
 
 # --- 3. AJUSTEMENTS & OP RISK ---
 st.header("3. Passage au SCR Final")
+st.markdown("""
+Une fois le BSCR calculé, on applique les mécanismes d'absorption des pertes :
+*   **LAC TP (Loss Absorbing Capacity of Technical Provisions) :** Si je perds de l'argent, je peux réduire la participation aux bénéfices future des assurés. C'est un "amortisseur" puissant en Assurance Vie.
+*   **LAC DT (Deferred Taxes) :** Une perte génère un crédit d'impôt futur, réduisant la facture fiscale.
+""")
 
 col_adj1, col_adj2 = st.columns(2)
 
@@ -94,6 +109,7 @@ st.divider()
 
 # --- 4. VISUALISATION WATERFALL ---
 st.header("4. Synthèse Visuelle (Waterfall)")
+st.write("Ce graphique permet de visualiser comment on passe de la somme brute des risques au capital réellement exigé.")
 
 fig = go.Figure(go.Waterfall(
     name = "SCR", orientation = "v",
@@ -113,4 +129,4 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.success(f"**Ratio de Diversification :** {diversification/sum_scr_brut:.1%} du capital économisé grâce à la diversification des risques.")
+st.success(f"📉 **Gain de Diversification :** L'agrégation permet d'économiser **{diversification/sum_scr_brut:.1%}** du capital par rapport à une somme simple des risques. C'est l'avantage d'être un assureur diversifié.")
