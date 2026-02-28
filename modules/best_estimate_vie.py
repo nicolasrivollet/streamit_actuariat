@@ -113,10 +113,17 @@ fig.add_trace(go.Bar(x=years, y=flux_rachats, name="Rachats (Out)", marker_color
 fig.add_trace(go.Bar(x=years, y=flux_frais, name="Frais (Out)", marker_color='gray'))
 fig.add_trace(go.Scatter(x=years, y=flux_net, name="Flux Net de Trésorerie", line=dict(color='black', width=3)))
 
+fig.add_hline(y=0, line_width=1, line_color="black", line_dash="dot")
 fig.update_layout(title="Projection des Flux de Trésorerie (Non actualisés)", barmode='relative', xaxis_title="Année de projection", yaxis_title="Montant (M€)", height=500)
 st.plotly_chart(fig, use_container_width=True)
 
-st.info("💡 **Lecture :** Les barres vertes (négatives) représentent les entrées d'argent (Primes). Les barres positives (rouge/orange) sont les sorties. La ligne noire est le solde net à financer.")
+st.info("""
+💡 **Lecture du Graphique (ALM) :**
+*   **Barres :** Décomposition des flux entrants (Vert) et sortants (Rouge/Orange).
+*   **Ligne Noire (Flux Net) :** C'est la courbe critique pour la gestion de trésorerie. 
+    *   Tant qu'elle est **négative** (sous 0), l'assureur est en phase de **collecte nette** (cash à investir).
+    *   Dès qu'elle devient **positive** (au-dessus de 0), le portefeuille est en **décaissement net** (besoin de vendre des actifs pour payer les prestations).
+""")
 
 with st.expander("🔎 Point Technique : Frontières de Contrat (Contract Boundaries)", expanded=True):
     st.markdown("""
