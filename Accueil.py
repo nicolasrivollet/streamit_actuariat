@@ -92,6 +92,12 @@ s2_review = st.Page(
     icon="⚖️"
 )
 
+s2_architecture = st.Page(
+    "modules/s2_architecture.py",
+    title="Architecture Réglementaire",
+    icon="🏛️"
+)
+
 volatility_adjustment = st.Page(
     "modules/volatility_adjustment.py",
     title="Volatility Adjustment",
@@ -130,6 +136,7 @@ pg = st.navigation({
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
     "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
+    "Réglementation & ESG": [s2_architecture, s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
 
 # --- 4. EXÉCUTION ---
