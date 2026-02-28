@@ -28,15 +28,12 @@ def generate_portfolio():
     ratings = ['AAA', 'AA', 'A', 'BBB', 'BB', 'B']
     rating_weights = [0.2, 0.3, 0.3, 0.15, 0.04, 0.01]
     
-<<<<<<< HEAD
     # Noms fictifs pour l'exemple
     names_gov = ["OAT France 2032", "Bund Allemagne 2028", "BTP Italie 2030", "Bonos Espagne 2029", "US Treasury 2025"]
     names_corp = ["TotalEnergies Bond", "LVMH Corp", "BNP Paribas Senior", "AXA Subordinated", "Danone Credit", "Orange SA"]
     names_equity = ["Air Liquide", "L'Oréal", "Schneider Electric", "Sanofi", "Airbus", "Vinci"]
     names_real = ["SCPI Bureau Paris", "OPCI Logistique", "Foncière Santé", "Immeuble La Défense"]
     
-=======
->>>>>>> 93f62d02fffea217b173ca86f250829a7941c646
     data = []
     for _ in range(n_assets):
         asset_type = np.random.choice(types, p=weights)
@@ -44,31 +41,20 @@ def generate_portfolio():
         
         rating = "N/A"
         duration = 0.0
-<<<<<<< HEAD
         name = "Cash Account"
-=======
->>>>>>> 93f62d02fffea217b173ca86f250829a7941c646
         
         if "Obligations" in asset_type:
             rating = np.random.choice(ratings, p=rating_weights)
             duration = np.random.uniform(2, 15)
-<<<<<<< HEAD
             name = np.random.choice(names_gov if "Gouv" in asset_type else names_corp)
-=======
->>>>>>> 93f62d02fffea217b173ca86f250829a7941c646
         elif asset_type == "Cash":
             duration = 0.0
         else:
             duration = 0.0 # Simplification
-<<<<<<< HEAD
             name = np.random.choice(names_equity if "Actions" in asset_type else names_real)
             
         data.append({
             "Nom de l'Actif": name,
-=======
-            
-        data.append({
->>>>>>> 93f62d02fffea217b173ca86f250829a7941c646
             "Classe d'Actif": asset_type,
             "Valeur de Marché (M€)": mv,
             "Rating": rating,
@@ -160,9 +146,5 @@ with col_stress2:
 st.divider()
 
 # --- 5. TABLEAU DÉTAILLÉ ---
-<<<<<<< HEAD
 with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=True):
-=======
-with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=False):
->>>>>>> 93f62d02fffea217b173ca86f250829a7941c646
     st.dataframe(df.sort_values("Valeur de Marché (M€)", ascending=False).head(10).style.format({"Valeur de Marché (M€)": "{:,.0f}", "Performance YTD (%)": "{:.2%}", "Duration": "{:.1f}"}))
