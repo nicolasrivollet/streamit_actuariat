@@ -98,6 +98,12 @@ s2_architecture = st.Page(
     icon="🏛️"
 )
 
+scr_standard = st.Page(
+    "modules/scr_standard.py",
+    title="SCR Global (Agrégation)",
+    icon="🧮"
+)
+
 volatility_adjustment = st.Page(
     "modules/volatility_adjustment.py",
     title="Volatility Adjustment",
@@ -135,7 +141,7 @@ pg = st.navigation({
     "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
-    "Réglementation & ESG": [s2_architecture, s2_review, scr_screener, volatility_adjustment, scr_taux],
+    "Réglementation & ESG": [s2_architecture, s2_review, scr_standard, scr_screener, volatility_adjustment, scr_taux],
 })
 
 # --- 4. EXÉCUTION ---
