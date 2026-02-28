@@ -72,12 +72,13 @@ scr_taux    = st.Page("modules/scr_taux.py", title="SCR Taux (Standard)", icon="
 reass_pilot = st.Page("modules/pilotage_reassu.py", title="Pilotage Réassurance", icon="🎯")
 lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-Carter)", icon="📉")
 best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie", icon="💰")
+risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques", icon="📊")
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "Général & Contexte": [home, normes, archi_s2],
-    "Finance & Marchés": [comparat, nelson, smith],
+    "Finance & Marchés": [risk_dash, comparat, nelson, smith],
     "Passif & Réassurance": [lee_carter, best_estim, chain_lad, reass_pilot],
     "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
     "Prospective & ESG": [reform_s2, cat_climat],
