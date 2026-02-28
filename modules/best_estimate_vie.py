@@ -133,30 +133,10 @@ $$ PT = BEL + RiskMargin $$
 La **Risk Margin (marge de risque)** vient s'ajouter pour couvrir l'incertitude liée aux risques non diversifiables, garantissant que les provisions correspondent au montant qu'un autre assureur demanderait pour reprendre les engagements.
 """)
 
-st.subheader("Calcul Simplifié de la Risk Margin")
-
-col_rm1, col_rm2 = st.columns(2)
-
-with col_rm1:
-    coc = st.slider("Coût du Capital (CoC)", 0.0, 10.0, 6.0, 0.25, help="Standard S2 = 6% (4.75% post-réforme)") / 100
-    scr_initial_ratio = st.slider("Ratio SCR / BEL Initial (%)", 0.0, 20.0, 5.0, 0.5, help="Hypothèse : Le SCR représente X% du BEL à t=0") / 100
-
-with col_rm2:
-    # Méthode simplifiée : Le SCR futur est proportionnel à l'évolution du stock (Encours)
-    # SCR(t) = SCR(0) * (Encours(t) / Encours(0))
-    scr_0 = bel * scr_initial_ratio
-    
-    # Projection du SCR (Proxy basé sur l'encours projeté précédemment)
-    # On utilise 'encours' calculé plus haut (attention encours a horizon+1 points)
-    scr_proj = scr_0 * (encours[:horizon] / encours_initial)
-    
-    # Actualisation des SCR futurs
-    # RM = CoC * Sum (SCR(t) / (1+r)^(t+1))
-    # Attention : le SCR couvre l'année à venir, on l'actualise donc à t+1
-    discount_factors_rm = 1 / ((1 + taux_actualisation) ** (years)) # years = 1..40
-    
-    risk_margin = coc * np.sum(scr_proj * discount_factors_rm)
-    
-    st.metric("Risk Margin (RM)", f"{risk_margin:,.1f} M€")
-    st.metric("Provisions Techniques Totales (BEL + RM)", f"{bel + risk_margin:,.1f} M€", delta="Bilan S2")
-    st.caption(f"Soit une majoration de +{risk_margin/bel*100:.1f}% sur le BEL")
+st.subheader("Formule de la Marge de Risque")
+st.latex(r"RM = CoC \times \sum_{t \ge 0} \frac{SCR(t)}{(1 + r(t+1))^{t+1}}")
+st.markdown("""
+*   **CoC (Cost of Capital) :** Le coût du capital, fixé réglementairement à **6%**.
+*   **SCR(t) :** Le Capital de Solvabilité Requis projeté à l'année $t$ (couvrant les risques non-couvrables).
+*   **Actualisation :** Au taux sans risque $r$.
+""")
