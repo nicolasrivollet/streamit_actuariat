@@ -10,9 +10,11 @@ st.subheader("Projection des Flux de Trésorerie (Cash Flows)")
 
 st.markdown("""
 Le **Best Estimate (BEL)** correspond à la valeur actuelle probable des flux de trésorerie futurs, pondérée par leur probabilité de survenance.
+""")
 
-$$ BEL = \sum_{t=1}^{T} \\frac{E[Flux_{Sortants}(t)] - E[Flux_{Entrants}(t)]}{(1 + r_t)^t} $$
+st.latex(r"BEL = \sum_{t=1}^{T} \frac{E[Flux_{Sortants}(t)] - E[Flux_{Entrants}(t)]}{(1 + r_t)^t}")
 
+st.markdown("""
 Ce module simule la projection d'un portefeuille d'épargne standard (Fonds Euros) sur 40 ans.
 Les **primes futures** sont projetées en déduction des engagements (Flux Entrants), sous réserve des frontières de contrat.
 """)
