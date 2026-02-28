@@ -25,7 +25,11 @@ def show_home():
     1.  **Finance & ALM** : Modélisation interactive des taux (Nelson-Siegel, Smith-Wilson).
     2.  **Réglementation** : Outils de calcul et de visualisation pour Solvabilité II (SCR, Best Estimate).
     3.  **Data Science** : Automatisation des processus actuariels via des dashboards web.
-    
+    """)
+
+    st.info("👈 **Utilisez le menu latéral pour naviguer à travers les différents modules de modélisation.**")
+
+    st.markdown("""
     ---
     #### 🛠 Stack Technique
     *   **Langage :** Python 3.10+
@@ -34,7 +38,6 @@ def show_home():
     *   **Visualisation :** Plotly Interactive
     """)
     
-    st.info("👈 **Utilisez le menu latéral pour naviguer à travers les différents modules de modélisation.**")
 
     # Ajout d'une section contact dans la sidebar pour le recrutement
     with st.sidebar:
