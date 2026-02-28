@@ -72,7 +72,7 @@ scr_taux    = st.Page("modules/scr_taux.py", title="SCR Taux (Standard)", icon="
 reass_pilot = st.Page("modules/pilotage_reassu.py", title="Pilotage Réassurance", icon="🎯")
 lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-Carter)", icon="📉")
 best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie", icon="💰")
-risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques", icon="📊")
+risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques Financiers", icon="📊")
 
 # --- 3. NAVIGATION ---
 
