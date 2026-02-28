@@ -72,11 +72,11 @@ lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "🏠 Général & Contexte": [home, normes, archi_s2],
-    "📈 Finance & Marchés": [comparat, nelson, smith],
-    "🛡️ Passif & Réassurance": [lee_carter, chain_lad, reass_pilot],
-    "⚖️ Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
-    "🌍 Prospective & ESG": [reform_s2, cat_climat],
+    "Général & Contexte": [home, normes, archi_s2],
+    "Finance & Marchés": [comparat, nelson, smith],
+    "Passif & Réassurance": [lee_carter, chain_lad, reass_pilot],
+    "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
+    "Prospective & ESG": [reform_s2, cat_climat],
 })
 
 # --- 4. EXÉCUTION ---
