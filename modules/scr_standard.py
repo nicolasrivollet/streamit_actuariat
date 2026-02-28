@@ -24,16 +24,16 @@ st.info("Entrez les montants de capital requis pour chaque module de risque (ava
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    scr_market = st.number_input("SCR Marché", value=1500.0, step=100.0, help="Taux, Actions, Immo, Spread, Change, Concentration")
-    scr_default = st.number_input("SCR Contrepartie", value=200.0, step=50.0, help="Défaut des réassureurs, banques, etc.")
+    scr_market = st.slider("SCR Marché", 0.0, 5000.0, 1500.0, step=50.0, help="Taux, Actions, Immo, Spread, Change, Concentration")
+    scr_default = st.slider("SCR Contrepartie", 0.0, 1000.0, 200.0, step=10.0, help="Défaut des réassureurs, banques, etc.")
 
 with col2:
-    scr_life = st.number_input("SCR Vie", value=800.0, step=100.0, help="Mortalité, Longévité, Rachats, Dépenses")
-    scr_health = st.number_input("SCR Santé", value=100.0, step=50.0, help="SLT, Non-SLT, Catastrophe")
+    scr_life = st.slider("SCR Vie", 0.0, 3000.0, 800.0, step=50.0, help="Mortalité, Longévité, Rachats, Dépenses")
+    scr_health = st.slider("SCR Santé", 0.0, 1000.0, 100.0, step=10.0, help="SLT, Non-SLT, Catastrophe")
 
 with col3:
-    scr_nonlife = st.number_input("SCR Non-Vie", value=600.0, step=100.0, help="Primes & Réserves, Cat Nat")
-    scr_intangibles = st.number_input("SCR Incorporels", value=0.0, step=10.0)
+    scr_nonlife = st.slider("SCR Non-Vie", 0.0, 3000.0, 600.0, step=50.0, help="Primes & Réserves, Cat Nat")
+    scr_intangibles = st.slider("SCR Incorporels", 0.0, 500.0, 0.0, step=10.0)
 
 # --- 2. MATRICE DE CORRÉLATION ---
 st.header("2. Agrégation (BSCR)")
@@ -81,12 +81,12 @@ col_adj1, col_adj2 = st.columns(2)
 
 with col_adj1:
     st.subheader("Ajustements")
-    adj_tp = st.number_input("Ajustement pour capacité d'absorption des PT (LAC TP)", value=0.0, help="Baisse de la PPB future en cas de choc")
-    adj_dt = st.number_input("Ajustement pour impôts différés (LAC DT)", value=0.0, help="Économie d'impôt générée par la perte")
+    adj_tp = st.slider("Ajustement LAC TP (Capacité d'absorption PT)", 0.0, 1000.0, 0.0, step=10.0, help="Baisse de la PPB future en cas de choc")
+    adj_dt = st.slider("Ajustement LAC DT (Impôts Différés)", 0.0, 500.0, 0.0, step=10.0, help="Économie d'impôt générée par la perte")
 
 with col_adj2:
     st.subheader("Risque Opérationnel")
-    scr_op = st.number_input("SCR Opérationnel", value=50.0, help="Souvent formule forfaitaire basée sur les Primes et Provisions")
+    scr_op = st.slider("SCR Opérationnel", 0.0, 500.0, 50.0, step=10.0, help="Souvent formule forfaitaire basée sur les Primes et Provisions")
 
 scr_final = bscr_total - adj_tp - adj_dt + scr_op
 
