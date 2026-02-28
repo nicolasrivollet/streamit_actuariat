@@ -143,12 +143,6 @@ with col_calib2:
     
     st.info(f"Calibration automatique (MSE : {res.fun:.2e})")
     
-    # Affichage des paramètres calibrés
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Beta 0 (Niveau)", f"{b0_opt:.4f}")
-    c2.metric("Beta 1 (Pente)", f"{b1_opt:.4f}")
-    c3.metric("Beta 2 (Courbure)", f"{b2_opt:.4f}")
-    c4.metric("Tau", f"{tau_opt:.4f}")
     
     # Visualisation Comparative
     t_plot = np.linspace(0.1, max(t_obs)+5, 100)
@@ -159,3 +153,10 @@ with col_calib2:
     fig_fit.add_trace(go.Scatter(x=t_obs, y=y_obs*100, mode='markers', name="Points Marché", marker=dict(color='red', size=12, symbol='x')))
     fig_fit.update_layout(title="Résultat du Fitting", xaxis_title="Maturité (Années)", yaxis_title="Taux (%)", template="plotly_white")
     st.plotly_chart(fig_fit, use_container_width=True)
+
+    # Affichage des paramètres calibrés
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Beta 0 (Niveau)", f"{b0_opt:.4f}")
+    c2.metric("Beta 1 (Pente)", f"{b1_opt:.4f}")
+    c3.metric("Beta 2 (Courbure)", f"{b2_opt:.4f}")
+    c4.metric("Tau", f"{tau_opt:.4f}")
