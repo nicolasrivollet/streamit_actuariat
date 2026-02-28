@@ -14,6 +14,7 @@ Le **Best Estimate (BEL)** correspond à la valeur actuelle probable des flux de
 $$ BEL = \sum_{t=1}^{T} \\frac{E[Flux_{Sortants}(t)] - E[Flux_{Entrants}(t)]}{(1 + r_t)^t} $$
 
 Ce module simule la projection d'un portefeuille d'épargne standard (Fonds Euros) sur 40 ans.
+Les **primes futures** sont projetées en déduction des engagements (Flux Entrants), sous réserve des frontières de contrat.
 """)
 
 st.divider()
@@ -111,4 +112,10 @@ fig.add_trace(go.Scatter(x=years, y=flux_net, name="Flux Net de Trésorerie", li
 fig.update_layout(title="Projection des Flux de Trésorerie (Non actualisés)", barmode='relative', xaxis_title="Année de projection", yaxis_title="Montant (M€)", height=500)
 st.plotly_chart(fig, use_container_width=True)
 
-st.info("💡 **Lecture :** Les barres vertes (négatives) représentent les entrées d'argent. Les barres positives (rouge/orange) sont les sorties. La ligne noire est le solde net à financer.")
+st.info("💡 **Lecture :** Les barres vertes (négatives) représentent les entrées d'argent (Primes). Les barres positives (rouge/orange) sont les sorties. La ligne noire est le solde net à financer.")
+
+with st.expander("🔎 Point Technique : Frontières de Contrat (Contract Boundaries)"):
+    st.markdown("""
+    En Solvabilité II, on ne projette les primes futures que si elles rentrent dans la **Frontière du Contrat**.
+    C'est-à-dire si l'assureur n'a pas le droit unilatéral de résilier le contrat, de refuser la prime ou de modifier les tarifs pour refléter le nouveau risque.
+    """)
