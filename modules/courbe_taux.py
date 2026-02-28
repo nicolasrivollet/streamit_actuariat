@@ -62,7 +62,7 @@ with col_param1:
     b1 = st.slider("Beta 1 (Pente)", -0.10, 0.10, -0.02, step=0.005)
 
 with col_param2:
-    b2 = st.slider("Beta 2 (Courbure)", -0.10, 0.10, 0.01, step=0.005)
+    b2 = st.slider("Beta 2 (Courbure)", -0.10, 0.10, 0.04, step=0.005)
     tau = st.slider("Tau (Facteur d'échelle)", 0.1, 10.0, 2.0)
 
 # --- CALCULATIONS ---
