@@ -82,16 +82,17 @@ with tab3:
     #### 🎯 Objectif : Lisibilité et Comparabilité
     Fini le "Black Box" de l'assurance. IFRS 17 aligne la comptabilité assurance sur les standards industriels (reconnaissance du revenu au fil de l'eau).
     
-    #### 🧩 Le Modèle en Blocs (Building Block Approach - BBA)
-    Le passif est la somme de 3 composantes :
+    #### 🧩 Le Modèle Général (General Measurement Model - GMM)
+    Le passif (LRC - Liability for Remaining Coverage) est la somme de 3 blocs :
     1.  **Flux de trésorerie d'exécution (FCF) :**
-        *   *Best Estimate* (comme S2) des flux futurs.
-        *   *Ajustement pour Risque (RA)* : Compensation pour l'incertitude (≠ Marge de Risque S2).
-        *   *Actualisation* : Taux de marché "illiquide" (Bottom-up ou Top-down).
+        *   *Estimations courantes* : Moyenne pondérée des flux futurs (proche du Best Estimate S2).
+        *   *Ajustement pour Risque (RA)* : Compensation pour l'incertitude non-financière (≠ Marge de Risque S2).
+        *   *Actualisation* : Taux sans risque + Prime d'illiquidité (Bottom-up) ou Taux portefeuille - Risque crédit (Top-down).
     2.  **Marge de Service Contractuelle (CSM) :**
         *   Représente le **profit non gagné** du contrat.
-        *   Au jour 1, on ne peut pas enregistrer de profit immédiat (CSM > 0).
-        *   Cette CSM est "libérée" en résultat (P&L) progressivement, à mesure que le service d'assurance est rendu.
+        *   Au jour 1, aucun profit n'est enregistré : il est stocké dans la CSM.
+        *   *Amortissement* : La CSM est libérée en résultat via des **Unités de Couverture** (Coverage Units).
+        *   *Exception* : Si le contrat est déficitaire (Onéreux), la perte est immédiate (pas de CSM).
 
     #### 🚦 Modèles de Mesure
     *   **GMM (General Model) :** Le modèle par défaut (Vie, Prévoyance longue).
@@ -109,7 +110,7 @@ data = {
     "Critère": ["Objectif Principal", "Valorisation Actif", "Valorisation Passif", "Actualisation", "Indicateur Clé"],
     "French GAAP": ["Prudence & Impôt", "Coût Historique (amorti)", "Taux Technique Garanti", "Taux historique (fixe)", "Résultat Net Comptable"],
     "Solvabilité II": ["Protection Assuré (Faillite)", "Valeur de Marché", "Best Estimate (Flux probables)", "Courbe Taux Sans Risque", "Ratio de Solvabilité (SCR)"],
-    "IFRS 17": ["Information Financière", "Valeur de Marché", "Best Estimate + CSM", "Courbe Taux Illiquide", "Marge de Service (CSM)"]
+    "IFRS 17": ["Information Financière", "Valeur de Marché", "FCF (Flux + RA) + CSM", "Taux ajusté (Illiquidité)", "Marge de Service (CSM)"]
 }
 
 df = pd.DataFrame(data)
