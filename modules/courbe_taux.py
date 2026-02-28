@@ -115,6 +115,7 @@ with col_calib1:
     # Éditeur interactif
     edited_df = st.data_editor(input_data, num_rows="dynamic", hide_index=True)
 
+
 with col_calib2:
     # Préparation des données
     t_obs = edited_df["Maturité (Ans)"].values
@@ -141,7 +142,7 @@ with col_calib2:
     # Résultats
     b0_opt, b1_opt, b2_opt, tau_opt = res.x
     
-    st.info(f"Calibration automatique (MSE : {res.fun:.2e})")
+
     
     
     # Visualisation Comparative
@@ -160,3 +161,5 @@ with col_calib2:
     c2.metric("Beta 1 (Pente)", f"{b1_opt:.4f}")
     c3.metric("Beta 2 (Courbure)", f"{b2_opt:.4f}")
     c4.metric("Tau", f"{tau_opt:.4f}")
+
+    st.info(f"Calibration automatique (MSE : {res.fun:.2e})")
