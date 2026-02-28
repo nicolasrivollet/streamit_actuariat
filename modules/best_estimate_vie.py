@@ -110,7 +110,6 @@ fig.add_trace(go.Bar(x=years, y=-flux_primes, name="Primes (In)", marker_color='
 fig.add_trace(go.Bar(x=years, y=flux_deces, name="Décès (Out)", marker_color='red'))
 fig.add_trace(go.Bar(x=years, y=flux_rachats, name="Rachats (Out)", marker_color='orange'))
 fig.add_trace(go.Bar(x=years, y=flux_frais, name="Frais (Out)", marker_color='gray'))
-fig.add_trace(go.Scatter(x=years, y=flux_net, name="Flux Net de Trésorerie", line=dict(color='black', width=3)))
 
 fig.add_hline(y=0, line_width=1, line_color="black", line_dash="dot")
 fig.update_layout(title="Projection des Flux de Trésorerie (Non actualisés)", barmode='relative', xaxis_title="Année de projection", yaxis_title="Montant (M€)", height=500)
