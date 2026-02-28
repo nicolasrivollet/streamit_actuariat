@@ -135,7 +135,6 @@ pg = st.navigation({
     "Assurance Vie": [lee_carter],
     "Provisionnement": [chain_ladder],
     "Finance & ALM": [comparatif_modeles, nelsonSiegel, smith_wilson, pilotage_reass], 
-    "Réglementation & ESG": [s2_review, scr_screener, volatility_adjustment, scr_taux],
     "Réglementation & ESG": [s2_architecture, s2_review, scr_screener, volatility_adjustment, scr_taux],
 })
 
