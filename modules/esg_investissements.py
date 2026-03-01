@@ -51,20 +51,21 @@ col_sim1, col_sim2 = st.columns([1, 2])
 
 with col_sim1:
     st.subheader("Allocation Cible")
-    alloc_classic = st.slider("Allocation Classique (%)", 0, 100, 50, step=5)
-    alloc_bic = st.slider("Allocation Best-in-Class (%)", 0, 100, 30, step=5)
-    alloc_impact = st.slider("Allocation Impact / Vert (%)", 0, 100, 20, step=5)
+    # Approche en cascade pour garantir 100%
+    part_esg = st.slider("1. Part Investissement Responsable (%)", 0, 100, 50, step=5, help="Part du portefeuille soumise à des critères ESG.")
     
-    total = alloc_classic + alloc_bic + alloc_impact
-    if total != 100:
-        st.warning(f"Total allocation : {total}%. Le calcul sera normalisé à 100%.")
+    part_impact = 0
+    if part_esg > 0:
+        part_impact = st.slider("2. Dont part 'Impact / Vert' (%)", 0, 100, 40, step=5, help="Au sein de la poche ESG, part dédiée à l'impact fort (Article 9).")
+    
+    # Calcul des poids (somme = 100%)
+    w_classic = (100 - part_esg) / 100.0
+    w_impact = (part_esg / 100.0) * (part_impact / 100.0)
+    w_bic = (part_esg / 100.0) * (1 - part_impact / 100.0)
+    
+    st.caption(f"**Répartition :**\n- Classique : {w_classic:.0%}\n- Best-in-Class : {w_bic:.0%}\n- Impact : {w_impact:.0%}")
 
 with col_sim2:
-    # Normalisation
-    w_classic = alloc_classic / total if total > 0 else 0
-    w_bic = alloc_bic / total if total > 0 else 0
-    w_impact = alloc_impact / total if total > 0 else 0
-    
     # Calculs
     score_esg = w_classic * 50 + w_bic * 75 + w_impact * 90
     carbon = w_classic * 200 + w_bic * 120 + w_impact * 50
