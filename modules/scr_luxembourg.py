@@ -37,13 +37,13 @@ with col2:
 # A. SCR Marché
 # Sur les UC, l'assureur ne porte pas le risque de marché, sauf sur ses frais futurs.
 # Simplification : SCR Marché = Choc sur les revenus futurs (Frais de gestion)
-# On suppose que le choc baisse la valeur actuelle des frais futurs de 20% (Mass Lapse / Baisse marchés).
-scr_market = tp_uc * 0.005 * 0.20 * 10 # Proxy : Frais annuels * 20% choc * 10 ans duration
+# On suppose que le choc baisse la valeur actuelle des frais futurs de 30% (Baisse marchés / Immo).
+scr_market = tp_uc * 0.005 * 0.30 * 10 # Proxy : Frais futurs * 30% choc * 10 ans duration
 
 # B. SCR Vie
 # Le risque de mortalité/longevité Euro est réassuré.
 # Reste le risque de rachat massif sur les UC (perte de frais futurs) et le risque de dépenses.
-scr_life = tp_uc * 0.005 * 0.40 * 5 # Proxy rachat massif
+scr_life = tp_uc * 0.005 * 0.40 * 10 # Proxy rachat massif
 
 # C. SCR Contrepartie (Le gros morceau)
 # Exposition = TP Euro - Collatéral
@@ -66,6 +66,10 @@ scr_op = op_euro + op_uc
 bscr = np.sqrt(scr_market**2 + scr_life**2 + scr_default**2 + 2*0.25*scr_market*scr_life + 2*0.25*scr_market*scr_default + 2*0.25*scr_life*scr_default)
 scr_total = bscr + scr_op
 
+# Calcul Diversification
+sum_scr_modules = scr_market + scr_life + scr_default
+diversification_gain = sum_scr_modules - bscr
+
 # --- 2. SYNTHÈSE (RÉSULTATS) ---
 st.header("2. Synthèse du Capital Requis")
 
@@ -73,6 +77,7 @@ col_res1, col_res2 = st.columns([1, 2])
 
 with col_res1:
     st.metric("SCR Total", f"{scr_total:,.1f} M€")
+    st.metric("Gain de Diversification", f"{diversification_gain:,.1f} M€", delta=f"-{diversification_gain/sum_scr_modules:.1%} (Effet Div.)", delta_color="inverse")
     part_default = scr_default/scr_total if scr_total > 0 else 0
     st.metric("Part du Risque de Contrepartie", f"{part_default:.1%}", delta="Risque Dominant" if part_default > 0.5 else "Risque Dilué")
 
