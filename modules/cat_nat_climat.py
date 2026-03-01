@@ -63,7 +63,8 @@ def generate_portfolio(n=500):
         'lat': np.concatenate([lat_n, lat_s]),
         'lon': np.concatenate([lon_n, lon_s]),
         'TIV': np.random.lognormal(12, 0.5, n), # Total Insured Value
-        'Type': ['Inondation']*int(n/2) + ['Sécheresse']*int(n/2)
+        'Type': ['Inondation']*int(n/2) + ['Sécheresse']*int(n/2),
+        'Base_Score': np.random.uniform(0, 10, n) # Score de risque intrinsèque (0-10)
     })
     return df
 
@@ -71,7 +72,7 @@ df_portfolio = generate_portfolio()
 
 # Calcul du risque par police (Score simplifié)
 # Le risque augmente avec le scénario
-df_portfolio['Risque_Score'] = np.random.uniform(0, 10, len(df_portfolio)) * factors['freq']
+df_portfolio['Risque_Score'] = df_portfolio['Base_Score'] * factors['freq']
 df_portfolio['Perte_Attendue'] = df_portfolio['TIV'] * (df_portfolio['Risque_Score'] / 1000) * factors['cost']
 
 # Carte interactive
@@ -82,6 +83,7 @@ fig_map = px.scatter_mapbox(
     color="Perte_Attendue",
     size="TIV",
     color_continuous_scale="RdYlGn_r",
+    range_color=[0, 15000], # Échelle fixe pour visualiser l'aggravation
     size_max=15, 
     zoom=4,
     mapbox_style="open-street-map",
