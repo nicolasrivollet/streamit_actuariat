@@ -26,10 +26,12 @@ col1, col2 = st.columns(2)
 with col1:
     tp_euro = st.number_input("Provisions Techniques Fonds Général (M€)", value=500.0, step=50.0)
     tp_uc = st.number_input("Provisions Techniques Unités de Compte (M€)", value=1000.0, step=100.0)
+    collecte_euro = st.number_input("Collecte Brute Fonds Général (M€)", value=50.0, step=10.0, help="Primes émises sur le fonds Euro (Impact SCR Opérationnel)")
 
 with col2:
     rating_parent = st.selectbox("Rating Maison Mère (Réassureur)", ["AAA", "AA", "A", "BBB", "BB"], index=1)
     collateral = st.number_input("Collatéral (Nantissement) (M€)", value=0.0, step=50.0, help="Actifs déposés en garantie par le réassureur pour réduire le risque.")
+    frais_uc = st.number_input("Frais de Gestion Annuels UC (M€)", value=10.0, step=1.0, help="Revenus de frais sur encours UC (Base du SCR Marché)")
 
 # --- 2. CALCUL DES SCR ---
 st.header("2. Calcul des Modules de Risque")
@@ -37,9 +39,9 @@ st.header("2. Calcul des Modules de Risque")
 # A. SCR Marché
 # Sur les UC, l'assureur ne porte pas le risque de marché, sauf sur ses frais futurs.
 # Simplification : SCR Marché = Choc sur les revenus futurs (Frais de gestion)
-# On suppose que les frais représentent 1% des encours et que le choc baisse la valeur de 20%.
-scr_market = tp_uc * 0.01 * 0.20 * 10 # Proxy : 1% frais * 20% choc * 10 ans duration
-st.write(f"**SCR Marché (Risque sur frais UC) :** {scr_market:.1f} M€")
+# On suppose que le choc baisse la valeur actuelle des frais futurs de 20% (Mass Lapse / Baisse marchés).
+scr_market = frais_uc * 0.20 * 10 # Proxy : Frais annuels * 20% choc * 10 ans duration
+st.write(f"**SCR Marché (Risque sur frais futurs UC) :** {scr_market:.1f} M€")
 
 # B. SCR Vie
 # Le risque de mortalité/longevité Euro est réassuré.
@@ -60,8 +62,10 @@ st.write(f"**SCR Contrepartie (Défaut Maison Mère) :** {scr_default:.1f} M€"
 st.caption(f"Exposition Nette : {exposure:.1f} M€ | Charge estimée : {charge_map[rating_parent]*100}%")
 
 # D. SCR Opérationnel
-# Max(Primes, Provisions). Ici basé sur Provisions.
-scr_op = (tp_euro + tp_uc) * 0.0045 # 0.45% des provisions
+# Max(Primes, Provisions).
+op_prov = (tp_euro + tp_uc) * 0.0045 # 0.45% des provisions
+op_prem = collecte_euro * 0.04 # 4% des primes émises (Euro)
+scr_op = max(op_prov, op_prem)
 st.write(f"**SCR Opérationnel :** {scr_op:.1f} M€")
 
 # --- 3. AGRÉGATION ---
