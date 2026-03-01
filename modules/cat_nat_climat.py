@@ -48,22 +48,39 @@ st.header("2. Cartographie des Risques")
 
 @st.cache_data
 def generate_portfolio(n=500):
-    # Génération de points autour de la France (Lat 46, Lon 2)
-    # On crée deux zones de risque artificielles pour l'exemple
+    # Génération de points autour de grandes agglomérations françaises
+    # Cela garantit que les points sont situés sur la terre ferme (et non en mer)
     
-    # Zone Nord (Inondation)
-    lat_n = np.random.normal(49, 1, int(n/2))
-    lon_n = np.random.normal(2.5, 2, int(n/2))
+    # Liste de villes (Lat, Lon, Type Risque Dominant)
+    cities = [
+        (48.8566, 2.3522, 'Inondation'),   # Paris
+        (50.6292, 3.0573, 'Inondation'),   # Lille
+        (47.2184, -1.5536, 'Inondation'),  # Nantes
+        (48.5734, 7.7521, 'Inondation'),   # Strasbourg
+        (49.4432, 1.0999, 'Inondation'),   # Rouen
+        (45.7640, 4.8357, 'Sécheresse'),   # Lyon
+        (43.2965, 5.3698, 'Sécheresse'),   # Marseille
+        (43.6047, 1.4442, 'Sécheresse'),   # Toulouse
+        (44.8378, -0.5792, 'Sécheresse'),  # Bordeaux
+        (43.7102, 7.2620, 'Sécheresse')    # Nice
+    ]
     
-    # Zone Sud (Sécheresse)
-    lat_s = np.random.normal(44, 1, int(n/2))
-    lon_s = np.random.normal(4, 2, int(n/2))
+    indices = np.random.randint(0, len(cities), n)
+    
+    # Extraction vectorisée des coordonnées de base
+    base_lats = np.array([cities[i][0] for i in indices])
+    base_lons = np.array([cities[i][1] for i in indices])
+    types = [cities[i][2] for i in indices]
+    
+    # Dispersion locale (sigma = 0.15 degrés ~ 15-20km) pour rester proche des villes
+    lats = base_lats + np.random.normal(0, 0.15, n)
+    lons = base_lons + np.random.normal(0, 0.15, n)
     
     df = pd.DataFrame({
-        'lat': np.concatenate([lat_n, lat_s]),
-        'lon': np.concatenate([lon_n, lon_s]),
+        'lat': lats,
+        'lon': lons,
         'TIV': np.random.lognormal(12, 0.5, n), # Total Insured Value
-        'Type': ['Inondation']*int(n/2) + ['Sécheresse']*int(n/2),
+        'Type': types,
         'Base_Score': np.random.uniform(0, 10, n) # Score de risque intrinsèque (0-10)
     })
     return df
