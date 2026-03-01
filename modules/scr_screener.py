@@ -130,18 +130,30 @@ with col_plot:
 
 with col_analysis:
     st.subheader("Analyse Stratégique")
+    
+    # Calculs complémentaires pour l'aide à la décision
+    revenu_annuel = nominal * yield_expected
+    payback = scr_div / revenu_annuel if revenu_annuel > 0 else 999
+    breakeven_yield = scr_div / (nominal * horizon) if (nominal * horizon) > 0 else 0
+    
     st.write(f"""
-    Sur un horizon de **{horizon} ans**, cet investissement génère **{generation_fp_total:,.0f} €** de revenus.
+    Sur un horizon de **{horizon} ans**, cet investissement génère **{generation_fp_total:,.0f} €** de revenus cumulés.
     
     Comparé au SCR initial de **{scr_div:,.0f} €**, le ratio de recouvrement est de **{ratio_recouvrement*100:.1f}%**.
     """)
     
+    st.markdown(f"""
+    **Indicateurs de décision :**
+    *   ⏳ **Payback SCR :** **{payback:.1f} ans** pour amortir le coût en capital.
+    *   📉 **Yield Breakeven :** Il faudrait un rendement min. de **{breakeven_yield*100:.2f}%** pour être à l'équilibre sur la période.
+    """)
+    
     if ratio_recouvrement > 1.0:
         st.success("**AUTO-FINANCEMENT : OUI**")
-        st.write("Les revenus cumulés de l'actif suffisent à 'rembourser' la consommation de capital réglementaire.")
+        st.write("Les revenus cumulés couvrent l'exigence de capital.")
     else:
         st.error("**AUTO-FINANCEMENT : NON**")
-        st.write("L'actif consomme plus de capital qu'il ne génère de revenus sur la période. Il est très coûteux en fonds propres.")
+        st.write("L'actif consomme plus de capital qu'il ne rapporte.")
 
 
 # --- DÉTAILS TECHNIQUES ---
