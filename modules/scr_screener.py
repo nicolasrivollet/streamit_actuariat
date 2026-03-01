@@ -145,7 +145,7 @@ with col_analysis:
 
 
 # --- DÉTAILS TECHNIQUES ---
-with st.expander("📚 Rappels Réglementaires (S2)"):
+with st.expander("📚 Rappels Réglementaires (S2)", expanded=True):
     st.markdown(r"""
     **Ratio de Recouvrement du SCR :**
     Cet indicateur compare la somme des revenus financiers générés sur l'horizon de détention au montant de capital bloqué (SCR).
