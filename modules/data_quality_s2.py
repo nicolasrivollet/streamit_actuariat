@@ -37,7 +37,7 @@ with c2:
     """)
 
 with c3:
-    st.success("### 🎯 Appropriateness (Pertinence)")
+    st.success("### 🎯 Pertinence (Appropriateness)")
     st.write("""
     La donnée est adaptée au modèle utilisé.
     *   *Exemple :* Utiliser une table de mortalité "Cadres" pour une population "Ouvriers" n'est pas approprié.
