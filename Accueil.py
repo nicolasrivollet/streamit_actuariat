@@ -75,11 +75,12 @@ lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-
 best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie", icon="💰")
 risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques Financiers", icon="📊")
 dora        = st.Page("modules/dora_regulation.py", title="Réglementation DORA", icon="🛡️")
+data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données S2", icon="🗃️")
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "Général & Contexte": [home, normes, s2_piliers, archi_s2],
+    "Général & Contexte": [home, normes, s2_piliers, archi_s2, data_qual],
     "Finance & Marchés": [risk_dash, comparat, nelson, smith],
     "Passif & Réassurance": [lee_carter, best_estim, chain_lad, reass_pilot],
     "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
