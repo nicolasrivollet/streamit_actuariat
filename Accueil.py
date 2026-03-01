@@ -59,6 +59,7 @@ def show_home():
 home        = st.Page(show_home, title="Présentation", default=True,  icon="🏚️")
 normes      = st.Page("modules/normes_intro.py", title="Panorama des Normes Comptables", icon="📖")
 nelson      = st.Page("modules/courbe_taux.py", title="Modèle Nelson-Siegel", icon="📈")
+s2_piliers  = st.Page("modules/solvabilite2_piliers.py", title="Les 3 Piliers Solvabilité II", icon="🏛️")
 comparat    = st.Page("modules/comparatif_modeles.py", title="Modélisation Courbe de Taux (intro)", icon="📊")
 scr_screen  = st.Page("modules/scr_screener.py", title="SCR Asset Screener", icon="🔍")
 smith       = st.Page("modules/smith_wilson.py", title="Modèle Smith-Wilson", icon="📐")
@@ -77,7 +78,7 @@ risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "Général & Contexte": [home, normes, archi_s2],
+    "Général & Contexte": [home, normes, s2_piliers, archi_s2],
     "Finance & Marchés": [risk_dash, comparat, nelson, smith],
     "Passif & Réassurance": [lee_carter, best_estim, chain_lad, reass_pilot],
     "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
