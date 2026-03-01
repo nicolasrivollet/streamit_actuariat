@@ -154,21 +154,21 @@ st.markdown("Évaluation de la création de valeur après rémunération du capi
 col_rent1, col_rent2 = st.columns(2)
 
 with col_rent1:
-    coc_rate = st.slider("Coût du Capital (Interne) %", 0.0, 15.0, 6.0, 0.5, help="Taux de rémunération exigé sur les fonds propres immobilisés.") / 100
+    coc_rate = st.slider("Taux de rémunération cible des FP (%)", 0.0, 20.0, 10.0, 0.5, help="Objectif de rentabilité sur le capital alloué (ROE Cible).") / 100
     
     revenu_annuel = nominal * yield_expected
     cout_scr = scr_div * coc_rate
     generation_nette = revenu_annuel - cout_scr
     
     st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta="Génération Brute")
-    st.metric("Coût du Capital (SCR)", f"{cout_scr:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
+    st.metric("Charge de Capital (Cible)", f"{cout_scr:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
     st.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta_color="normal" if generation_nette > 0 else "inverse")
 
 with col_rent2:
     fig_water = go.Figure(go.Waterfall(
         orientation = "v",
         measure = ["relative", "relative", "total"],
-        x = ["Revenus Financiers", "Coût du Capital", "Génération Nette"],
+        x = ["Revenus Financiers", "Charge Capital", "Génération Nette"],
         textposition = "outside",
         text = [f"+{revenu_annuel:,.0f}", f"-{cout_scr:,.0f}", f"{generation_nette:,.0f}"],
         y = [revenu_annuel, -cout_scr, generation_nette],
