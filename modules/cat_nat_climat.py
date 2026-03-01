@@ -48,33 +48,50 @@ st.header("2. Cartographie des Risques")
 
 @st.cache_data
 def generate_portfolio(n=500):
-    # Génération uniforme sur le territoire (approximation par rectangles pour éviter la mer)
+    # Génération uniforme sur le territoire via la méthode de l'Hexagone (Rejection Sampling)
+    # Cela permet une répartition réaliste sans utiliser de shapefiles lourds.
     
-    # Zone 1 : Ouest (Bretagne/Pays de la Loire)
-    n1 = int(n * 0.2)
-    lat1 = np.random.uniform(47.0, 48.5, n1)
-    lon1 = np.random.uniform(-4.5, -0.5, n1)
+    # Définition de l'Hexagone simplifié (Longitude, Latitude)
+    hexagon = [
+        (2.5, 51.1),   # Nord (Dunkerque)
+        (8.2, 49.0),   # Est (Strasbourg)
+        (7.5, 43.7),   # Sud-Est (Nice)
+        (3.1, 42.3),   # Sud (Perpignan)
+        (-1.8, 43.4),  # Sud-Ouest (Biarritz)
+        (-4.8, 48.4)   # Ouest (Brest)
+    ]
     
-    # Zone 2 : Nord/Centre (IDF, Hauts de France, Centre)
-    n2 = int(n * 0.3)
-    lat2 = np.random.uniform(46.0, 51.0, n2)
-    lon2 = np.random.uniform(0.0, 5.0, n2)
+    # Algorithme Ray-Casting pour vérifier si un point est dans le polygone
+    def is_inside(lon, lat):
+        inside = False
+        j = len(hexagon) - 1
+        for i in range(len(hexagon)):
+            xi, yi = hexagon[i]
+            xj, yj = hexagon[j]
+            intersect = ((yi > lat) != (yj > lat)) and \
+                        (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi)
+            if intersect:
+                inside = not inside
+            j = i
+        return inside
+
+    lats = []
+    lons = []
     
-    # Zone 3 : Est (Grand Est, Bourgogne, Alpes)
-    n3 = int(n * 0.25)
-    lat3 = np.random.uniform(44.5, 49.0, n3)
-    lon3 = np.random.uniform(4.5, 7.5, n3)
-    
-    # Zone 4 : Sud-Ouest (Aquitaine, Occitanie)
-    n4 = n - n1 - n2 - n3
-    lat4 = np.random.uniform(43.0, 46.0, n4)
-    lon4 = np.random.uniform(-1.5, 4.0, n4)
-    
-    lats = np.concatenate([lat1, lat2, lat3, lat4])
-    lons = np.concatenate([lon1, lon2, lon3, lon4])
+    # Génération par rejet
+    while len(lats) < n:
+        # Boîte englobante large autour de la France
+        lat_cand = np.random.uniform(42.0, 51.5)
+        lon_cand = np.random.uniform(-5.0, 8.5)
+        
+        if is_inside(lon_cand, lat_cand):
+            lats.append(lat_cand)
+            lons.append(lon_cand)
+            
+    lats = np.array(lats)
+    lons = np.array(lons)
     
     # Détermination du type de risque (Nord = Inondation, Sud = Sécheresse)
-    # Frontière approximative à la latitude 46.5
     types = np.where(lats > 46.5, 'Inondation', 'Sécheresse')
     
     df = pd.DataFrame({
