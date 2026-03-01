@@ -143,37 +143,6 @@ with col_analysis:
         st.error("**AUTO-FINANCEMENT : NON**")
         st.write("L'actif consomme plus de capital qu'il ne génère de revenus sur la période. Il est très coûteux en fonds propres.")
 
-# --- SECTION 4 : RENTABILITÉ ÉCONOMIQUE (Horizon) ---
-st.divider()
-st.header("4️⃣ Rentabilité Économique (Génération Nette Totale)")
-st.markdown(f"Évaluation de la création de valeur sur {horizon} ans après rémunération du capital immobilisé.")
-
-col_rent1, col_rent2 = st.columns(2)
-
-with col_rent1:
-    coc_rate = st.slider("Taux de rémunération cible des FP (%)", 0.0, 20.0, 10.0, 0.5, help="Objectif de rentabilité sur le capital alloué (ROE Cible).") / 100
-    
-    revenu_total = nominal * yield_expected * horizon
-    # Coût du capital sur la durée (Hypothèse SCR constant)
-    cout_scr_total = scr_div * coc_rate * horizon
-    generation_nette_total = revenu_total - cout_scr_total
-    
-    st.metric(f"Revenus Financiers ({horizon} ans)", f"{revenu_total:,.0f} €", delta=f"Yield {yield_expected*100:.2f}%")
-    st.metric(f"Coût Capital ({horizon} ans)", f"{cout_scr_total:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
-    st.metric("Génération Nette de FP", f"{generation_nette_total:,.0f} €", delta_color="normal" if generation_nette_total > 0 else "inverse")
-
-with col_rent2:
-    fig_water = go.Figure(go.Waterfall(
-        orientation = "v",
-        measure = ["relative", "relative", "total"],
-        x = ["Revenus Totaux", "Coût Capital Total", "Génération Nette"],
-        textposition = "outside",
-        text = [f"+{revenu_total:,.0f}", f"-{cout_scr_total:,.0f}", f"{generation_nette_total:,.0f}"],
-        y = [revenu_total, -cout_scr_total, generation_nette_total],
-        connector = {"line":{"color":"rgb(63, 63, 63)"}},
-    ))
-    fig_water.update_layout(title=f"Création de Valeur sur {horizon} ans", height=300)
-    st.plotly_chart(fig_water, use_container_width=True)
 
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
