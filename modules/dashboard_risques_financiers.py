@@ -132,6 +132,13 @@ with col_stress1:
     st.metric("Duration Gap", f"{gap:.2f} ans", delta="Positif = Sur-sensible" if gap > 0 else "Négatif = Sous-sensible", delta_color="off")
     st.write(f"Impact d'une hausse des taux de **+100 bps** sur la NAV :")
     st.metric("P&L Latent", f"{impact_bps * 100 / 1e6:,.1f} M€", delta_color="inverse" if gap > 0 else "normal")
+    
+    with st.expander("Comprendre le lien Duration / P&L"):
+        st.markdown(r"""
+        L'impact est estimé par l'approximation de sensibilité :
+        $$ \Delta \text{NAV} \approx - (\text{Dur}_{Actif} - \text{Dur}_{Passif}) \times \text{AUM} \times \Delta \text{Taux} $$
+        Un **Gap positif** signifie que l'actif est plus long que le passif : une hausse des taux dévalorise l'actif plus fortement que le passif, créant une perte nette.
+        """)
 
 with col_stress2:
     st.subheader("Choc Actions")
