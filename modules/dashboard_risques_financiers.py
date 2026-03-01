@@ -67,6 +67,45 @@ def generate_portfolio():
 df = generate_portfolio()
 total_aum = df["Valeur de Marché (M€)"].sum()
 
+# --- PARAMÈTRES DE RISQUE ---
+st.header("⚙️ Paramètres de Risque")
+col_p1, col_p2 = st.columns(2)
+
+with col_p1:
+    liab_duration = st.slider("Duration Passif (Cible)", 0.0, 20.0, 10.0, 0.5)
+
+with col_p2:
+    sa = st.slider("Ajustement Symétrique (SA)", -10.0, 10.0, 0.0, 0.1, help="Mécanisme contracyclique (-10% à +10%)") / 100
+
+# --- MOTEUR DE CALCUL SCR (PRE-CALCUL) ---
+# 1. Actions (Choc Type 1 + SA)
+equity_exposure = df[df["Classe d'Actif"] == "Actions"]["Valeur de Marché (M€)"].sum()
+scr_equity = equity_exposure * (0.39 + sa)
+
+# 2. Immobilier (Choc 25%)
+prop_exposure = df[df["Classe d'Actif"] == "Immobilier"]["Valeur de Marché (M€)"].sum()
+scr_property = prop_exposure * 0.25
+
+# 3. Spread (Tableau standard)
+def calc_spread_scr(row):
+    if "Obligations" not in row["Classe d'Actif"]: return 0
+    factors = {'AAA': 0.009, 'AA': 0.011, 'A': 0.014, 'BBB': 0.025, 'BB': 0.045, 'B': 0.075}
+    f = factors.get(row['Rating'], 0.045)
+    return row["Valeur de Marché (M€)"] * row["Duration"] * f
+
+df['SCR_Spread'] = df.apply(calc_spread_scr, axis=1)
+scr_spread = df['SCR_Spread'].sum()
+
+# 4. Taux (Proxy Duration Gap)
+avg_duration = (df["Duration"] * df["Valeur de Marché (M€)"]).sum() / total_aum
+gap = avg_duration - liab_duration
+scr_rate = abs(gap * total_aum * 0.01) # Proxy 1%
+
+# 5. Agrégation (Matrice Corrélation Simplifiée)
+scr_vec = np.array([scr_equity, scr_property, scr_spread, scr_rate])
+corr_mat = np.array([[1.0, 0.75, 0.75, 0.5], [0.75, 1.0, 0.5, 0.5], [0.75, 0.5, 1.0, 0.5], [0.5, 0.5, 0.5, 1.0]])
+scr_market = np.sqrt(np.dot(scr_vec, np.dot(corr_mat, scr_vec)))
+
 # --- 2. KPIS GLOBAUX ---
 st.header("1. Indicateurs Clés (KPIs)")
 
@@ -81,36 +120,11 @@ with col2:
 
 with col3:
     # Duration moyenne pondérée (sur le total, incluant actions à 0)
-    avg_duration = (df["Duration"] * df["Valeur de Marché (M€)"]).sum() / total_aum
     st.metric("Duration Actif", f"{avg_duration:.2f} ans")
 
 with col4:
-    # VaR Paramétrique améliorée (basée sur l'allocation)
-    # Hypothèses de volatilité par classe d'actif
-    vol_assumptions = {'Actions': 0.25, 'Immobilier': 0.15, 'Obligations Corp.': 0.07, 'Obligations Gouv.': 0.04, 'Cash': 0.0}
-    
-    # Calcul de la volatilité pondérée
-    df['Vol_Est'] = df["Classe d'Actif"].map(vol_assumptions).fillna(0.05)
-    weighted_vol = (df['Vol_Est'] * df["Valeur de Marché (M€)"]).sum() / total_aum
-    
-    # Diversification (Hypothèse : corrélation imparfaite)
-    portfolio_vol = weighted_vol * 0.75 # -25% de risque grâce à la diversification
-    var_995 = total_aum * portfolio_vol * 2.58 # Quantile 99.5% N(0,1)
-    
-    st.metric("VaR (99.5% 1 an)", f"{var_995/1e6:,.0f} M€", delta="Capital à risque", delta_color="inverse",
-              help=f"Méthode Paramétrique :\nVolatilité Portefeuille : {portfolio_vol:.1%}\nQuantile 99.5% : 2.58")
-
-with st.expander("ℹ️ Détail du calcul de la VaR (Méthodologie)"):
-    st.markdown(r"""
-    **Approche Paramétrique Simplifiée :**
-    La VaR (Value at Risk) est estimée selon une approche Variance-Covariance sous hypothèse de distribution Normale.
-    
-    1.  **Volatilité par classe d'actif :** Hypothèses de marché (Actions 25%, Immo 15%, Crédit 7%, Souverain 4%).
-    2.  **Diversification :** La volatilité globale est pondérée puis réduite de **25%** pour refléter la décorrélation entre les actifs.
-    3.  **Formule :** 
-        $$ VaR_{99.5\%} = \text{Exposition} \times \sigma_{Portefeuille} \times 2.58 $$
-        *(2.58 correspond au quantile 99.5% d'une loi Normale centrée réduite)*
-    """)
+    st.metric("SCR Marché (99.5%)", f"{scr_market/1e6:,.0f} M€", delta="Capital Réglementaire", delta_color="inverse",
+              help="Estimation du SCR Marché selon la Formule Standard (agrégation des chocs Actions, Immo, Spread, Taux).")
 
 st.divider()
 
