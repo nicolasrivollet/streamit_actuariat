@@ -150,7 +150,7 @@ with col_conc2:
     fig_geo = px.choropleth(df_geo.dropna(subset=['iso_alpha']), locations="iso_alpha",
                             color="Valeur de Marché (M€)", hover_name="Pays",
                             color_continuous_scale="Blues", title="Exposition Géographique", scope="europe")
-    fig_geo.update_geos(showframe=False, showcoastlines=True, projection_type="natural earth")
+    fig_geo.update_geos(showframe=False, showcoastlines=True, projection_type="natural earth", fitbounds="locations")
     fig_geo.update_layout(margin={"r":0,"t":30,"l":0,"b":0})
     st.plotly_chart(fig_geo, use_container_width=True)
     
