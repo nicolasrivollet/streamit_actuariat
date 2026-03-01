@@ -50,9 +50,11 @@ with col_b:
     yield_expected = st.number_input("Rendement annuel attendu (%)", value=4.50, step=0.05) / 100
     if asset_type == "Obligations":
         rating = st.select_slider("Notation (Rating)", options=["AAA", "AA", "A", "BBB", "HY"], value="BBB")
-        duration = st.slider("Sensibilité (Duration modifiée)", 0.0, 20.0, 6.0)
+        duration = st.slider("Sensibilité & Horizon (Années)", 1.0, 20.0, 6.0)
+        horizon = duration
     else:
         rating, duration = None, 0
+        horizon = st.slider("Horizon de détention (Années)", 1, 20, 5)
 
 st.divider()
 
@@ -89,99 +91,99 @@ with col_calc:
 scr_div = calculate_diversified_scr(scr_results)
 diversification_gain = sum(scr_results.values()) - scr_div
 
-# --- SECTION 3 : EFFICACITÉ DU CAPITAL (RoSCR) ---
+# --- SECTION 3 : EFFICACITÉ DU CAPITAL (Vision Horizon) ---
 st.divider()
-st.header("3️⃣ Efficacité du Capital (Rentabilité sur SCR)")
+st.header("3️⃣ Efficacité du Capital (Vision Horizon)")
 
-# Analyse : Rentabilité vs Consommation de Capital
-# La "Génération de Fonds Propres" est le résultat financier attendu (net de l'investissement initial).
-generation_fp = nominal * yield_expected
-roscr = generation_fp / scr_div if scr_div > 0 else 0
+# Analyse : Génération Totale vs Consommation de Capital
+# On regarde si l'investissement génère plus de FP sur sa durée de vie qu'il n'en consomme en SCR instantané.
+generation_fp_total = nominal * yield_expected * horizon
+ratio_recouvrement = generation_fp_total / scr_div if scr_div > 0 else 0
 
 # Affichage des métriques clés
 m1, m2, m3 = st.columns(3)
 m1.metric("SCR Consommé", f"{scr_div:,.0f} €", delta="Exigence de Capital", delta_color="inverse")
-m2.metric("Génération FP (1 an)", f"{generation_fp:,.0f} €", help="Revenus financiers attendus (Rendement)")
-m3.metric("Rentabilité sur SCR (RoSCR)", f"{roscr:.1%}", delta="Rendement / SCR")
+m2.metric(f"Génération FP ({horizon} ans)", f"{generation_fp_total:,.0f} €", help="Cumul des revenus financiers attendus sur l'horizon.")
+m3.metric("Ratio Recouvrement SCR", f"{ratio_recouvrement:.1%}", delta="Génération / SCR")
 
 # --- VISUALISATION ---
 col_plot, col_analysis = st.columns([1.5, 1])
 
 with col_plot:
-    # Jauge de RoSCR
+    # Jauge de Recouvrement
     fig_gauge = go.Figure(go.Indicator(
         mode = "gauge+number",
-        value = roscr * 100,
-        title = {'text': "RoSCR (%)", 'font': {'size': 16}},
+        value = ratio_recouvrement * 100,
+        title = {'text': "Couverture du SCR par les revenus (%)", 'font': {'size': 16}},
         gauge = {
-            'axis': {'range': [0, 30]}, # Echelle adaptée au RoSCR (ex: 0-30%)
+            'axis': {'range': [0, 200]}, # Echelle adaptée (0-200%)
             'bar': {'color': "#1E88E5"},
             'steps': [
-                {'range': [0, 5], 'color': "#FFCDD2"}, # < 5% (Faible)
-                {'range': [5, 10], 'color': "#FFF9C4"}, # 5-10% (Moyen)
-                {'range': [10, 30], 'color': "#C8E6C9"}], # > 10% (Bon)
+                {'range': [0, 100], 'color': "#FFCDD2"}, # < 100% (Ne couvre pas le SCR)
+                {'range': [100, 200], 'color': "#C8E6C9"}], # > 100% (Couvre le SCR)
             'threshold': {
                 'line': {'color': "red", 'width': 4},
                 'thickness': 0.75,
-                'value': 10}})) # Seuil indicatif 10%
+                'value': 100}})) # Seuil 100%
     fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
     st.plotly_chart(fig_gauge, use_container_width=True)
 
 with col_analysis:
     st.subheader("Analyse Stratégique")
     st.write(f"""
-    Pour chaque euro de capital réglementaire immobilisé (**SCR**), cet investissement génère **{roscr*100:.1f} centimes** de résultat financier annuel.
+    Sur un horizon de **{horizon} ans**, cet investissement génère **{generation_fp_total:,.0f} €** de revenus.
+    
+    Comparé au SCR initial de **{scr_div:,.0f} €**, le ratio de recouvrement est de **{ratio_recouvrement*100:.1f}%**.
     """)
     
-    if roscr > 0.10:
-        st.success("**EFFICACITÉ : ÉLEVÉE**")
-        st.write("L'actif rémunère très bien le capital consommé (> 10%).")
-    elif roscr > 0.05:
-        st.warning("**EFFICACITÉ : MOYENNE**")
-        st.write("La rentabilité couvre le coût du capital mais sans marge excessive.")
+    if ratio_recouvrement > 1.0:
+        st.success("**AUTO-FINANCEMENT : OUI**")
+        st.write("Les revenus cumulés de l'actif suffisent à 'rembourser' la consommation de capital réglementaire.")
     else:
-        st.error("**EFFICACITÉ : FAIBLE**")
-        st.write("La consommation de SCR est trop élevée par rapport au rendement offert.")
+        st.error("**AUTO-FINANCEMENT : NON**")
+        st.write("L'actif consomme plus de capital qu'il ne génère de revenus sur la période. Il est très coûteux en fonds propres.")
 
-# --- SECTION 4 : RENTABILITÉ ÉCONOMIQUE ---
+# --- SECTION 4 : RENTABILITÉ ÉCONOMIQUE (Horizon) ---
 st.divider()
-st.header("4️⃣ Rentabilité Économique (Génération Nette)")
-st.markdown("Évaluation de la création de valeur après rémunération du capital immobilisé.")
+st.header("4️⃣ Rentabilité Économique (Génération Nette Totale)")
+st.markdown(f"Évaluation de la création de valeur sur {horizon} ans après rémunération du capital immobilisé.")
 
 col_rent1, col_rent2 = st.columns(2)
 
 with col_rent1:
     coc_rate = st.slider("Taux de rémunération cible des FP (%)", 0.0, 20.0, 10.0, 0.5, help="Objectif de rentabilité sur le capital alloué (ROE Cible).") / 100
     
-    revenu_annuel = nominal * yield_expected
-    cout_scr = scr_div * coc_rate
-    generation_nette = revenu_annuel - cout_scr
+    revenu_total = nominal * yield_expected * horizon
+    # Coût du capital sur la durée (Hypothèse SCR constant)
+    cout_scr_total = scr_div * coc_rate * horizon
+    generation_nette_total = revenu_total - cout_scr_total
     
-    st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta=f"Yield {yield_expected*100:.2f}%")
-    st.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta_color="normal" if generation_nette > 0 else "inverse")
+    st.metric(f"Revenus Financiers ({horizon} ans)", f"{revenu_total:,.0f} €", delta=f"Yield {yield_expected*100:.2f}%")
+    st.metric(f"Coût Capital ({horizon} ans)", f"{cout_scr_total:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
+    st.metric("Génération Nette de FP", f"{generation_nette_total:,.0f} €", delta_color="normal" if generation_nette_total > 0 else "inverse")
 
 with col_rent2:
     fig_water = go.Figure(go.Waterfall(
         orientation = "v",
         measure = ["relative", "relative", "total"],
-        x = ["Revenus Financiers", "Charge Capital", "Génération Nette"],
+        x = ["Revenus Totaux", "Coût Capital Total", "Génération Nette"],
         textposition = "outside",
-        text = [f"+{revenu_annuel:,.0f}", f"-{cout_scr:,.0f}", f"{generation_nette:,.0f}"],
-        y = [revenu_annuel, -cout_scr, generation_nette],
+        text = [f"+{revenu_total:,.0f}", f"-{cout_scr_total:,.0f}", f"{generation_nette_total:,.0f}"],
+        y = [revenu_total, -cout_scr_total, generation_nette_total],
         connector = {"line":{"color":"rgb(63, 63, 63)"}},
     ))
-    fig_water.update_layout(title="Création de Valeur (1 an)", height=300)
+    fig_water.update_layout(title=f"Création de Valeur sur {horizon} ans", height=300)
     st.plotly_chart(fig_water, use_container_width=True)
 
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
     st.markdown(r"""
-    **Return on Solvency Capital Requirement (RoSCR) :**
-    Indicateur clé pour l'allocation d'actifs sous contrainte Solvabilité II.
+    **Ratio de Recouvrement du SCR :**
+    Cet indicateur compare la somme des revenus financiers générés sur l'horizon de détention au montant de capital bloqué (SCR).
     
-    $$ \text{RoSCR} = \frac{\text{Rendement Espéré (€)}}{\text{SCR Marginal (€)}} $$
+    $$ \text{Ratio} = \frac{\sum \text{Revenus Financiers}}{\text{SCR Initial}} $$
     
-    Il permet de comparer des actifs hétérogènes (ex: Obligations vs Actions) sur une base commune : la rémunération du risque réglementaire.
+    Si le ratio est > 100%, l'actif génère suffisamment de cash pour "rembourser" virtuellement l'exigence de capital qu'il a créée.
     
     **La Matrice de Corrélation :** Elle permet de calculer le SCR Diversifié en tenant compte de la faible probabilité 
     que tous les chocs de marché (Action, Spread, Immo) atteignent leur intensité maximale simultanément.
