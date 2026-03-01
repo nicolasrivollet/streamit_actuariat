@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="Classes d'Actifs & Risques", layout="wide")
 
@@ -128,3 +130,62 @@ df = pd.DataFrame(data)
 st.table(df)
 
 st.caption("IG : Investment Grade (Noté BBB- ou plus).")
+
+st.divider()
+
+# --- 3. VISUALISATION RENDEMENT / RISQUE ---
+st.header("3. Cartographie Rendement / Risque (Efficient Frontier)")
+st.markdown("Positionnement relatif des classes d'actifs (Données de marché illustratives).")
+
+# Données pour le graphique
+data_viz = {
+    "Classe d'Actif": ["Cash", "Oblig. Gouv (Core)", "Oblig. Crédit (IG)", "Immobilier", "Actions (Monde)", "Private Equity", "Hedge Funds"],
+    "Rendement Espéré (%)": [3.0, 3.5, 4.5, 5.5, 7.5, 9.0, 6.0],
+    "Volatilité (%)": [0.5, 4.0, 6.0, 12.0, 18.0, 25.0, 10.0],
+    "Type": ["Monétaire", "Taux", "Crédit", "Réel", "Action", "Action", "Alternatif"]
+}
+df_viz = pd.DataFrame(data_viz)
+
+fig = px.scatter(df_viz, x="Volatilité (%)", y="Rendement Espéré (%)", color="Type", text="Classe d'Actif", size=[20]*7,
+                 title="Couple Rendement / Risque", template="plotly_white")
+fig.update_traces(textposition='top center')
+fig.update_layout(xaxis_title="Risque (Volatilité)", yaxis_title="Rendement Attendu")
+
+st.plotly_chart(fig, use_container_width=True)
+
+# --- 4. IMPACT CAPITAL (SCR) ---
+st.header("4. Consommation de Capital (SCR Marché)")
+st.markdown("Comparaison des chocs réglementaires (Formule Standard) par classe d'actif.")
+
+data_scr = {
+    "Classe d'Actif": ["Cash", "Oblig. Gouv (EEE)", "Immobilier", "Infra (Qualif.)", "Actions (Type 1)", "Actions (Type 2)", "Private Equity"],
+    "Choc S2 (%)": [0, 0, 25, 30, 39, 49, 49]
+}
+df_scr = pd.DataFrame(data_scr)
+fig_scr = px.bar(df_scr, x="Classe d'Actif", y="Choc S2 (%)", color="Choc S2 (%)", title="Intensité du Choc en Capital", color_continuous_scale="Reds")
+st.plotly_chart(fig_scr, use_container_width=True)
+
+# --- 5. CONTEXTE STRATÉGIQUE (ALM) ---
+st.header("5. La Stratégie d'Investissement (ALM)")
+st.markdown("""
+L'allocation d'actifs d'un assureur n'est pas libre. Elle est contrainte par le passif (les engagements envers les assurés).
+C'est le principe du **Liability Driven Investment (LDI)**.
+""")
+
+col_alm1, col_alm2 = st.columns(2)
+
+with col_alm1:
+    st.subheader("🛡️ Contraintes de Passif")
+    st.write("""
+    *   **Duration :** L'actif doit avoir une sensibilité aux taux proche du passif pour immuniser le bilan.
+    *   **Liquidité :** Il faut assez de cash pour payer les sinistres (rachats, décès).
+    *   **Devise :** Congruence (Matching) des devises Actif/Passif pour éviter le risque de change.
+    """)
+
+with col_alm2:
+    st.subheader("⚖️ Contraintes Réglementaires")
+    st.write("""
+    *   **Principe de la Personne Prudente (PPP) :** N'investir que dans ce que l'on comprend et maîtrise.
+    *   **Diversification :** Éviter la concentration sur un seul émetteur.
+    *   **SCR :** L'allocation doit tenir compte du coût en capital (un actif à haut rendement peut détruire de la valeur si son coût en SCR est trop élevé).
+    """)
