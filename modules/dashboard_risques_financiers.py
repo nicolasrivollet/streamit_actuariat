@@ -67,45 +67,6 @@ def generate_portfolio():
 df = generate_portfolio()
 total_aum = df["Valeur de Marché (M€)"].sum()
 
-# --- PARAMÈTRES DE RISQUE ---
-st.header("⚙️ Paramètres de Risque")
-col_p1, col_p2 = st.columns(2)
-
-with col_p1:
-    liab_duration = st.slider("Duration Passif (Cible)", 0.0, 20.0, 10.0, 0.5)
-
-with col_p2:
-    sa = st.slider("Ajustement Symétrique (SA)", -10.0, 10.0, 0.0, 0.1, help="Mécanisme contracyclique (-10% à +10%)") / 100
-
-# --- MOTEUR DE CALCUL SCR (PRE-CALCUL) ---
-# 1. Actions (Choc Type 1 + SA)
-equity_exposure = df[df["Classe d'Actif"] == "Actions"]["Valeur de Marché (M€)"].sum()
-scr_equity = equity_exposure * (0.39 + sa)
-
-# 2. Immobilier (Choc 25%)
-prop_exposure = df[df["Classe d'Actif"] == "Immobilier"]["Valeur de Marché (M€)"].sum()
-scr_property = prop_exposure * 0.25
-
-# 3. Spread (Tableau standard)
-def calc_spread_scr(row):
-    if "Obligations" not in row["Classe d'Actif"]: return 0
-    factors = {'AAA': 0.009, 'AA': 0.011, 'A': 0.014, 'BBB': 0.025, 'BB': 0.045, 'B': 0.075}
-    f = factors.get(row['Rating'], 0.045)
-    return row["Valeur de Marché (M€)"] * row["Duration"] * f
-
-df['SCR_Spread'] = df.apply(calc_spread_scr, axis=1)
-scr_spread = df['SCR_Spread'].sum()
-
-# 4. Taux (Proxy Duration Gap)
-avg_duration = (df["Duration"] * df["Valeur de Marché (M€)"]).sum() / total_aum
-gap = avg_duration - liab_duration
-scr_rate = abs(gap * total_aum * 0.01) # Proxy 1%
-
-# 5. Agrégation (Matrice Corrélation Simplifiée)
-scr_vec = np.array([scr_equity, scr_property, scr_spread, scr_rate])
-corr_mat = np.array([[1.0, 0.75, 0.75, 0.5], [0.75, 1.0, 0.5, 0.5], [0.75, 0.5, 1.0, 0.5], [0.5, 0.5, 0.5, 1.0]])
-scr_market = np.sqrt(np.dot(scr_vec, np.dot(corr_mat, scr_vec)))
-
 # --- 2. KPIS GLOBAUX ---
 st.header("1. Indicateurs Clés (KPIs)")
 
@@ -119,12 +80,9 @@ with col2:
     st.metric("Performance YTD", f"{avg_perf*100:.2f}%", delta=f"{avg_perf*100 - 1.5:.2f} pts vs Budget")
 
 with col3:
-    # Duration moyenne pondérée (sur le total, incluant actions à 0)
+    avg_duration = (df["Duration"] * df["Valeur de Marché (M€)"]).sum() / total_aum
     st.metric("Duration Actif", f"{avg_duration:.2f} ans")
 
-with col4:
-    st.metric("SCR Marché (99.5%)", f"{scr_market/1e6:,.0f} M€", delta="Capital Réglementaire", delta_color="inverse",
-              help="Estimation du SCR Marché selon la Formule Standard (agrégation des chocs Actions, Immo, Spread, Taux).")
 
 st.divider()
 
@@ -152,15 +110,66 @@ with col_alloc2:
                      color_discrete_sequence=px.colors.sequential.Blues_r)
     st.plotly_chart(fig_bar, use_container_width=True)
 
+# --- TABLEAU DÉTAILLÉ ---
+with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=True):
+    st.dataframe(df.sort_values("Valeur de Marché (M€)", ascending=False).head(10).style.format({"Valeur de Marché (M€)": "{:,.0f}", "Performance YTD (%)": "{:.2%}", "Duration": "{:.1f}"}))
+
 # --- 4. ANALYSE DE SENSIBILITÉ (SOLVABILITÉ II) ---
 st.header("3. Impact des Chocs Solvabilité II (Bicentenaires)")
 st.markdown("Estimation des pertes de valeur (SCR Marché) selon les calibrages de la Formule Standard (VaR 99.5%).")
+
+col_p1, col_p2 = st.columns(2)
+with col_p1:
+    liab_duration = st.slider("Duration Passif (Cible)", 0.0, 20.0, 10.0, 0.5)
+with col_p2:
+    sa = st.slider("Ajustement Symétrique (SA)", -10.0, 10.0, 0.0, 0.1, help="Mécanisme contracyclique (-10% à +10%)") / 100
+
+st.info("""
+**Rappel des Chocs Réglementaires (Formule Standard) :**
+*   **Actions (Type 1) :** Choc de base de **39%** + Ajustement Symétrique (SA).
+*   **Immobilier :** Choc de **25%**.
+*   **Spread :** Choc dépendant du rating et de la duration (ex: ~0.9% à 7.5% par année de duration).
+*   **Taux :** Choc à la hausse ou à la baisse de la courbe des taux (ici approximé par un choc parallèle).
+""")
+
+# --- MOTEUR DE CALCUL SCR ---
+# 1. Actions (Choc Type 1 + SA)
+equity_exposure = df[df["Classe d'Actif"] == "Actions"]["Valeur de Marché (M€)"].sum()
+shock_equity_s2 = 0.39 + sa
+scr_equity = equity_exposure * shock_equity_s2
+
+# 2. Immobilier (Choc 25%)
+prop_exposure = df[df["Classe d'Actif"] == "Immobilier"]["Valeur de Marché (M€)"].sum()
+scr_property = prop_exposure * 0.25
+
+# 3. Spread (Tableau standard)
+def calc_spread_scr(row):
+    if "Obligations" not in row["Classe d'Actif"]: return 0
+    factors = {'AAA': 0.009, 'AA': 0.011, 'A': 0.014, 'BBB': 0.025, 'BB': 0.045, 'B': 0.075}
+    f = factors.get(row['Rating'], 0.045)
+    return row["Valeur de Marché (M€)"] * row["Duration"] * f
+
+df['SCR_Spread'] = df.apply(calc_spread_scr, axis=1)
+scr_spread = df['SCR_Spread'].sum()
+
+# 4. Taux (Proxy Duration Gap)
+gap = avg_duration - liab_duration
+scr_rate = abs(gap * total_aum * 0.01) # Proxy 1%
+
+# 5. Agrégation (Matrice Corrélation Simplifiée)
+scr_vec = np.array([scr_equity, scr_property, scr_spread, scr_rate])
+corr_mat = np.array([[1.0, 0.75, 0.75, 0.5], [0.75, 1.0, 0.5, 0.5], [0.75, 0.5, 1.0, 0.5], [0.5, 0.5, 0.5, 1.0]])
+scr_market = np.sqrt(np.dot(scr_vec, np.dot(corr_mat, scr_vec)))
+
+# Update KPI du haut
+with col4:
+    st.metric("SCR Marché (99.5%)", f"{scr_market/1e6:,.0f} M€", delta="Capital Réglementaire", delta_color="inverse",
+              help="Estimation du SCR Marché selon la Formule Standard (agrégation des chocs Actions, Immo, Spread, Taux).")
 
 col_stress1, col_stress2 = st.columns(2)
 
 with col_stress1:
     st.subheader("Choc Actions (Type 1)")
-    shock_equity_s2 = 0.39 + sa
     
     st.metric("Exposition Actions", f"{equity_exposure/1e6:,.0f} M€")
     st.metric("SCR Actions (Est.)", f"{scr_equity/1e6:,.1f} M€", delta=f"-{shock_equity_s2*100:.1f}%", delta_color="inverse")
@@ -178,7 +187,3 @@ with col_stress2:
     st.metric("SCR Taux (Proxy +/- 1%)", f"{scr_rate/1e6:,.1f} M€", delta_color="inverse", help="Estimation simplifiée basée sur le Duration Gap.")
 
 st.divider()
-
-# --- 5. TABLEAU DÉTAILLÉ ---
-with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=True):
-    st.dataframe(df.sort_values("Valeur de Marché (M€)", ascending=False).head(10).style.format({"Valeur de Marché (M€)": "{:,.0f}", "Performance YTD (%)": "{:.2%}", "Duration": "{:.1f}"}))
