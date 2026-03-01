@@ -80,11 +80,10 @@ data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "Général & Contexte": [home, normes, s2_piliers, archi_s2, data_qual],
-    "Finance & Marchés": [risk_dash, comparat, nelson, smith],
-    "Passif & Réassurance": [lee_carter, best_estim, chain_lad, reass_pilot],
-    "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
-    "Prospective & ESG": [reform_s2, cat_climat, dora],
+    "🏠 Présentation & Cadre": [home, normes, s2_piliers, archi_s2],
+    "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, data_qual, cat_climat],
+    "📈 Finance & Actif": [risk_dash, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
+    "🛡️ Passif & Solvabilité": [best_estim, lee_carter, chain_lad, reass_pilot, scr_global],
 })
 
 # --- 4. EXÉCUTION ---
