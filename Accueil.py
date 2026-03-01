@@ -80,6 +80,7 @@ data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données
 lux_vie     = st.Page("modules/luxembourg_vie.py", title="Assurance Vie Luxembourg", icon="🇱🇺")
 esg_invest  = st.Page("modules/esg_investissements.py", title="ESG & Investissements", icon="🌿")
 csrd        = st.Page("modules/csrd_reporting.py", title="Reporting CSRD", icon="🌱")
+asset_class = st.Page("modules/asset_classes_risks.py", title="Classes d'Actifs & Risques", icon="💎")
 risk_app    = st.Page("modules/risk_appetite.py", title="Appétence au Risque (RAF)", icon="🎯")
 op_risk     = st.Page("modules/operational_risks.py", title="Risques Opérationnels", icon="🛠️")
 orsa        = st.Page("modules/orsa_process.py", title="Processus ORSA", icon="🔄")
@@ -91,7 +92,7 @@ pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 pg = st.navigation({
     "🏠 Présentation & Cadre": [home, normes, s2_piliers, archi_s2, pdf_reader],
     "⚖️ Focus Réglementaire & ESG": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
-    "📈 Finance & Actif": [risk_dash, gse, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
+    "📈 Finance & Actif": [risk_dash, asset_class, gse, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
 })
 
