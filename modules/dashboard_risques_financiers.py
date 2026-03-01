@@ -29,7 +29,7 @@ def generate_portfolio():
     rating_weights = [0.2, 0.3, 0.3, 0.15, 0.04, 0.01]
     
     # Noms fictifs pour l'exemple
-    names_gov = ["OAT France 2032", "Bund Allemagne 2028", "BTP Italie 2030", "Bonos Espagne 2029", "US Treasury 2025"]
+    names_gov = ["OAT France 2032", "Bund Allemagne 2028", "BTP Italie 2030", "Bonos Espagne 2029"]
     names_corp = ["TotalEnergies Bond", "LVMH Corp", "BNP Paribas Senior", "AXA Subordinated", "Danone Credit", "Orange SA"]
     names_equity = ["Air Liquide", "L'Oréal", "Schneider Electric", "Sanofi", "Airbus", "Vinci"]
     names_real = ["SCPI Bureau Paris", "OPCI Logistique", "Foncière Santé", "Immeuble La Défense"]
@@ -54,16 +54,15 @@ def generate_portfolio():
                 if "Allemagne" in name: country = "Allemagne"
                 elif "Italie" in name: country = "Italie"
                 elif "Espagne" in name: country = "Espagne"
-                elif "US" in name: country = "USA"
             else:
-                country = np.random.choice(["France", "Allemagne", "Pays-Bas", "USA", "UK"], p=[0.5, 0.2, 0.1, 0.1, 0.1])
+                country = np.random.choice(["France", "Allemagne", "Pays-Bas", "UK"], p=[0.6, 0.2, 0.1, 0.1])
                 
         elif asset_type == "Cash":
             duration = 0.0
         else:
             duration = 0.0 # Simplification
             name = np.random.choice(names_equity if "Actions" in asset_type else names_real)
-            country = np.random.choice(["France", "Allemagne", "USA", "Monde"], p=[0.4, 0.2, 0.2, 0.2])
+            country = np.random.choice(["France", "Allemagne", "Monde"], p=[0.5, 0.3, 0.2])
             
         data.append({
             "Nom de l'Actif": name,
@@ -150,7 +149,7 @@ with col_conc2:
     
     fig_geo = px.choropleth(df_geo.dropna(subset=['iso_alpha']), locations="iso_alpha",
                             color="Valeur de Marché (M€)", hover_name="Pays",
-                            color_continuous_scale="Blues", title="Exposition Géographique")
+                            color_continuous_scale="Blues", title="Exposition Géographique", scope="europe")
     fig_geo.update_geos(showframe=False, showcoastlines=True, projection_type="natural earth")
     fig_geo.update_layout(margin={"r":0,"t":30,"l":0,"b":0})
     st.plotly_chart(fig_geo, use_container_width=True)
