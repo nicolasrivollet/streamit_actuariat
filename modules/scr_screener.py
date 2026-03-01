@@ -159,9 +159,10 @@ with col_rent1:
     revenu_annuel = nominal * yield_expected
     cout_scr = scr_div * coc_rate
     generation_nette = revenu_annuel - cout_scr
+    return_on_scr = revenu_annuel / scr_div if scr_div > 0 else 0
     
-    st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta="Génération Brute")
-    st.metric("Charge de Capital (Cible)", f"{cout_scr:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
+    st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta=f"Yield {yield_expected*100:.2f}%")
+    st.metric("Rentabilité sur SCR (RoSCR)", f"{return_on_scr:.1%}", delta=f"{return_on_scr*100 - coc_rate*100:.1f} pts vs Cible")
     st.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta_color="normal" if generation_nette > 0 else "inverse")
 
 with col_rent2:
