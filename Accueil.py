@@ -74,6 +74,7 @@ reass_pilot = st.Page("modules/pilotage_reassu.py", title="Pilotage Réassurance
 lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-Carter)", icon="📉")
 best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie", icon="💰")
 risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques Financiers", icon="📊")
+dora        = st.Page("modules/dora_regulation.py", title="Réglementation DORA", icon="🛡️")
 
 # --- 3. NAVIGATION ---
 
@@ -82,7 +83,7 @@ pg = st.navigation({
     "Finance & Marchés": [risk_dash, comparat, nelson, smith],
     "Passif & Réassurance": [lee_carter, best_estim, chain_lad, reass_pilot],
     "Solvabilité II (Outils)": [scr_global, scr_taux, volat_adj, scr_screen],
-    "Prospective & ESG": [reform_s2, cat_climat],
+    "Prospective & ESG": [reform_s2, cat_climat, dora],
 })
 
 # --- 4. EXÉCUTION ---
