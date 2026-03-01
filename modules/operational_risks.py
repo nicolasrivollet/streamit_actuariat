@@ -140,6 +140,6 @@ with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)",
     **Le processus :**
     On simule des milliers d'années d'activité (Monte Carlo). Pour chaque année, on tire un nombre de sinistres, puis un coût pour chaque sinistre. La somme donne la perte annuelle totale.
     
-    Le **SCR Opérationnel** correspond à la VaR 99.5% de cette distribution agrégée des pertes annuelles.
+    En Modèle Interne, le **SCR Opérationnel** correspond à la VaR 99.5% de cette distribution agrégée des pertes annuelles.
     """)
 
