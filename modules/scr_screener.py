@@ -89,62 +89,59 @@ with col_calc:
 scr_div = calculate_diversified_scr(scr_results)
 diversification_gain = sum(scr_results.values()) - scr_div
 
-# --- SECTION 3 : EFFICACITÉ DU CAPITAL (SOLVABILITÉ) ---
+# --- SECTION 3 : EFFICACITÉ DU CAPITAL (RoSCR) ---
 st.divider()
-st.header("3️⃣ Efficacité du Capital & Solvabilité")
+st.header("3️⃣ Efficacité du Capital (Rentabilité sur SCR)")
 
-# Analyse Solvabilité (Asset vs SCR)
-# L'actif entre au bilan : il augmente les Fonds Propres (Asset Side) de sa valeur nominale.
-# Il augmente le SCR de 'scr_div'.
-apport_fp = nominal
-surplus_solvabilite = apport_fp - scr_div
-ratio_couverture_implicite = apport_fp / scr_div if scr_div > 0 else float('inf')
+# Analyse : Rentabilité vs Consommation de Capital
+# La "Génération de Fonds Propres" est le résultat financier attendu (net de l'investissement initial).
+generation_fp = nominal * yield_expected
+roscr = generation_fp / scr_div if scr_div > 0 else 0
 
 # Affichage des métriques clés
 m1, m2, m3 = st.columns(3)
 m1.metric("SCR Consommé", f"{scr_div:,.0f} €", delta="Exigence de Capital", delta_color="inverse")
-m2.metric("Apport Fonds Propres", f"{apport_fp:,.0f} €", help="Valeur de marché de l'actif (Contribution aux FP)")
-m3.metric("Ratio de Couverture Implicite", f"{ratio_couverture_implicite:.0%}", delta="Densité Solvabilité")
+m2.metric("Génération FP (1 an)", f"{generation_fp:,.0f} €", help="Revenus financiers attendus (Rendement)")
+m3.metric("Rentabilité sur SCR (RoSCR)", f"{roscr:.1%}", delta="Rendement / SCR")
 
 # --- VISUALISATION ---
 col_plot, col_analysis = st.columns([1.5, 1])
 
 with col_plot:
-    # Jauge de densité solvabilité
+    # Jauge de RoSCR
     fig_gauge = go.Figure(go.Indicator(
         mode = "gauge+number",
-        value = ratio_couverture_implicite * 100,
-        title = {'text': "Ratio Asset / SCR (%)", 'font': {'size': 16}},
+        value = roscr * 100,
+        title = {'text': "RoSCR (%)", 'font': {'size': 16}},
         gauge = {
-            'axis': {'range': [0, 400]},
+            'axis': {'range': [0, 30]}, # Echelle adaptée au RoSCR (ex: 0-30%)
             'bar': {'color': "#1E88E5"},
             'steps': [
-                {'range': [0, 100], 'color': "#FFCDD2"}, # Sous-capitalisé
-                {'range': [100, 400], 'color': "#C8E6C9"}], # Sur-capitalisé
+                {'range': [0, 5], 'color': "#FFCDD2"}, # < 5% (Faible)
+                {'range': [5, 10], 'color': "#FFF9C4"}, # 5-10% (Moyen)
+                {'range': [10, 30], 'color': "#C8E6C9"}], # > 10% (Bon)
             'threshold': {
                 'line': {'color': "red", 'width': 4},
                 'thickness': 0.75,
-                'value': 100}}))
+                'value': 10}})) # Seuil indicatif 10%
     fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
     st.plotly_chart(fig_gauge, use_container_width=True)
 
 with col_analysis:
     st.subheader("Analyse Stratégique")
     st.write(f"""
-    Cet investissement apporte **{apport_fp:,.0f} €** de valeur d'actif pour une consommation de capital de **{scr_div:,.0f} €**.
-    
-    Il génère donc un **surplus de solvabilité brut de {surplus_solvabilite:,.0f} €**.
+    Pour chaque euro de capital réglementaire immobilisé (**SCR**), cet investissement génère **{roscr*100:.1f} centimes** de résultat financier annuel.
     """)
     
-    if ratio_couverture_implicite > 1.5:
-        st.success("**PROFIL SOLVABILITÉ : ROBUSTE**")
-        st.write("L'actif est 'dense' en capital : il apporte beaucoup plus de fonds propres qu'il ne consomme de SCR (> 150%).")
-    elif ratio_couverture_implicite > 1.0:
-        st.warning("**PROFIL SOLVABILITÉ : CORRECT**")
-        st.write("L'actif couvre sa propre exigence de capital, mais avec une marge limitée.")
+    if roscr > 0.10:
+        st.success("**EFFICACITÉ : ÉLEVÉE**")
+        st.write("L'actif rémunère très bien le capital consommé (> 10%).")
+    elif roscr > 0.05:
+        st.warning("**EFFICACITÉ : MOYENNE**")
+        st.write("La rentabilité couvre le coût du capital mais sans marge excessive.")
     else:
-        st.error("**PROFIL SOLVABILITÉ : DILUTIF**")
-        st.write("Attention : L'actif consomme plus de SCR qu'il n'apporte de valeur (cas rare, ex: dérivés ou levier).")
+        st.error("**EFFICACITÉ : FAIBLE**")
+        st.write("La consommation de SCR est trop élevée par rapport au rendement offert.")
 
 # --- SECTION 4 : RENTABILITÉ ÉCONOMIQUE ---
 st.divider()
@@ -159,10 +156,8 @@ with col_rent1:
     revenu_annuel = nominal * yield_expected
     cout_scr = scr_div * coc_rate
     generation_nette = revenu_annuel - cout_scr
-    return_on_scr = revenu_annuel / scr_div if scr_div > 0 else 0
     
     st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta=f"Yield {yield_expected*100:.2f}%")
-    st.metric("Rentabilité sur SCR (RoSCR)", f"{return_on_scr:.1%}", delta=f"{return_on_scr*100 - coc_rate*100:.1f} pts vs Cible")
     st.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta_color="normal" if generation_nette > 0 else "inverse")
 
 with col_rent2:
@@ -181,12 +176,12 @@ with col_rent2:
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
     st.markdown(r"""
-    **Philosophie du Ratio Implicite :**
-    Pour le pilotage du bilan, il est pertinent de vérifier la **densité en solvabilité** de l'actif, c'est-à-dire sa capacité à auto-financer sa propre exigence de capital.
+    **Return on Solvency Capital Requirement (RoSCR) :**
+    Indicateur clé pour l'allocation d'actifs sous contrainte Solvabilité II.
     
-    $$ \text{Ratio} = \frac{\text{Valeur de Marché (Apport FP)}}{\text{SCR Consommé}} $$
+    $$ \text{RoSCR} = \frac{\text{Rendement Espéré (€)}}{\text{SCR Marginal (€)}} $$
     
-    Si ce ratio est supérieur au ratio de solvabilité cible de la compagnie (ex: 200%), l'investissement est **relutif** (il améliore le ratio global).
+    Il permet de comparer des actifs hétérogènes (ex: Obligations vs Actions) sur une base commune : la rémunération du risque réglementaire.
     
     **La Matrice de Corrélation :** Elle permet de calculer le SCR Diversifié en tenant compte de la faible probabilité 
     que tous les chocs de marché (Action, Spread, Immo) atteignent leur intensité maximale simultanément.
