@@ -13,7 +13,7 @@ De nombreuses filiales luxembourgeoises de groupes français fonctionnent selon 
 *   **Unit-Linked (UC) :** Le risque est porté par les assurés (sauf risque de frais).
 *   **Fonds Général (Euro) :** Il est **réassuré à 100%** par la maison mère française (Quota Share).
 
-**Conséquence :** Le risque de marché et de souscription disparaît du bilan de la filiale, mais il est remplacé par un **Risque de Contrepartie** massif envers la maison mère.
+**Conséquence :** Le risque de marché et de souscription sur le Fonds Général (Euro) disparaît du bilan de la filiale, mais il est remplacé par un **Risque de Contrepartie** massif envers la maison mère.
 """)
 
 st.divider()
@@ -38,7 +38,7 @@ with col2:
 # Sur les UC, l'assureur ne porte pas le risque de marché, sauf sur ses frais futurs.
 # Simplification : SCR Marché = Choc sur les revenus futurs (Frais de gestion)
 # On suppose que le choc baisse la valeur actuelle des frais futurs de 20% (Mass Lapse / Baisse marchés).
-scr_market = frais_uc * 0.20 * 10 # Proxy : Frais annuels * 20% choc * 10 ans duration
+scr_market = tp_uc * 0.005 * 0.20 * 10 # Proxy : Frais annuels * 20% choc * 10 ans duration
 
 # B. SCR Vie
 # Le risque de mortalité/longevité Euro est réassuré.
@@ -55,10 +55,10 @@ charge_map = {"AAA": 0.015, "AA": 0.03, "A": 0.06, "BBB": 0.12, "BB": 0.25}
 scr_default = exposure * charge_map[rating_parent]
 
 # D. SCR Opérationnel
-# Max(Primes, Provisions).
-op_prov = (tp_euro + tp_uc) * 0.0045 # 0.45% des provisions
-op_prem = collecte_euro * 0.04 # 4% des primes émises (Euro)
-scr_op = max(op_prov, op_prem)
+# Formule Standard : Max(Primes, Provisions) pour le Fonds Général + 25% des frais pour les UC.
+op_euro = max(tp_euro * 0.0045, collecte_euro * 0.04) # 0.45% des provisions ou 4% des primes
+op_uc = frais_uc * 0.25 # 25% des frais annuels supportés par les UC
+scr_op = op_euro + op_uc
 
 # --- AGRÉGATION ---
 # Matrice de corrélation simplifiée
