@@ -43,7 +43,6 @@ st.header("1️⃣ Caractéristiques de l'Investissement")
 col_a, col_b = st.columns(2)
 
 with col_a:
-    asset_name = st.text_input("Nom de l'actif / Émetteur", "Obligation Corporate BBB+")
     asset_type = st.selectbox("Classe d'actif (Module SCR)", ["Obligations", "Actions", "Immobilier"])
     nominal = st.number_input("Montant investi (€)", min_value=0, value=1000000, step=100000)
 
@@ -90,65 +89,72 @@ with col_calc:
 scr_div = calculate_diversified_scr(scr_results)
 diversification_gain = sum(scr_results.values()) - scr_div
 
-# --- SECTION 3 : RENTABILITÉ ET GÉNÉRATION DE FONDS PROPRES ---
+# --- SECTION 3 : EFFICACITÉ DU CAPITAL (SOLVABILITÉ) ---
 st.divider()
-st.header("3️⃣ Indicateurs de Rentabilité et Solvabilité")
+st.header("3️⃣ Efficacité du Capital & Solvabilité")
 
-# Paramètres économiques
-k_cost_rate = 0.06  # Coût du capital réglementaire (Risk Margin CoC)
-revenu_annuel = nominal * yield_expected
-cout_immobilisation = scr_div * k_cost_rate
-generation_nette = revenu_annuel - cout_immobilisation
-raroc = revenu_annuel / scr_div if scr_div > 0 else 0
+# Analyse Solvabilité (Asset vs SCR)
+# L'actif entre au bilan : il augmente les Fonds Propres (Asset Side) de sa valeur nominale.
+# Il augmente le SCR de 'scr_div'.
+apport_fp = nominal
+surplus_solvabilite = apport_fp - scr_div
+ratio_couverture_implicite = apport_fp / scr_div if scr_div > 0 else float('inf')
 
 # Affichage des métriques clés
 m1, m2, m3 = st.columns(3)
-m1.metric("SCR Diversifié", f"{scr_div:,.0f} €")
-m2.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta=f"{raroc:.2%} vs 6%")
-m3.metric("RAROC", f"{raroc:.2%}")
+m1.metric("SCR Consommé", f"{scr_div:,.0f} €", delta="Exigence de Capital", delta_color="inverse")
+m2.metric("Apport Fonds Propres", f"{apport_fp:,.0f} €", help="Valeur de marché de l'actif (Contribution aux FP)")
+m3.metric("Ratio de Couverture Implicite", f"{ratio_couverture_implicite:.0%}", delta="Densité Solvabilité")
 
 # --- VISUALISATION ---
 col_plot, col_analysis = st.columns([1.5, 1])
 
 with col_plot:
-    # Jauge de rentabilité
+    # Jauge de densité solvabilité
     fig_gauge = go.Figure(go.Indicator(
         mode = "gauge+number",
-        value = raroc * 100,
-        title = {'text': "RAROC (%) vs Coût du Capital (6%)", 'font': {'size': 16}},
+        value = ratio_couverture_implicite * 100,
+        title = {'text': "Ratio Asset / SCR (%)", 'font': {'size': 16}},
         gauge = {
-            'axis': {'range': [None, 15]},
+            'axis': {'range': [0, 400]},
             'bar': {'color': "#1E88E5"},
             'steps': [
-                {'range': [0, 6], 'color': "#FFCDD2"},
-                {'range': [6, 15], 'color': "#C8E6C9"}],
+                {'range': [0, 100], 'color': "#FFCDD2"}, # Sous-capitalisé
+                {'range': [100, 400], 'color': "#C8E6C9"}], # Sur-capitalisé
             'threshold': {
                 'line': {'color': "red", 'width': 4},
                 'thickness': 0.75,
-                'value': 6}}))
+                'value': 100}}))
     fig_gauge.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20))
     st.plotly_chart(fig_gauge, use_container_width=True)
 
 with col_analysis:
     st.subheader("Analyse Stratégique")
     st.write(f"""
-    L'actif dégage un revenu brut de **{revenu_annuel:,.0f} €**. 
-    Cependant, l'immobilisation de **{scr_div:,.0f} €** de fonds propres engendre un coût d'opportunité 
-    théorique de **{cout_immobilisation:,.0f} €** (au taux de 6%).
+    Cet investissement apporte **{apport_fp:,.0f} €** de valeur d'actif pour une consommation de capital de **{scr_div:,.0f} €**.
+    
+    Il génère donc un **surplus de solvabilité brut de {surplus_solvabilite:,.0f} €**.
     """)
     
-    if raroc > k_cost_rate:
-        st.success("**AVIS RISQUE : FAVORABLE**")
-        st.write("L'investissement auto-finance sa consommation de capital et génère un surplus de solvabilité.")
+    if ratio_couverture_implicite > 1.5:
+        st.success("**PROFIL SOLVABILITÉ : ROBUSTE**")
+        st.write("L'actif est 'dense' en capital : il apporte beaucoup plus de fonds propres qu'il ne consomme de SCR (> 150%).")
+    elif ratio_couverture_implicite > 1.0:
+        st.warning("**PROFIL SOLVABILITÉ : CORRECT**")
+        st.write("L'actif couvre sa propre exigence de capital, mais avec une marge limitée.")
     else:
-        st.warning("**AVIS RISQUE : RÉSERVÉ**")
-        st.write("La rentabilité est insuffisante pour couvrir le coût du capital réglementaire.")
+        st.error("**PROFIL SOLVABILITÉ : DILUTIF**")
+        st.write("Attention : L'actif consomme plus de SCR qu'il n'apporte de valeur (cas rare, ex: dérivés ou levier).")
 
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
     st.markdown(f"""
-    **Le Coût du Capital (CoC) :** Fixé à 6 % par la directive, il représente le spread exigé par un investisseur pour 
-    apporter les fonds propres nécessaires à la couverture des risques.
+    **Philosophie du Ratio Implicite :**
+    Plutôt que de comparer le rendement au Coût du Capital (CoC), il est souvent plus pertinent pour le pilotage du bilan de vérifier la **densité en solvabilité** de l'actif.
+    
+    $$ \\text{Ratio} = \\frac{\\text{Valeur de Marché (Apport FP)}}{\\text{SCR Consommé}} $$
+    
+    Si ce ratio est supérieur au ratio de solvabilité cible de la compagnie (ex: 200%), l'investissement est **relutif** (il améliore le ratio global).
     
     **La Matrice de Corrélation :** Elle permet de calculer le SCR Diversifié en tenant compte de la faible probabilité 
     que tous les chocs de marché (Action, Spread, Immo) atteignent leur intensité maximale simultanément.
