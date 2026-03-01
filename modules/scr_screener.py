@@ -148,11 +148,11 @@ with col_analysis:
 
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
-    st.markdown(f"""
+    st.markdown(r"""
     **Philosophie du Ratio Implicite :**
     Plutôt que de comparer le rendement au Coût du Capital (CoC), il est souvent plus pertinent pour le pilotage du bilan de vérifier la **densité en solvabilité** de l'actif.
     
-    $$ \\text{Ratio} = \\frac{\\text{Valeur de Marché (Apport FP)}}{\\text{SCR Consommé}} $$
+    $$ \text{Ratio} = \frac{\text{Valeur de Marché (Apport FP)}}{\text{SCR Consommé}} $$
     
     Si ce ratio est supérieur au ratio de solvabilité cible de la compagnie (ex: 200%), l'investissement est **relutif** (il améliore le ratio global).
     
