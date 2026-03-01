@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+from scipy.optimize import minimize
+from scipy.interpolate import CubicSpline
 
 st.set_page_config(page_title="Expertise Modèles de Taux", layout="wide")
 
@@ -106,11 +108,20 @@ t = np.linspace(0.1, 40, 200)
 t_market = np.array([1, 2, 5, 10, 20])
 y_market = np.array([0.025, 0.028, 0.032, 0.035, 0.038])
 
-# Modèle Lisse (type Nelson-Siegel)
-y_smooth = 0.04 - 0.02 * np.exp(-t/2)
+# 1. Modèle Paramétrique (Nelson-Siegel calibré)
+def ns_curve(t, params):
+    b0, b1, b2, tau = params
+    term1 = (1 - np.exp(-t/tau)) / (t/tau)
+    term2 = term1 - np.exp(-t/tau)
+    return b0 + b1*term1 + b2*term2
 
-# Modèle "Overfitted" (type Splines qui cherche les points)
-y_spline = np.interp(t, t_market, y_market) 
+res = minimize(lambda p: np.sum((ns_curve(t_market, p) - y_market)**2), 
+               [0.04, -0.01, 0.0, 2.0], method='Nelder-Mead')
+y_smooth = ns_curve(t, res.x)
+
+# 2. Modèle Interpolation (Splines Cubiques)
+cs = CubicSpline(t_market, y_market, bc_type='natural')
+y_spline = cs(t)
 
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=t, y=y_smooth*100, name="Approche Paramétrique (Lisse)", line=dict(dash='dash', color='blue')))
