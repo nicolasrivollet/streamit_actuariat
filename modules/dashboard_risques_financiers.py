@@ -111,7 +111,7 @@ with col_alloc2:
     st.plotly_chart(fig_bar, use_container_width=True)
 
 # --- TABLEAU DÉTAILLÉ ---
-with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=True):
+with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=False):
     st.dataframe(df.sort_values("Valeur de Marché (M€)", ascending=False).head(10).style.format({"Valeur de Marché (M€)": "{:,.0f}", "Performance YTD (%)": "{:.2%}", "Duration": "{:.1f}"}))
 
 # --- 4. ANALYSE DE SENSIBILITÉ (SOLVABILITÉ II) ---
