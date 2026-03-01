@@ -7,3 +7,4 @@ chainladder
 seaborn
 scipy
 streamlit-pdf-viewer
+matplotlib
