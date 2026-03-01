@@ -117,6 +117,18 @@ st.divider()
 st.header("3. Gestion des Incidents (Base de Pertes)")
 st.markdown("Le suivi des pertes avérées est essentiel pour calibrer les modèles de capital (LDA - Loss Distribution Approach).")
 
+# Exemple de base de données
+data_incidents = pd.DataFrame({
+    "Date": ["2023-01-15", "2023-03-22", "2023-06-10", "2023-09-05", "2023-11-20"],
+    "Type": ["Exécution", "Fraude Externe", "Interruption", "Clients", "RH"],
+    "Montant Perte (€)": [15000, 450000, 120000, 5000, 25000],
+    "Statut": ["Clôturé", "En cours", "Clôturé", "Clôturé", "En cours"]
+})
+
+st.dataframe(data_incidents)
+
+st.info("💡 **Lien avec le SCR Opérationnel :** Bien que la Formule Standard soit forfaitaire (basée sur les primes/provisions), la collecte des pertes historiques est obligatoire pour valider la pertinence de cette formule standard par rapport au profil de risque réel.")
+
 with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)", expanded=True):
     st.markdown("""
     La méthode **LDA** est l'approche standard pour modéliser le capital économique pour le risque opérationnel (Modèle Interne).
@@ -131,14 +143,3 @@ with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)",
     Le **SCR Opérationnel** correspond à la VaR 99.5% de cette distribution agrégée des pertes annuelles.
     """)
 
-# Exemple de base de données
-data_incidents = pd.DataFrame({
-    "Date": ["2023-01-15", "2023-03-22", "2023-06-10", "2023-09-05", "2023-11-20"],
-    "Type": ["Exécution", "Fraude Externe", "Interruption", "Clients", "RH"],
-    "Montant Perte (€)": [15000, 450000, 120000, 5000, 25000],
-    "Statut": ["Clôturé", "En cours", "Clôturé", "Clôturé", "En cours"]
-})
-
-st.dataframe(data_incidents)
-
-st.info("💡 **Lien avec le SCR Opérationnel :** Bien que la Formule Standard soit forfaitaire (basée sur les primes/provisions), la collecte des pertes historiques est obligatoire pour valider la pertinence de cette formule standard par rapport au profil de risque réel.")
