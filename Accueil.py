@@ -78,13 +78,14 @@ dora        = st.Page("modules/dora_regulation.py", title="Réglementation DORA"
 data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données S2", icon="🗃️")
 lux_vie     = st.Page("modules/luxembourg_vie.py", title="Assurance Vie Luxembourg", icon="🇱🇺")
 esg_invest  = st.Page("modules/esg_investissements.py", title="ESG & Investissements", icon="🌿")
+csrd        = st.Page("modules/csrd_reporting.py", title="Reporting CSRD", icon="🌱")
 pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "🏠 Présentation & Cadre": [home, normes, s2_piliers, archi_s2, pdf_reader],
-    "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, data_qual, esg_invest, cat_climat],
+    "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, csrd, data_qual, esg_invest, cat_climat],
     "📈 Finance & Actif": [risk_dash, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, lee_carter, lux_vie, chain_lad, reass_pilot, scr_global],
 })
