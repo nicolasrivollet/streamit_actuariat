@@ -76,12 +76,13 @@ best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie",
 risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques Financiers", icon="📊")
 dora        = st.Page("modules/dora_regulation.py", title="Réglementation DORA", icon="🛡️")
 data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données S2", icon="🗃️")
+esg_invest  = st.Page("modules/esg_investissements.py", title="ESG & Investissements", icon="🌿")
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
     "🏠 Présentation & Cadre": [home, normes, s2_piliers, archi_s2],
-    "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, data_qual, cat_climat],
+    "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, data_qual, esg_invest, cat_climat],
     "📈 Finance & Actif": [risk_dash, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, lee_carter, chain_lad, reass_pilot, scr_global],
 })
