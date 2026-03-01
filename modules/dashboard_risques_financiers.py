@@ -42,16 +42,28 @@ def generate_portfolio():
         rating = "N/A"
         duration = 0.0
         name = "Cash Account"
+        country = "France"
         
         if "Obligations" in asset_type:
             rating = np.random.choice(ratings, p=rating_weights)
             duration = np.random.uniform(2, 15)
             name = np.random.choice(names_gov if "Gouv" in asset_type else names_corp)
+            
+            # Logique Pays simple pour les Gouv
+            if "Gouv" in asset_type:
+                if "Allemagne" in name: country = "Allemagne"
+                elif "Italie" in name: country = "Italie"
+                elif "Espagne" in name: country = "Espagne"
+                elif "US" in name: country = "USA"
+            else:
+                country = np.random.choice(["France", "Allemagne", "Pays-Bas", "USA", "UK"], p=[0.5, 0.2, 0.1, 0.1, 0.1])
+                
         elif asset_type == "Cash":
             duration = 0.0
         else:
             duration = 0.0 # Simplification
             name = np.random.choice(names_equity if "Actions" in asset_type else names_real)
+            country = np.random.choice(["France", "Allemagne", "USA", "Monde"], p=[0.4, 0.2, 0.2, 0.2])
             
         data.append({
             "Nom de l'Actif": name,
@@ -59,7 +71,8 @@ def generate_portfolio():
             "Valeur de Marché (M€)": mv,
             "Rating": rating,
             "Duration": duration,
-            "Performance YTD (%)": np.random.normal(0.02, 0.05)
+            "Performance YTD (%)": np.random.normal(0.02, 0.05),
+            "Pays": country
         })
         
     return pd.DataFrame(data)
@@ -109,6 +122,25 @@ with col_alloc2:
                      title="Qualité de Crédit (Obligations)", color="Rating",
                      color_discrete_sequence=px.colors.sequential.Blues_r)
     st.plotly_chart(fig_bar, use_container_width=True)
+
+# --- 2b. ANALYSE DE CONCENTRATION ---
+st.subheader("Analyse de la Concentration (Risque Émetteur & Géo)")
+
+col_conc1, col_conc2 = st.columns(2)
+
+with col_conc1:
+    # Top 5 Émetteurs
+    df_issuer = df.groupby("Nom de l'Actif")["Valeur de Marché (M€)"].sum().reset_index()
+    df_issuer = df_issuer.sort_values("Valeur de Marché (M€)", ascending=True).tail(5) # Top 5
+    
+    fig_conc = px.bar(df_issuer, x="Valeur de Marché (M€)", y="Nom de l'Actif", orientation='h', 
+                      title="Top 5 Émetteurs (Concentration)", text_auto='.0f')
+    st.plotly_chart(fig_conc, use_container_width=True)
+
+with col_conc2:
+    # Répartition Géographique
+    fig_geo = px.pie(df, values='Valeur de Marché (M€)', names='Pays', title="Exposition Géographique", hole=0.4)
+    st.plotly_chart(fig_geo, use_container_width=True)
 
 # --- TABLEAU DÉTAILLÉ ---
 with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=False):
