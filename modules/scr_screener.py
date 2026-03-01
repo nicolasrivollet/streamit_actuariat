@@ -33,7 +33,7 @@ def calculate_diversified_scr(scr_dict):
 st.title("🛡️ SCR Asset Screener & Analyse de Rentabilité")
 st.markdown("""
 Cet outil simule l'impact d'un nouvel investissement sur le **Capital de Solvabilité Requis (SCR)** du GACM. 
-Il permet de confronter le rendement attendu au coût réglementaire du capital (6%) pour évaluer la création de valeur économique.
+Il permet d'évaluer l'efficacité de l'investissement en termes de consommation de capital et son impact sur le ratio de solvabilité.
 """)
 
 st.divider()
@@ -146,11 +146,42 @@ with col_analysis:
         st.error("**PROFIL SOLVABILITÉ : DILUTIF**")
         st.write("Attention : L'actif consomme plus de SCR qu'il n'apporte de valeur (cas rare, ex: dérivés ou levier).")
 
+# --- SECTION 4 : RENTABILITÉ ÉCONOMIQUE ---
+st.divider()
+st.header("4️⃣ Rentabilité Économique (Génération Nette)")
+st.markdown("Évaluation de la création de valeur après rémunération du capital immobilisé.")
+
+col_rent1, col_rent2 = st.columns(2)
+
+with col_rent1:
+    coc_rate = st.slider("Coût du Capital (Interne) %", 0.0, 15.0, 6.0, 0.5, help="Taux de rémunération exigé sur les fonds propres immobilisés.") / 100
+    
+    revenu_annuel = nominal * yield_expected
+    cout_scr = scr_div * coc_rate
+    generation_nette = revenu_annuel - cout_scr
+    
+    st.metric("Revenus Financiers (1 an)", f"{revenu_annuel:,.0f} €", delta="Génération Brute")
+    st.metric("Coût du Capital (SCR)", f"{cout_scr:,.0f} €", delta="Coût d'opportunité", delta_color="inverse")
+    st.metric("Génération Nette de FP", f"{generation_nette:,.0f} €", delta_color="normal" if generation_nette > 0 else "inverse")
+
+with col_rent2:
+    fig_water = go.Figure(go.Waterfall(
+        orientation = "v",
+        measure = ["relative", "relative", "total"],
+        x = ["Revenus Financiers", "Coût du Capital", "Génération Nette"],
+        textposition = "outside",
+        text = [f"+{revenu_annuel:,.0f}", f"-{cout_scr:,.0f}", f"{generation_nette:,.0f}"],
+        y = [revenu_annuel, -cout_scr, generation_nette],
+        connector = {"line":{"color":"rgb(63, 63, 63)"}},
+    ))
+    fig_water.update_layout(title="Création de Valeur (1 an)", height=300)
+    st.plotly_chart(fig_water, use_container_width=True)
+
 # --- DÉTAILS TECHNIQUES ---
 with st.expander("📚 Rappels Réglementaires (S2)"):
     st.markdown(r"""
     **Philosophie du Ratio Implicite :**
-    Plutôt que de comparer le rendement au Coût du Capital (CoC), il est souvent plus pertinent pour le pilotage du bilan de vérifier la **densité en solvabilité** de l'actif.
+    Pour le pilotage du bilan, il est pertinent de vérifier la **densité en solvabilité** de l'actif, c'est-à-dire sa capacité à auto-financer sa propre exigence de capital.
     
     $$ \text{Ratio} = \frac{\text{Valeur de Marché (Apport FP)}}{\text{SCR Consommé}} $$
     
