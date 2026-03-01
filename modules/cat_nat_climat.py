@@ -48,26 +48,25 @@ st.header("2. Cartographie des Risques")
 
 @st.cache_data
 def generate_portfolio(n=500):
-    # Génération uniforme sur le territoire via la méthode de l'Hexagone (Rejection Sampling)
-    # Cela permet une répartition réaliste sans utiliser de shapefiles lourds.
+    # Génération uniforme sur le territoire via un polygone détaillé (Rejection Sampling)
+    # Permet d'éviter les points en mer avec une meilleure précision que l'hexagone.
     
-    # Définition de l'Hexagone simplifié (Longitude, Latitude)
-    hexagon = [
-        (2.5, 51.1),   # Nord (Dunkerque)
-        (8.2, 49.0),   # Est (Strasbourg)
-        (7.5, 43.7),   # Sud-Est (Nice)
-        (3.1, 42.3),   # Sud (Perpignan)
-        (-1.8, 43.4),  # Sud-Ouest (Biarritz)
-        (-4.8, 48.4)   # Ouest (Brest)
+    # Polygone approximatif de la France Métropolitaine (Lon, Lat)
+    france_polygon = [
+        (2.56, 51.10), (3.60, 50.40), (5.50, 49.50), (8.20, 49.00), # Nord-Est
+        (7.50, 47.50), (6.10, 46.20), (7.10, 45.00), (7.50, 43.80), # Alpes
+        (5.00, 43.20), (3.10, 42.40), (1.80, 42.40), (-1.80, 43.40), # Sud / Pyrénées
+        (-1.40, 44.60), (-1.10, 46.00), (-2.10, 47.10), (-4.80, 48.40), # Atlantique / Bretagne
+        (-3.90, 48.80), (-1.60, 48.60), (-1.90, 49.70), (-0.20, 49.30), (1.60, 50.10) # Manche
     ]
     
     # Algorithme Ray-Casting pour vérifier si un point est dans le polygone
     def is_inside(lon, lat):
         inside = False
-        j = len(hexagon) - 1
-        for i in range(len(hexagon)):
-            xi, yi = hexagon[i]
-            xj, yj = hexagon[j]
+        j = len(france_polygon) - 1
+        for i in range(len(france_polygon)):
+            xi, yi = france_polygon[i]
+            xj, yj = france_polygon[j]
             intersect = ((yi > lat) != (yj > lat)) and \
                         (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi)
             if intersect:
