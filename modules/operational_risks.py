@@ -117,6 +117,20 @@ st.divider()
 st.header("3. Gestion des Incidents (Base de Pertes)")
 st.markdown("Le suivi des pertes avérées est essentiel pour calibrer les modèles de capital (LDA - Loss Distribution Approach).")
 
+with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)", expanded=True):
+    st.markdown("""
+    La méthode **LDA** est l'approche standard pour modéliser le capital économique pour le risque opérationnel (Modèle Interne).
+    Elle repose sur la convolution de deux distributions :
+    
+    1.  **Distribution de Fréquence :** Combien d'incidents surviennent par an ? (ex: Loi de Poisson $\lambda$).
+    2.  **Distribution de Sévérité :** Quel est le coût d'un incident quand il survient ? (ex: Loi Lognormale ou Pareto pour les queues épaisses).
+    
+    **Le processus :**
+    On simule des milliers d'années d'activité (Monte Carlo). Pour chaque année, on tire un nombre de sinistres, puis un coût pour chaque sinistre. La somme donne la perte annuelle totale.
+    
+    Le **SCR Opérationnel** correspond à la VaR 99.5% de cette distribution agrégée des pertes annuelles.
+    """)
+
 # Exemple de base de données
 data_incidents = pd.DataFrame({
     "Date": ["2023-01-15", "2023-03-22", "2023-06-10", "2023-09-05", "2023-11-20"],
