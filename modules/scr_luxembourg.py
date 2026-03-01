@@ -31,7 +31,7 @@ with col1:
 with col2:
     rating_parent = st.selectbox("Rating Maison Mère (Réassureur)", ["AAA", "AA", "A", "BBB", "BB"], index=1)
     collateral = st.number_input("Collatéral (Nantissement) (M€)", value=0.0, step=50.0, help="Actifs déposés en garantie par le réassureur pour réduire le risque.")
-    frais_uc = st.number_input("Frais de Gestion Annuels UC (M€)", value=10.0, step=1.0, help="Revenus de frais sur encours UC (Base du SCR Marché)")
+    frais_uc = st.number_input("Frais de Gestion Annuels UC (M€)", value=10.0, step=1.0, help="Revenus de frais sur encours UC (Impact SCR Opérationnel)")
 
 # --- MOTEUR DE CALCUL ---
 # A. SCR Marché
