@@ -138,9 +138,26 @@ with col_conc1:
     st.plotly_chart(fig_conc, use_container_width=True)
 
 with col_conc2:
-    # Répartition Géographique
-    fig_geo = px.pie(df, values='Valeur de Marché (M€)', names='Pays', title="Exposition Géographique", hole=0.4)
+    # Carte Géographique des Expositions
+    df_geo = df.groupby("Pays")["Valeur de Marché (M€)"].sum().reset_index()
+    
+    # Mapping ISO-3 pour Plotly
+    iso_map = {
+        "France": "FRA", "Allemagne": "DEU", "Italie": "ITA", "Espagne": "ESP", 
+        "USA": "USA", "Pays-Bas": "NLD", "UK": "GBR"
+    }
+    df_geo['iso_alpha'] = df_geo['Pays'].map(iso_map)
+    
+    fig_geo = px.choropleth(df_geo.dropna(subset=['iso_alpha']), locations="iso_alpha",
+                            color="Valeur de Marché (M€)", hover_name="Pays",
+                            color_continuous_scale="Blues", title="Exposition Géographique")
+    fig_geo.update_geos(showframe=False, showcoastlines=True, projection_type="natural earth")
+    fig_geo.update_layout(margin={"r":0,"t":30,"l":0,"b":0})
     st.plotly_chart(fig_geo, use_container_width=True)
+    
+    if 'Monde' in df_geo['Pays'].values:
+        val_monde = df_geo[df_geo['Pays']=='Monde']['Valeur de Marché (M€)'].values[0]
+        st.caption(f"🌍 **Note :** {val_monde/1e6:,.0f} M€ investis sur des indices mondiaux (Global).")
 
 # --- TABLEAU DÉTAILLÉ ---
 with st.expander("🔎 Voir le détail des lignes (Top 10)", expanded=False):
