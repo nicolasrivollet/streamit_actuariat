@@ -9,7 +9,7 @@ st.subheader("Le carburant du moteur Solvabilité II")
 
 st.markdown("""
 Dans Solvabilité II, la qualité des données n'est pas une option, c'est une exigence réglementaire stricte (Article 82 de la Directive).
-Des données de mauvaise qualité entraînent un mauvais calcul du SCR, une mauvaise gestion des risques et in fine, des sanctions du superviseur.
+Des données de mauvaise qualité entraînent un mauvais calcul des Provisions Techniques (Best Estimate), du SCR, une mauvaise gestion des risques et in fine, des sanctions du superviseur.
 """)
 
 st.divider()
