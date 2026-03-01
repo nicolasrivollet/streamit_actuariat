@@ -6,3 +6,4 @@ smithwilson
 chainladder
 seaborn
 scipy
+streamlit-pdf-viewer

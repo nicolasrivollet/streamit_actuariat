@@ -1,6 +1,6 @@
 import streamlit as st
-import base64
 import os
+from streamlit_pdf_viewer import pdf_viewer
 
 st.set_page_config(page_title="Mon CV", layout="wide")
 
@@ -17,7 +17,6 @@ cv_filename = "cv_RivolletNicolas_v2602-5.pdf"
 if os.path.exists(cv_filename):
     with open(cv_filename, "rb") as f:
         pdf_data = f.read()
-        base64_pdf = base64.b64encode(pdf_data).decode('utf-8')
     
     st.download_button(
         label="📥 Télécharger mon CV (PDF)",
@@ -26,7 +25,6 @@ if os.path.exists(cv_filename):
         mime="application/pdf"
     )
     
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="1000" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    pdf_viewer(input=pdf_data, width=700)
 else:
     st.error(f"Fichier {cv_filename} introuvable.")
