@@ -9,8 +9,14 @@ st.title("📊 Moteur IFRS 17 : Modèle Général (GMM)")
 st.subheader("Simulation de la Marge de Service Contractuelle (CSM)")
 
 st.markdown("""
-Sous IFRS 17, la **CSM (Contractual Service Margin)** représente le profit non gagné que l'entité comptabilisera au fur et à mesure qu'elle fournira les services d'assurance.
-Ce module simule la comptabilisation initiale et l'amortissement de la CSM pour un groupe de contrats.
+### 💡 Comprendre la philosophie IFRS 17
+La norme IFRS 17 (entrée en vigueur en 2023) révolutionne la comptabilité des assurances en passant d'une logique de "Primes encaissées" à une logique de **"Service rendu"**.
+
+Le **Modèle Général (GMM)**, aussi appelé BBA (*Building Block Approach*), repose sur l'agrégation de 4 blocs pour valoriser le passif :
+1.  **Flux de trésorerie futurs (BEL)** : La meilleure estimation des entrées (primes) et sorties (sinistres, frais).
+2.  **Ajustement pour Risque (RA)** : Une marge pour couvrir l'incertitude des flux non-financiers.
+3.  **Actualisation** : Prise en compte de la valeur temps de l'argent.
+4.  **Marge de Service Contractuelle (CSM)** : Le profit non gagné, stocké au bilan et libéré au rythme du service.
 """)
 
 st.divider()
@@ -28,6 +34,12 @@ with col1:
 
 with col2:
     st.subheader("Calcul de la CSM Initiale")
+    st.markdown("""
+    **Principe du "No Gain at Inception" :**
+    *   Si le contrat est **profitable**, le gain est mis en réserve dans la **CSM** (pas de profit immédiat).
+    *   Si le contrat est **déficitaire**, la perte est reconnue **immédiatement** (Loss Component).
+    """)
+    
     # FCF = PV Outflows + RA - PV Inflows
     fcf = pv_claims + risk_adjustment - pv_premiums
     
@@ -59,7 +71,12 @@ st.divider()
 
 # --- 2. SUIVI ULTÉRIEUR (AMORTISSEMENT) ---
 st.header("2. Suivi Ultérieur : Projection de la CSM")
-st.markdown("La CSM s'amortit en fonction des **Unités de Couverture (Coverage Units)** fournies sur la période.")
+st.markdown("""
+La CSM est un "réservoir de profit" vivant. Elle évolue selon trois mécanismes :
+1.  **Accrétion d'intérêts :** La CSM grossit avec le temps (désactualisation) au taux fixé à l'origine (*Locked-in rate*).
+2.  **Ajustements (Unlock) :** Elle absorbe les changements d'hypothèses futures (ex: baisse de mortalité) pour lisser le résultat.
+3.  **Libération (Amortissement) :** Une part est transférée en P&L en fonction des **Unités de Couverture (Coverage Units)**.
+""")
 
 col_proj1, col_proj2 = st.columns(2)
 
@@ -88,8 +105,11 @@ with col_proj2:
     csm_balance = [csm_initial]
     csm_release = []
     csm_interest = []
+    ra_balance = [risk_adjustment]
+    ra_release_list = []
     
     curr_csm = csm_initial
+    curr_ra = risk_adjustment
     
     for t in range(duration):
         # 1. Accrétion d'intérêts
@@ -108,6 +128,12 @@ with col_proj2:
         csm_release.append(release)
         curr_csm -= release
         csm_balance.append(curr_csm)
+        
+        # RA Release (Simplification : suit le même profil que la CSM pour l'exemple)
+        ra_rel = curr_ra * release_ratio
+        ra_release_list.append(ra_rel)
+        curr_ra -= ra_rel
+        ra_balance.append(curr_ra)
 
     # DataFrame résultats
     df_proj = pd.DataFrame({
@@ -115,21 +141,37 @@ with col_proj2:
         "CSM Début": csm_balance[:-1],
         "Intérêts (Accrétion)": csm_interest,
         "Libération (P&L)": csm_release,
-        "CSM Fin": csm_balance[1:]
+        "CSM Fin": csm_balance[1:],
+        "Libération RA": ra_release_list
     })
     
     st.dataframe(df_proj.style.format("{:.1f}"))
 
+# --- 3. IMPACT P&L ---
+st.header("3. Formation du Résultat (P&L)")
+st.markdown("""
+Sous IFRS 17, la ligne "Primes Émises" disparaît du compte de résultat. Elle est remplacée par le **Revenu d'Assurance**.
+
+$$ \\text{Revenu d'Assurance} = \\text{Sinistres Attendus} + \\text{Libération du RA} + \\text{Libération de la CSM} $$
+""")
+
 # Graphique Amortissement
 fig_proj = go.Figure()
-fig_proj.add_trace(go.Bar(x=years, y=df_proj["Libération (P&L)"], name="Revenu CSM (P&L)", marker_color='green'))
-fig_proj.add_trace(go.Scatter(x=years, y=df_proj["CSM Fin"], name="Stock CSM (Bilan)", line=dict(color='blue', width=3)))
+fig_proj.add_trace(go.Bar(x=years, y=df_proj["Libération (P&L)"], name="Marge (CSM)", marker_color='green'))
+fig_proj.add_trace(go.Bar(x=years, y=df_proj["Libération RA"], name="Risque (RA)", marker_color='orange'))
+fig_proj.add_trace(go.Scatter(x=years, y=df_proj["CSM Fin"], name="Stock CSM Restant (Bilan)", line=dict(color='blue', width=3), yaxis='y2'))
 
-fig_proj.update_layout(title="Projection de la CSM : Stock vs Flux", xaxis_title="Année", yaxis_title="Montant (€)")
+fig_proj.update_layout(
+    title="Contribution au Résultat (Revenu d'Assurance) & Stock Bilan",
+    xaxis_title="Année", 
+    yaxis=dict(title="Flux P&L (€)"),
+    yaxis2=dict(title="Stock Bilan (€)", overlaying='y', side='right'),
+    barmode='stack',
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+)
 st.plotly_chart(fig_proj, use_container_width=True)
 
 st.info("""
-**Mécanique IFRS 17 :**
-1.  **Accrétion :** La CSM grossit avec le temps (valeur temps de l'argent) au taux locked-in.
-2.  **Libération :** Une part est reconnue en résultat (Revenu d'Assurance) proportionnellement au service rendu (Coverage Units).
+**Lecture du graphique :**
+Les barres représentent le profit reconnu chaque année (Revenu). La ligne bleue représente le "réservoir" de profit futur qui diminue au fil du temps.
 """)
