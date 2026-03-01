@@ -85,11 +85,20 @@ with col3:
     st.metric("Duration Actif", f"{avg_duration:.2f} ans")
 
 with col4:
-    # VaR Paramétrique simplifiée (99.5% 1 an)
-    # Hypothèse vol portefeuille = 8%
-    vol_port = 0.08
-    var_995 = total_aum * vol_port * 2.58 # Quantile 99.5% N(0,1) approx
-    st.metric("VaR (99.5% 1 an)", f"{var_995/1e6:,.0f} M€", delta="Capital à risque", delta_color="inverse")
+    # VaR Paramétrique améliorée (basée sur l'allocation)
+    # Hypothèses de volatilité par classe d'actif
+    vol_assumptions = {'Actions': 0.25, 'Immobilier': 0.15, 'Obligations Corp.': 0.07, 'Obligations Gouv.': 0.04, 'Cash': 0.0}
+    
+    # Calcul de la volatilité pondérée
+    df['Vol_Est'] = df["Classe d'Actif"].map(vol_assumptions).fillna(0.05)
+    weighted_vol = (df['Vol_Est'] * df["Valeur de Marché (M€)"]).sum() / total_aum
+    
+    # Diversification (Hypothèse : corrélation imparfaite)
+    portfolio_vol = weighted_vol * 0.75 # -25% de risque grâce à la diversification
+    var_995 = total_aum * portfolio_vol * 2.58 # Quantile 99.5% N(0,1)
+    
+    st.metric("VaR (99.5% 1 an)", f"{var_995/1e6:,.0f} M€", delta="Capital à risque", delta_color="inverse",
+              help=f"Méthode Paramétrique :\nVolatilité Portefeuille : {portfolio_vol:.1%}\nQuantile 99.5% : 2.58")
 
 st.divider()
 
@@ -137,7 +146,13 @@ with col_stress1:
         st.markdown(r"""
         L'impact est estimé par l'approximation de sensibilité :
         $$ \Delta \text{NAV} \approx - (\text{Dur}_{Actif} - \text{Dur}_{Passif}) \times \text{AUM} \times \Delta \text{Taux} $$
-        Un **Gap positif** signifie que l'actif est plus long que le passif : une hausse des taux dévalorise l'actif plus fortement que le passif, créant une perte nette.
+        
+        **Mécanique du Passif :**
+        Le passif (Provisions Techniques) réagit **inversement** aux taux :
+        *   📉 **Baisse des taux :** Le taux d'actualisation diminue $\rightarrow$ La valeur actuelle des engagements **augmente** (le passif s'alourdit).
+        *   📈 **Hausse des taux :** Le taux d'actualisation augmente $\rightarrow$ La valeur actuelle des engagements **diminue** (le passif s'allège).
+        
+        Le P&L total dépend de si la baisse de l'actif est compensée ou non par la baisse du passif (Duration Gap).
         """)
 
 with col_stress2:
