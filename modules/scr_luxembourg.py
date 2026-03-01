@@ -33,21 +33,17 @@ with col2:
     collateral = st.number_input("Collatéral (Nantissement) (M€)", value=0.0, step=50.0, help="Actifs déposés en garantie par le réassureur pour réduire le risque.")
     frais_uc = st.number_input("Frais de Gestion Annuels UC (M€)", value=10.0, step=1.0, help="Revenus de frais sur encours UC (Base du SCR Marché)")
 
-# --- 2. CALCUL DES SCR ---
-st.header("2. Calcul des Modules de Risque")
-
+# --- MOTEUR DE CALCUL ---
 # A. SCR Marché
 # Sur les UC, l'assureur ne porte pas le risque de marché, sauf sur ses frais futurs.
 # Simplification : SCR Marché = Choc sur les revenus futurs (Frais de gestion)
 # On suppose que le choc baisse la valeur actuelle des frais futurs de 20% (Mass Lapse / Baisse marchés).
 scr_market = frais_uc * 0.20 * 10 # Proxy : Frais annuels * 20% choc * 10 ans duration
-st.write(f"**SCR Marché (Risque sur frais futurs UC) :** {scr_market:.1f} M€")
 
 # B. SCR Vie
 # Le risque de mortalité/longevité Euro est réassuré.
 # Reste le risque de rachat massif sur les UC (perte de frais futurs) et le risque de dépenses.
 scr_life = tp_uc * 0.005 * 0.40 * 5 # Proxy rachat massif
-st.write(f"**SCR Vie (Rachat UC & Dépenses) :** {scr_life:.1f} M€")
 
 # C. SCR Contrepartie (Le gros morceau)
 # Exposition = TP Euro - Collatéral
@@ -58,26 +54,20 @@ exposure = max(0, tp_euro - collateral)
 charge_map = {"AAA": 0.015, "AA": 0.03, "A": 0.06, "BBB": 0.12, "BB": 0.25} 
 scr_default = exposure * charge_map[rating_parent]
 
-st.write(f"**SCR Contrepartie (Défaut Maison Mère) :** {scr_default:.1f} M€")
-st.caption(f"Exposition Nette : {exposure:.1f} M€ | Charge estimée : {charge_map[rating_parent]*100}%")
-
 # D. SCR Opérationnel
 # Max(Primes, Provisions).
 op_prov = (tp_euro + tp_uc) * 0.0045 # 0.45% des provisions
 op_prem = collecte_euro * 0.04 # 4% des primes émises (Euro)
 scr_op = max(op_prov, op_prem)
-st.write(f"**SCR Opérationnel :** {scr_op:.1f} M€")
 
-# --- 3. AGRÉGATION ---
+# --- AGRÉGATION ---
 # Matrice de corrélation simplifiée
 # Marché et Vie sont corrélés (0.25), Contrepartie peu corrélée (0.25).
 bscr = np.sqrt(scr_market**2 + scr_life**2 + scr_default**2 + 2*0.25*scr_market*scr_life + 2*0.25*scr_market*scr_default + 2*0.25*scr_life*scr_default)
 scr_total = bscr + scr_op
 
-st.divider()
-
-# --- 4. RÉSULTATS & ANALYSE ---
-st.header("3. Synthèse du Capital Requis")
+# --- 2. SYNTHÈSE (RÉSULTATS) ---
+st.header("2. Synthèse du Capital Requis")
 
 col_res1, col_res2 = st.columns([1, 2])
 
@@ -94,6 +84,17 @@ with col_res2:
     ))
     fig.update_layout(title="Décomposition du SCR par Risque", yaxis_title="M€")
     st.plotly_chart(fig, use_container_width=True)
+
+st.divider()
+
+# --- 3. DÉTAIL DES CALCULS ---
+st.header("3. Détail des Modules de Risque")
+
+st.write(f"**SCR Marché (Risque sur frais futurs UC) :** {scr_market:.1f} M€")
+st.write(f"**SCR Vie (Rachat UC & Dépenses) :** {scr_life:.1f} M€")
+st.write(f"**SCR Contrepartie (Défaut Maison Mère) :** {scr_default:.1f} M€")
+st.caption(f"Exposition Nette : {exposure:.1f} M€ | Charge estimée : {charge_map[rating_parent]*100}%")
+st.write(f"**SCR Opérationnel :** {scr_op:.1f} M€")
 
 # --- ANALYSE STRATÉGIQUE ---
 st.info("""
