@@ -48,33 +48,34 @@ st.header("2. Cartographie des Risques")
 
 @st.cache_data
 def generate_portfolio(n=500):
-    # Génération de points autour de grandes agglomérations françaises
-    # Cela garantit que les points sont situés sur la terre ferme (et non en mer)
+    # Génération uniforme sur le territoire (approximation par rectangles pour éviter la mer)
     
-    # Liste de villes (Lat, Lon, Type Risque Dominant)
-    cities = [
-        (48.8566, 2.3522, 'Inondation'),   # Paris
-        (50.6292, 3.0573, 'Inondation'),   # Lille
-        (47.2184, -1.5536, 'Inondation'),  # Nantes
-        (48.5734, 7.7521, 'Inondation'),   # Strasbourg
-        (49.4432, 1.0999, 'Inondation'),   # Rouen
-        (45.7640, 4.8357, 'Sécheresse'),   # Lyon
-        (43.2965, 5.3698, 'Sécheresse'),   # Marseille
-        (43.6047, 1.4442, 'Sécheresse'),   # Toulouse
-        (44.8378, -0.5792, 'Sécheresse'),  # Bordeaux
-        (43.7102, 7.2620, 'Sécheresse')    # Nice
-    ]
+    # Zone 1 : Ouest (Bretagne/Pays de la Loire)
+    n1 = int(n * 0.2)
+    lat1 = np.random.uniform(47.0, 48.5, n1)
+    lon1 = np.random.uniform(-4.5, -0.5, n1)
     
-    indices = np.random.randint(0, len(cities), n)
+    # Zone 2 : Nord/Centre (IDF, Hauts de France, Centre)
+    n2 = int(n * 0.3)
+    lat2 = np.random.uniform(46.0, 51.0, n2)
+    lon2 = np.random.uniform(0.0, 5.0, n2)
     
-    # Extraction vectorisée des coordonnées de base
-    base_lats = np.array([cities[i][0] for i in indices])
-    base_lons = np.array([cities[i][1] for i in indices])
-    types = [cities[i][2] for i in indices]
+    # Zone 3 : Est (Grand Est, Bourgogne, Alpes)
+    n3 = int(n * 0.25)
+    lat3 = np.random.uniform(44.5, 49.0, n3)
+    lon3 = np.random.uniform(4.5, 7.5, n3)
     
-    # Dispersion locale (sigma = 0.15 degrés ~ 15-20km) pour rester proche des villes
-    lats = base_lats + np.random.normal(0, 0.15, n)
-    lons = base_lons + np.random.normal(0, 0.15, n)
+    # Zone 4 : Sud-Ouest (Aquitaine, Occitanie)
+    n4 = n - n1 - n2 - n3
+    lat4 = np.random.uniform(43.0, 46.0, n4)
+    lon4 = np.random.uniform(-1.5, 4.0, n4)
+    
+    lats = np.concatenate([lat1, lat2, lat3, lat4])
+    lons = np.concatenate([lon1, lon2, lon3, lon4])
+    
+    # Détermination du type de risque (Nord = Inondation, Sud = Sécheresse)
+    # Frontière approximative à la latitude 46.5
+    types = np.where(lats > 46.5, 'Inondation', 'Sécheresse')
     
     df = pd.DataFrame({
         'lat': lats,
