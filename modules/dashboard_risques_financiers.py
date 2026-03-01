@@ -100,6 +100,18 @@ with col4:
     st.metric("VaR (99.5% 1 an)", f"{var_995/1e6:,.0f} M€", delta="Capital à risque", delta_color="inverse",
               help=f"Méthode Paramétrique :\nVolatilité Portefeuille : {portfolio_vol:.1%}\nQuantile 99.5% : 2.58")
 
+with st.expander("ℹ️ Détail du calcul de la VaR (Méthodologie)"):
+    st.markdown(r"""
+    **Approche Paramétrique Simplifiée :**
+    La VaR (Value at Risk) est estimée selon une approche Variance-Covariance sous hypothèse de distribution Normale.
+    
+    1.  **Volatilité par classe d'actif :** Hypothèses de marché (Actions 25%, Immo 15%, Crédit 7%, Souverain 4%).
+    2.  **Diversification :** La volatilité globale est pondérée puis réduite de **25%** pour refléter la décorrélation entre les actifs.
+    3.  **Formule :** 
+        $$ VaR_{99.5\%} = \text{Exposition} \times \sigma_{Portefeuille} \times 2.58 $$
+        *(2.58 correspond au quantile 99.5% d'une loi Normale centrée réduite)*
+    """)
+
 st.divider()
 
 # --- 3. ALLOCATION D'ACTIFS ---
@@ -126,44 +138,50 @@ with col_alloc2:
                      color_discrete_sequence=px.colors.sequential.Blues_r)
     st.plotly_chart(fig_bar, use_container_width=True)
 
-# --- 4. ANALYSE DE SENSIBILITÉ (STRESS TESTS) ---
-st.header("3. Stress Tests & Sensibilités")
+# --- 4. ANALYSE DE SENSIBILITÉ (SOLVABILITÉ II) ---
+st.header("3. Impact des Chocs Solvabilité II (Bicentenaires)")
+st.markdown("Estimation des pertes de valeur (SCR Marché) selon les calibrages de la Formule Standard (VaR 99.5%).")
 
 col_stress1, col_stress2 = st.columns(2)
 
 with col_stress1:
-    st.subheader("Sensibilité Taux (Duration Gap)")
-    liab_duration = st.slider("Duration du Passif (Cible)", 0.0, 20.0, 10.0, 0.5)
-    
-    gap = avg_duration - liab_duration
-    impact_bps = - gap * total_aum * 0.0001 # Impact de +1bp
-    
-    st.metric("Duration Gap", f"{gap:.2f} ans", delta="Positif = Sur-sensible" if gap > 0 else "Négatif = Sous-sensible", delta_color="off")
-    st.write(f"Impact d'une hausse des taux de **+100 bps** sur la NAV :")
-    st.metric("P&L Latent", f"{impact_bps * 100 / 1e6:,.1f} M€", delta_color="inverse" if gap > 0 else "normal")
-    
-    with st.expander("Comprendre le lien Duration / P&L"):
-        st.markdown(r"""
-        L'impact est estimé par l'approximation de sensibilité :
-        $$ \Delta \text{NAV} \approx - (\text{Dur}_{Actif} - \text{Dur}_{Passif}) \times \text{AUM} \times \Delta \text{Taux} $$
-        
-        **Mécanique du Passif :**
-        Le passif (Provisions Techniques) réagit **inversement** aux taux :
-        *   📉 **Baisse des taux :** Le taux d'actualisation diminue $\rightarrow$ La valeur actuelle des engagements **augmente** (le passif s'alourdit).
-        *   📈 **Hausse des taux :** Le taux d'actualisation augmente $\rightarrow$ La valeur actuelle des engagements **diminue** (le passif s'allège).
-        
-        Le P&L total dépend de si la baisse de l'actif est compensée ou non par la baisse du passif (Duration Gap).
-        """)
-
-with col_stress2:
-    st.subheader("Choc Actions")
-    shock_equity = st.slider("Choc Boursier (%)", -50, 0, -25, 5) / 100
+    st.subheader("Choc Actions (Type 1)")
+    sa = st.slider("Ajustement Symétrique (SA)", -10.0, 10.0, 0.0, 0.1, help="Mécanisme contracyclique (-10% à +10%)") / 100
+    shock_equity_s2 = 0.39 + sa
     
     equity_exposure = df[df["Classe d'Actif"] == "Actions"]["Valeur de Marché (M€)"].sum()
-    loss_equity = equity_exposure * shock_equity
+    loss_equity_s2 = equity_exposure * shock_equity_s2
     
     st.metric("Exposition Actions", f"{equity_exposure/1e6:,.0f} M€")
-    st.metric("Perte estimée", f"{loss_equity/1e6:,.1f} M€", delta_color="inverse")
+    st.metric("SCR Actions (Est.)", f"{loss_equity_s2/1e6:,.1f} M€", delta=f"-{shock_equity_s2*100:.1f}%", delta_color="inverse")
+
+    st.subheader("Choc Immobilier")
+    prop_exposure = df[df["Classe d'Actif"] == "Immobilier"]["Valeur de Marché (M€)"].sum()
+    scr_prop = prop_exposure * 0.25
+    st.metric("SCR Immobilier", f"{scr_prop/1e6:,.1f} M€", delta="-25%", delta_color="inverse")
+
+with col_stress2:
+    st.subheader("Choc Spread (Crédit)")
+    # Calcul détaillé par ligne pour le Spread
+    def calc_spread_scr(row):
+        if "Obligations" not in row["Classe d'Actif"]: return 0
+        # Facteurs simplifiés S2 (Tableau A - Obligations)
+        factors = {'AAA': 0.009, 'AA': 0.011, 'A': 0.014, 'BBB': 0.025, 'BB': 0.045, 'B': 0.075}
+        f = factors.get(row['Rating'], 0.0)
+        return row["Valeur de Marché (M€)"] * row["Duration"] * f
+
+    df['SCR_Spread'] = df.apply(calc_spread_scr, axis=1)
+    scr_spread_total = df['SCR_Spread'].sum()
+    st.metric("SCR Spread (Est.)", f"{scr_spread_total/1e6:,.1f} M€", delta="Risque de Crédit", delta_color="inverse")
+
+    st.subheader("Choc Taux (Simplifié)")
+    liab_duration = st.slider("Duration Passif", 0.0, 20.0, 10.0, 0.5)
+    gap = avg_duration - liab_duration
+    # Proxy : Choc parallèle de +/- 1% (100bps) pour estimer l'ordre de grandeur du SCR Taux
+    impact_nav = abs(gap * total_aum * 0.01)
+    
+    st.metric("Duration Gap", f"{gap:.2f} ans")
+    st.metric("SCR Taux (Proxy +/- 1%)", f"{impact_nav/1e6:,.1f} M€", delta_color="inverse", help="Estimation simplifiée basée sur le Duration Gap.")
 
 st.divider()
 
