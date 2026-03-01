@@ -75,6 +75,7 @@ lee_carter  = st.Page("modules/mortalite_lee_carter.py", title="Mortalité (Lee-
 best_estim  = st.Page("modules/best_estimate_vie.py", title="Best Estimate Vie", icon="💰")
 risk_dash   = st.Page("modules/dashboard_risques_financiers.py", title="Tableau de Bord Risques Financiers", icon="📊")
 dora        = st.Page("modules/dora_regulation.py", title="Réglementation DORA", icon="🛡️")
+gse         = st.Page("modules/gse_economique.py", title="Générateur Scénarios Eco (GSE)", icon="🎲")
 data_qual   = st.Page("modules/data_quality_s2.py", title="Qualité des Données S2", icon="🗃️")
 lux_vie     = st.Page("modules/luxembourg_vie.py", title="Assurance Vie Luxembourg", icon="🇱🇺")
 esg_invest  = st.Page("modules/esg_investissements.py", title="ESG & Investissements", icon="🌿")
@@ -87,7 +88,7 @@ pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 pg = st.navigation({
     "🏠 Présentation & Cadre": [home, normes, s2_piliers, archi_s2, pdf_reader],
     "⚖️ Focus Réglementaire & ESG": [reform_s2, dora, csrd, data_qual, esg_invest, cat_climat],
-    "📈 Finance & Actif": [risk_dash, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
+    "📈 Finance & Actif": [risk_dash, gse, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
 })
 
