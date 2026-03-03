@@ -175,10 +175,80 @@ st.header("4. L'avenir : FRTB (Fundamental Review of the Trading Book)")
 st.markdown("""
 La réforme FRTB remplace ces mesures par une approche plus cohérente.
 """)
+with st.expander("🔬 De la VaR à l'Expected Shortfall (ES)", expanded=True):
+    st.markdown("""
+    FRTB remplace la VaR par l'**Expected Shortfall (ES)** pour les modèles internes.
+    *   **VaR :** "Quelle est la perte maximale qui ne sera pas dépassée avec X% de confiance ?" (un point sur la distribution).
+    *   **ES :** "SI la perte dépasse le seuil de la VaR, quelle est sa valeur moyenne ?" (la moyenne de la queue de distribution).
+    
+    L'ES est donc plus sensible aux événements extrêmes (Fat Tails).
+    """)
+    
+    es_vol = st.slider("Volatilité du P&L (%)", 1.0, 30.0, 10.0, 1.0, key="es_vol") / 100
+    es_conf = 0.975 # Standard FRTB
+    
+    # Calculs
+    pnl_stdev = 1_000_000 * es_vol
+    alpha = 1 - es_conf
+    
+    var_975 = -norm.ppf(alpha) * pnl_stdev
+    es_975 = pnl_stdev * norm.pdf(norm.ppf(alpha)) / alpha
+    
+    # Graphique
+    x_es = np.linspace(-5 * pnl_stdev, 5 * pnl_stdev, 1000)
+    pdf_es = norm.pdf(x_es, 0, pnl_stdev)
+    
+    fig_es = go.Figure()
+    fig_es.add_trace(go.Scatter(x=x_es, y=pdf_es, name="Distribution P&L", line=dict(color='blue')))
+    
+    # Zone de la queue
+    tail_x = np.linspace(-5 * pnl_stdev, -var_975, 100)
+    tail_y = norm.pdf(tail_x, 0, pnl_stdev)
+    fig_es.add_trace(go.Scatter(x=np.concatenate([tail_x, tail_x[::-1]]), y=np.concatenate([tail_y, np.zeros(len(tail_y))]), 
+                                fill='toself', fillcolor='rgba(255,0,0,0.3)', line=dict(width=0), name=f'Queue ({alpha*100:.1f}%)'))
 
-st.success("""
-*   **VaR & SVaR** $\\rightarrow$ Remplacées par l'**Expected Shortfall (ES)** calibré sur une période de stress.
-    *   *Avantage :* Capture mieux le risque de queue (Tail Risk) que la VaR.
-*   **IRC & CRM** $\\rightarrow$ Remplacés par le **DRC (Default Risk Charge)**.
-    *   Capitalisation explicite du risque de saut au défaut (Jump-to-Default).
-""")
+    fig_es.add_vline(x=-var_975, line_dash="dash", line_color="red", annotation_text=f"VaR {es_conf*100:.1f}%")
+    fig_es.add_vline(x=-es_975, line_dash="dash", line_color="purple", annotation_text=f"ES {es_conf*100:.1f}%")
+    
+    fig_es.update_layout(title="Comparaison VaR vs. Expected Shortfall", xaxis_title="P&L (€)", yaxis_title="Densité")
+    st.plotly_chart(fig_es, use_container_width=True)
+    
+    st.metric("Expected Shortfall (ES)", f"{es_975:,.0f} €", delta=f"{(es_975/var_975 - 1)*100:.1f}% plus élevé que la VaR", delta_color="inverse")
+
+with st.expander("🧱 Du IRC/CRM au Default Risk Charge (DRC)", expanded=True):
+    st.markdown("""
+    Le **DRC** remplace l'IRC et le CRM. Il couvre le risque de saut au défaut (Jump-to-Default) pour toutes les positions sensibles au crédit (y compris les actions).
+    
+    *   **Horizon :** 1 an.
+    *   **Confiance :** 99.9%.
+    *   **Méthodologie :** VaR sur la distribution des pertes de défaut. Pas de diversification avec les autres risques de marché.
+    """)
+    
+    st.subheader("Simulateur DRC (Simplifié)")
+    
+    drc_exp_bonds = st.slider("Exposition Obligations (M€)", 0, 1000, 500) * 1e6
+    drc_exp_equity = st.slider("Exposition Actions (M€)", 0, 1000, 200) * 1e6
+    drc_pd = st.slider("PD moyenne", 0.1, 5.0, 2.0, 0.1) / 100
+    drc_corr = st.slider("Corrélation", 0.0, 100.0, 30.0, 5.0) / 100
+    
+    # Hypothèses LGD
+    lgd_bonds = 0.50
+    lgd_equity = 1.00
+    
+    # Simulation
+    Z_drc = np.random.normal(0, 1, 10000)
+    thresh_drc = norm.ppf(drc_pd)
+    cond_pd_drc = norm.cdf((thresh_drc - np.sqrt(drc_corr) * Z_drc) / np.sqrt(1 - drc_corr))
+    
+    losses_bonds = drc_exp_bonds * lgd_bonds * cond_pd_drc
+    losses_equity = drc_exp_equity * lgd_equity * cond_pd_drc
+    total_losses_drc = losses_bonds + losses_equity
+    
+    drc_value = np.percentile(total_losses_drc, 99.9)
+    
+    st.metric("Default Risk Charge (DRC)", f"{drc_value/1e6:,.1f} M€", help="VaR 99.9% des pertes de défaut sur 1 an.")
+    
+    fig_drc = go.Figure(go.Histogram(x=total_losses_drc/1e6, nbinsx=50, name='Distribution des Pertes', histnorm='probability'))
+    fig_drc.add_vline(x=drc_value/1e6, line_dash="dash", line_color="red", annotation_text="DRC (99.9%)")
+    fig_drc.update_layout(title="Distribution des Pertes de Défaut (DRC)", xaxis_title="Perte (M€)", yaxis_title="Probabilité")
+    st.plotly_chart(fig_drc, use_container_width=True)
