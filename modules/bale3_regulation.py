@@ -105,17 +105,42 @@ c_res3.metric("Ratio Total", f"{total_ratio:.1%}", delta="Min: 8.0%", delta_colo
 # --- 2. BÂLE IV / FINALISATION ---
 st.header("2. La Finalisation de Bâle III (surnommée 'Bâle IV')")
 st.markdown("""
-Pour restaurer la crédibilité et la comparabilité des ratios, les réformes finales de Bâle III (applicables à partir de 2025) introduisent une mesure phare : l'**Output Floor**.
+Pour restaurer la crédibilité et la comparabilité des ratios, les réformes finales de Bâle III (applicables à partir de 2025 en Europe via CRR3) introduisent des changements structurels majeurs au-delà du simple Output Floor.
 """)
 
-st.success(r"""
-### Plancher de Capital (Output Floor)
-Les banques utilisant des modèles internes (IRB) pour calculer leurs RWA ne pourront plus obtenir un avantage en capital illimité.
+col_b4_1, col_b4_2 = st.columns(2)
 
-$$ \text{RWA}_{\text{Total}} \ge 72.5\% \times \text{RWA}_{\text{Approche Standard}} $$
+with col_b4_1:
+    st.success(r"""
+    ### 🛡️ Output Floor (Plancher)
+    Les banques utilisant des modèles internes ne pourront plus bénéficier d'un allègement de capital illimité.
+    
+    $$ \text{RWA}_{\text{Interne}} \ge 72.5\% \times \text{RWA}_{\text{Standard}} $$
+    
+    **Objectif :** Limiter l'optimisation des modèles.
+    """)
+    
+    st.warning("""
+    ### 📉 Risque de Marché (FRTB)
+    **Fundamental Review of the Trading Book**
+    *   Passage de la VaR à l'**Expected Shortfall (ES)** pour les modèles internes (meilleure capture des risques extrêmes).
+    *   Frontière plus stricte entre Trading Book et Banking Book.
+    """)
 
-**Conséquence :** Le capital calculé par les modèles internes ne pourra jamais être inférieur à 72.5% de ce qu'il serait en utilisant l'approche standard, moins sensible aux risques.
-""")
+with col_b4_2:
+    st.info("""
+    ### 🛠️ Risque Opérationnel
+    **Suppression des modèles internes (AMA).**
+    Remplacement par une approche standard unique (SMA) basée sur :
+    1.  La taille de la banque (Business Indicator).
+    2.  L'historique des pertes opérationnelles.
+    """)
+    
+    st.error("""
+    ### ⚠️ CVA (Credit Valuation Adj.)
+    Révision du cadre pour le risque de contrepartie sur dérivés.
+    Suppression de l'approche interne pour la CVA, remplacée par des approches standardisées.
+    """)
 
 st.divider()
 
