@@ -14,7 +14,7 @@ st.set_page_config(
 # Pour éviter la répétition, nous allons définir une fonction pour le contenu de l'accueil
 def show_home():
     st.title("Bienvenue sur mon Portfolio")
-    st.subheader("Nicolas RIVOLLET | Expert en Risques et Actuariat")
+    st.subheader("Nicolas RIVOLLET | Expert en Gestion des Risques et en Actuariat")
     
     col_video, col_text = st.columns(2)
 
