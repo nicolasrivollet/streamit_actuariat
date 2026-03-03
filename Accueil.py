@@ -108,7 +108,6 @@ op_risk     = st.Page("modules/operational_risks.py", title="Risques Opérationn
 orsa        = st.Page("modules/orsa_process.py", title="Processus ORSA", icon="🔄")
 scr_lux     = st.Page("modules/scr_luxembourg.py", title="SCR Lux (Réassurance)", icon="🤝")
 pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
-bale3       = st.Page("modules/bale3_regulation.py", title="Réglementation Bâle III", icon="🏦")
 black_scholes = st.Page("modules/black_scholes.py", title="Modèle Black-Scholes", icon="📉")
 ifrs9       = st.Page("modules/ifrs9_standard.py", title="Norme IFRS 9", icon="📉")
 market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Marché (VaR/IRC)", icon="📉")
@@ -117,10 +116,10 @@ market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Ma
 
 # Dictionnaire complet des pages
 pages = {
-    "Accueil & Cadre Général": [home, normes, s2_piliers, bale3, archi_s2],
+    "Accueil & Cadre Général": [home, normes, s2_piliers, archi_s2, lux_vie],
     "Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk],
     "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, volat_adj, scr_screen, scr_lux],
-    "Passif & Normes Comptables": [best_estim, ifrs17, ifrs9, chain_lad, lee_carter, lux_vie, reass_pilot],
+    "Passif & Normes Comptables": [best_estim, ifrs17, ifrs9, chain_lad, lee_carter, reass_pilot],
     "Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
 }
 
