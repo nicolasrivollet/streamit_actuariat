@@ -9,3 +9,4 @@ scipy
 streamlit-pdf-viewer
 matplotlib
 scikit-learn
+statsmodels
