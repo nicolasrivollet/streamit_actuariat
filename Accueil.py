@@ -111,6 +111,7 @@ pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 black_scholes = st.Page("modules/black_scholes.py", title="Modèle Black-Scholes", icon="📉")
 ifrs9       = st.Page("modules/ifrs9_standard.py", title="Norme IFRS 9", icon="📉")
 market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Marché (VaR/IRC)", icon="📉")
+alm_sim     = st.Page("modules/alm_simulator.py", title="Simulateur ALM (Fonds Euros)", icon="🏦")
 
 # --- 3. NAVIGATION ---
 
@@ -118,8 +119,8 @@ market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Ma
 pages = {
     "Accueil & Cadre Général": [home, normes, s2_piliers, archi_s2, lux_vie],
     "Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk],
-    "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, volat_adj, scr_screen, scr_lux],
-    "Passif & Normes Comptables": [best_estim, ifrs17, ifrs9, chain_lad, lee_carter, reass_pilot],
+    "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, scr_screen, scr_lux],
+    "📝 Passif & Normes Comptables": [best_estim, alm_sim, ifrs17, ifrs9, lee_carter, lux_vie, reass_pilot],
     "Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
 }
 
