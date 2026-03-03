@@ -46,7 +46,6 @@ def show_home():
         st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
         st.link_button("Code Source (GitHub)", "https://github.com/nicolasrivollet")
 
-        st.markdown("---")
         # Bouton de téléchargement du CV
         import os
         cv_file = "cv_RivolletNicolas_v2602-5.pdf"
@@ -103,6 +102,7 @@ pages = {
 }
 
 # Ajout de la barre de recherche dans la sidebar
+st.markdown("---")
 search_query = st.sidebar.text_input(
     "Filtrer les modules...",
     label_visibility="collapsed",
