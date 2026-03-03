@@ -133,12 +133,17 @@ C'est ici que l'actuariat prédictif entre en jeu. Nous modélisons l'indice $k_
 L'hypothèse est que la vitesse moyenne d'amélioration observée dans le passé va se poursuivre, avec une certaine volatilité.
 """)
 
-horizon = st.slider("Horizon de projection (années)", 10, 50, 30)
+col_proj1, col_proj2 = st.columns(2)
+with col_proj1:
+    horizon = st.slider("Horizon de projection (années)", 10, 50, 30)
+with col_proj2:
+    attenuation = st.slider("Atténuation de la tendance (%)", 0, 100, 20, help="Réduit la vitesse d'amélioration future (Prudence / Ralentissement des progrès).") / 100
 
 # Modélisation de kt comme une marche aléatoire avec dérive (Random Walk with Drift)
 drift = (kt[-1] - kt[0]) / (len(kt) - 1)
+drift_adj = drift * (1 - attenuation)
 future_years = np.arange(years[-1] + 1, years[-1] + 1 + horizon)
-kt_proj = [kt[-1] + drift * (t+1) for t in range(horizon)]
+kt_proj = [kt[-1] + drift_adj * (t+1) for t in range(horizon)]
 
 # Reconstruction de la surface projetée
 log_mx_proj = ax[:, np.newaxis] + np.outer(bx, kt_proj)
@@ -163,3 +168,5 @@ st.info("""
 **Impact Bilan :** Pour un assureur, cette augmentation mécanique de l'espérance de vie signifie que les rentes devront être versées plus longtemps. 
 Si cette dérive n'est pas anticipée dans le provisionnement (via des tables de mortalité prospectives), le bilan risque d'être sous-provisionné.
 """)
+
+st.caption("Note : L'atténuation permet de refléter l'hypothèse d'un ralentissement des progrès médicaux (plafond biologique).")
