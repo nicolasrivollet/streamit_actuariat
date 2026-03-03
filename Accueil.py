@@ -30,7 +30,14 @@ def show_home():
         Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
         """)
     
-    st.divider()
+    st.markdown("""
+    ### 🤝 Prêt à échanger ?
+    
+    Je suis actuellement **disponible pour un entretien** afin de discuter de la manière dont je pourrais apporter de la valeur à votre organisation.
+    
+    N'hésitez pas à explorer les modules via le menu latéral 👈 ou à me contacter directement.
+    """)
+    
     
     st.markdown("### 🚀 Domaines d'Expertise")
     
@@ -47,13 +54,6 @@ def show_home():
 
     st.divider()
     
-    st.markdown("""
-    ### 🤝 Prêt à échanger ?
-    
-    Je suis actuellement **disponible pour un entretien** afin de discuter de la manière dont je pourrais apporter de la valeur à votre organisation.
-    
-    N'hésitez pas à explorer les modules via le menu latéral 👈 ou à me contacter directement.
-    """)
 
     st.markdown("""
     ---
