@@ -100,8 +100,13 @@ with col_irc2:
     np.random.seed(42)
     Z = np.random.normal(0, 1, n_sim_irc)
     
-    # Seuil de défaut conditionnel
+    # 1. Calcul du seuil de défaut (Inverse loi Normale : norm.ppf)
+    # On transforme la PD moyenne en un seuil sur une loi N(0,1).
+    # Si la valeur d'actif de l'entreprise tombe sous ce seuil, elle fait défaut.
     thresh = norm.ppf(pd_avg)
+    
+    # 2. Calcul de la PD Conditionnelle (Formule de Vasicek : norm.cdf)
+    # On ajuste le seuil en fonction du facteur systémique Z (l'économie) et de la corrélation.
     cond_pd = norm.cdf((thresh - np.sqrt(correlation) * Z) / np.sqrt(1 - correlation))
     
     # Pertes du portefeuille (en % de l'exposition) = Cond_PD * LGD
@@ -143,7 +148,7 @@ with col_crm1:
 
 with col_crm2:
     st.warning("### 🛡️ Le Plancher (Floor)")
-    st.markdown("""
+    st.markdown(r"""
     Pour éviter une sous-estimation par les modèles internes, le régulateur impose un plancher.
     
     $$ CRM \ge 8\% \times \text{Charge Standard (Méthode Forfaitaire)} $$
