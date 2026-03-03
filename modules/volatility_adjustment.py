@@ -8,7 +8,7 @@ st.set_page_config(page_title="Volatility Adjustment", layout="wide")
 st.title("🛡️ Ajustement pour Volatilité (Volatility Adjustment)")
 st.subheader("Mécanisme contracyclique de Solvabilité II")
 
-st.markdown("""
+st.markdown(r"""
 Le **Volatility Adjustment (VA)** est une mesure du paquet "Garanties Long Terme" (LTG) de Solvabilité II. 
 Il vise à éviter qu'une volatilité artificielle des spreads de crédit (non liée à un risque de défaut réel) 
 ne dégrade excessivement le ratio de solvabilité des assureurs.
