@@ -12,14 +12,17 @@ st.subheader("Valorisation d'Options Européennes & Calcul des Grecques")
 st.markdown("""
 Le modèle de **Black-Scholes** (1973) est la pierre angulaire de la finance quantitative. 
 Il permet de calculer la valeur théorique d'une option européenne (Call ou Put) ne versant pas de dividendes, en fonction de plusieurs paramètres de marché.
-
-$$ C(S, t) = S_t N(d_1) - K e^{-r(T-t)} N(d_2) $$
-$$ P(S, t) = K e^{-r(T-t)} N(-d_2) - S_t N(-d_1) $$
-
-Avec :
-$$ d_1 = \\frac{\\ln(S_t/K) + (r + \\sigma^2/2)(T-t)}{\\sigma \\sqrt{T-t}} $$
-$$ d_2 = d_1 - \\sigma \\sqrt{T-t} $$
 """)
+
+col_f1, col_f2 = st.columns(2)
+
+with col_f1:
+    st.latex(r"C(S, t) = S_t N(d_1) - K e^{-r(T-t)} N(d_2)")
+    st.latex(r"P(S, t) = K e^{-r(T-t)} N(-d_2) - S_t N(-d_1)")
+
+with col_f2:
+    st.latex(r"d_1 = \frac{\ln(S_t/K) + (r + \sigma^2/2)(T-t)}{\sigma \sqrt{T-t}}")
+    st.latex(r"d_2 = d_1 - \sigma \sqrt{T-t}")
 
 st.divider()
 
