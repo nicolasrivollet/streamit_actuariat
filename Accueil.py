@@ -95,10 +95,11 @@ market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Ma
 
 # Dictionnaire complet des pages
 pages = {
-    "🏠 Présentation & Cadre": [home, normes, ifrs9, s2_piliers, bale3, archi_s2, pdf_reader],
-    "⚖️ Focus Réglementaire & ESG": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
-    "📈 Finance & Actif": [risk_dash, asset_class, market_risk, gse, black_scholes, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
-    "🛡️ Passif & Solvabilité": [best_estim, ifrs17, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
+    "🏠 Accueil & Cadre Général": [home, normes, s2_piliers, bale3, archi_s2, pdf_reader],
+    "📈 Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk],
+    "🛡️ Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, volat_adj, scr_screen, scr_lux],
+    "📝 Passif & Normes Comptables": [best_estim, ifrs17, ifrs9, chain_lad, lee_carter, lux_vie, reass_pilot],
+    "🌍 Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
 }
 
 # Ajout de la barre de recherche dans la sidebar
