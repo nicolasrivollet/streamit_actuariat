@@ -116,12 +116,19 @@ for t in range(horizon):
     res_rate_served.append(rate_served)
     res_ppb_stock.append(curr_ppb)
     
-    # Proxy Solvabilité (Fonds Propres / SCR)
-    # FP = Aum - PM - PPB
-    own_funds = curr_aum - curr_pm - curr_ppb
-    # SCR simpliste (4% des PM + Choc Action sur la part action)
-    scr = curr_pm * 0.04 + (curr_aum * (1-alloc_bond) * 0.39)
-    res_solvency.append(own_funds / scr if scr > 0 else 0)
+    # Proxy Solvabilité S2 (Vision Économique)
+    # 1. Fonds Propres Économiques = FP Comptables + VIF (Value In Force)
+    # VIF proxy : Valeur actuelle des marges futures (~1.5% des PM)
+    vif = curr_pm * 0.015
+    own_funds_s2 = (curr_aum - curr_pm - curr_ppb) + vif
+    
+    # 2. SCR (Capital Requis) avec LAC TP
+    # Choc Brut = Choc Marché (Actions) + Choc Vie/Op (Proxy 3% PM)
+    scr_brut = (curr_aum * (1-alloc_bond) * 0.39) + (curr_pm * 0.03)
+    # LAC TP : On suppose que 50% du choc est absorbé par la baisse de la PB future
+    scr_net = scr_brut * (1 - 0.50)
+    
+    res_solvency.append(own_funds_s2 / scr_net if scr_net > 0 else 0)
 
 # --- 3. VISUALISATION ---
 st.header("2. Résultats de la Projection")
