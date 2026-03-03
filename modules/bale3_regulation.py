@@ -65,6 +65,43 @@ with tab3:
 
 st.divider()
 
+# --- CALCULATEUR DE RATIOS ---
+st.header("Calculateur de Ratios de Capital")
+st.markdown("Simulez l'impact de la structure du bilan sur les ratios prudentiels.")
+
+col_bilan1, col_bilan2 = st.columns(2)
+
+with col_bilan1:
+    st.subheader("Structure des Actifs (RWA)")
+    credit_corporate = st.slider("Exposition Crédit Corporate (M€)", 1000, 10000, 5000)
+    credit_retail = st.slider("Exposition Crédit Retail (M€)", 1000, 10000, 3000)
+    credit_souverain = st.slider("Exposition Souveraine (M€)", 1000, 10000, 2000)
+    
+    # Pondérations de risque (Approche Standard simplifiée)
+    rwa = credit_corporate * 1.0 + credit_retail * 0.75 + credit_souverain * 0.0
+    
+    st.metric("Total Actifs Pondérés (RWA)", f"{rwa/1000:.1f} Md€")
+
+with col_bilan2:
+    st.subheader("Structure du Capital")
+    cet1_capital = st.slider("Capital CET1 (M€)", 100, 1000, 400)
+    at1_capital = st.slider("Capital AT1 (M€)", 0, 500, 100)
+    t2_capital = st.slider("Capital Tier 2 (M€)", 0, 500, 150)
+    
+    total_capital = cet1_capital + at1_capital + t2_capital
+    st.metric("Total Capital Prudentiel", f"{total_capital} M€")
+
+# Calcul des ratios
+cet1_ratio = cet1_capital / rwa if rwa > 0 else 0
+t1_ratio = (cet1_capital + at1_capital) / rwa if rwa > 0 else 0
+total_ratio = total_capital / rwa if rwa > 0 else 0
+
+st.subheader("Ratios de Solvabilité Calculés")
+c_res1, c_res2, c_res3 = st.columns(3)
+c_res1.metric("Ratio CET1", f"{cet1_ratio:.1%}", delta="Min: 4.5%", delta_color="normal" if cet1_ratio >= 0.045 else "inverse")
+c_res2.metric("Ratio Tier 1", f"{t1_ratio:.1%}", delta="Min: 6.0%", delta_color="normal" if t1_ratio >= 0.06 else "inverse")
+c_res3.metric("Ratio Total", f"{total_ratio:.1%}", delta="Min: 8.0%", delta_color="normal" if total_ratio >= 0.08 else "inverse")
+
 # --- 2. BÂLE IV / FINALISATION ---
 st.header("2. La Finalisation de Bâle III (surnommée 'Bâle IV')")
 st.markdown("""
