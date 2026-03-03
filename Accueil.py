@@ -101,19 +101,6 @@ pg = st.navigation({
     "🛡️ Passif & Solvabilité": [best_estim, ifrs17, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
 })
 
-st.sidebar.markdown("### 🔍 Recherche")
-search_query = st.sidebar.text_input("Recherche", label_visibility="collapsed", placeholder="Chercher un module...")
-
-if search_query:
-    filtered_pages = {}
-    for category, page_list in pg.items():
-        filtered = [p for p in page_list if search_query.lower() in p.title.lower()]
-        if filtered:
-            filtered_pages[category] = filtered
-    pg = st.navigation(filtered_pages if filtered_pages else pg)
-else:
-    pg = st.navigation(pg)
-
 # --- 4. EXÉCUTION ---
 # pg.run() s'occupe de tout : 
 # - Si home_page est sélectionnée, il exécute show_home()
