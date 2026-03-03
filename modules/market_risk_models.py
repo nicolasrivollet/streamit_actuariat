@@ -226,29 +226,33 @@ with st.expander("🧱 Du IRC/CRM au Default Risk Charge (DRC)", expanded=True):
     
     st.subheader("Simulateur DRC (Simplifié)")
     
-    drc_exp_bonds = st.slider("Exposition Obligations (M€)", 0, 1000, 500) * 1e6
-    drc_exp_equity = st.slider("Exposition Actions (M€)", 0, 1000, 200) * 1e6
-    drc_pd = st.slider("PD moyenne", 0.1, 5.0, 2.0, 0.1) / 100
-    drc_corr = st.slider("Corrélation", 0.0, 100.0, 30.0, 5.0) / 100
+    col_drc1, col_drc2 = st.columns(2)
+
+    with col_drc1:
+        drc_exp_bonds = st.slider("Exposition Obligations (M€)", 0, 1000, 500, key="drc_bonds") * 1e6
+        drc_exp_equity = st.slider("Exposition Actions (M€)", 0, 1000, 200, key="drc_equity") * 1e6
+        drc_pd = st.slider("PD moyenne", 0.1, 5.0, 2.0, 0.1, key="drc_pd") / 100
+        drc_corr = st.slider("Corrélation", 0.0, 100.0, 30.0, 5.0, key="drc_corr") / 100
     
-    # Hypothèses LGD
-    lgd_bonds = 0.50
-    lgd_equity = 1.00
-    
-    # Simulation
-    Z_drc = np.random.normal(0, 1, 10000)
-    thresh_drc = norm.ppf(drc_pd)
-    cond_pd_drc = norm.cdf((thresh_drc - np.sqrt(drc_corr) * Z_drc) / np.sqrt(1 - drc_corr))
-    
-    losses_bonds = drc_exp_bonds * lgd_bonds * cond_pd_drc
-    losses_equity = drc_exp_equity * lgd_equity * cond_pd_drc
-    total_losses_drc = losses_bonds + losses_equity
-    
-    drc_value = np.percentile(total_losses_drc, 99.9)
-    
-    st.metric("Default Risk Charge (DRC)", f"{drc_value/1e6:,.1f} M€", help="VaR 99.9% des pertes de défaut sur 1 an.")
-    
-    fig_drc = go.Figure(go.Histogram(x=total_losses_drc/1e6, nbinsx=50, name='Distribution des Pertes', histnorm='probability'))
-    fig_drc.add_vline(x=drc_value/1e6, line_dash="dash", line_color="red", annotation_text="DRC (99.9%)")
-    fig_drc.update_layout(title="Distribution des Pertes de Défaut (DRC)", xaxis_title="Perte (M€)", yaxis_title="Probabilité")
-    st.plotly_chart(fig_drc, use_container_width=True)
+    with col_drc2:
+        # Hypothèses LGD
+        lgd_bonds = 0.50
+        lgd_equity = 1.00
+        
+        # Simulation
+        Z_drc = np.random.normal(0, 1, 10000)
+        thresh_drc = norm.ppf(drc_pd)
+        cond_pd_drc = norm.cdf((thresh_drc - np.sqrt(drc_corr) * Z_drc) / np.sqrt(1 - drc_corr))
+        
+        losses_bonds = drc_exp_bonds * lgd_bonds * cond_pd_drc
+        losses_equity = drc_exp_equity * lgd_equity * cond_pd_drc
+        total_losses_drc = losses_bonds + losses_equity
+        
+        drc_value = np.percentile(total_losses_drc, 99.9)
+        
+        st.metric("Default Risk Charge (DRC)", f"{drc_value/1e6:,.1f} M€", help="VaR 99.9% des pertes de défaut sur 1 an.")
+        
+        fig_drc = go.Figure(go.Histogram(x=total_losses_drc/1e6, nbinsx=50, name='Distribution des Pertes', histnorm='probability'))
+        fig_drc.add_vline(x=drc_value/1e6, line_dash="dash", line_color="red", annotation_text="DRC (99.9%)")
+        fig_drc.update_layout(title="Distribution des Pertes de Défaut (DRC)", xaxis_title="Perte (M€)", yaxis_title="Probabilité")
+        st.plotly_chart(fig_drc, use_container_width=True)
