@@ -77,7 +77,7 @@ def show_home():
 
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
-home        = st.Page(show_home, title="Présentation", default=True,  icon="🏚️")
+home        = st.Page(show_home, title="Présentation", default=True,  icon="🏠")
 normes      = st.Page("modules/normes_intro.py", title="Panorama des Normes Comptables", icon="📖")
 nelson      = st.Page("modules/courbe_taux.py", title="Modèle Nelson-Siegel", icon="📈")
 s2_piliers  = st.Page("modules/solvabilite2_piliers.py", title="Les 3 Piliers Solvabilité II", icon="🏛️")
