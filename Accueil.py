@@ -103,11 +103,10 @@ pages = {
 }
 
 # Ajout de la barre de recherche dans la sidebar
-st.sidebar.markdown("### 🔍 Recherche")
 search_query = st.sidebar.text_input(
     "Filtrer les modules...",
     label_visibility="collapsed",
-    placeholder="Ex: SCR, IFRS, Taux..."
+    placeholder="🔍 (Ex: SCR, IFRS, Taux...)"
 )
 
 # Logique de filtrage dynamique
