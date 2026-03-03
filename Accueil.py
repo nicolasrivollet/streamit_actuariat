@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 # --- 1. CONFIGURATION DE LA PAGE ---
 st.set_page_config(
@@ -12,22 +13,43 @@ st.set_page_config(
 # La page d'accueil pointe vers une fonction interne ou le fichier lui-même
 # Pour éviter la répétition, nous allons définir une fonction pour le contenu de l'accueil
 def show_home():
-    st.title("Système de Pilotage des Risques & Actuariat")
-    st.caption("🚀 Portfolio Technique - Nicolas Rivollet")
+    st.title("Bienvenue sur mon Portfolio")
+    st.subheader("Nicolas RIVOLLET | Actuaire & Expert Risques")
+    
+    # Vidéo de présentation depuis YouTube
+    st.video("https://www.youtube.com/watch?v=your_video_id_here") # Remplacez par le lien de votre vidéo
     
     st.markdown("""
-    ### Bienvenue sur mon Portfolio d'Expertise
+    ### 👋 À propos de ce site
     
-    Ce site regroupe mes travaux de modélisation et mes analyses stratégiques dans le secteur de l'assurance et de la finance. 
-    Il a été conçu pour démontrer l'application de **Python** aux problématiques actuarielles modernes.
-    
-    #### 🎯 Objectifs du projet
-    1.  **Finance & ALM** : Modélisation interactive des taux (Nelson-Siegel, Smith-Wilson).
-    2.  **Réglementation** : Outils de calcul et de visualisation pour Solvabilité II (SCR, Best Estimate).
-    3.  **Data Science** : Automatisation des processus actuariels via des dashboards web.
+    Ce site est une vitrine interactive de mes compétences techniques et métiers. 
+    Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
     """)
+    
+    st.divider()
+    
+    st.markdown("### 🚀 Domaines d'Expertise")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.info("**🛡️ Solvabilité & Risques**\n\nMaîtrise approfondie de Solvabilité II (Piliers 1, 2, 3), ORSA, et des modèles de capital (SCR).")
+        
+    with col2:
+        st.success("**📈 Finance & ALM**\n\nModélisation des actifs, couverture des risques financiers et optimisation de l'allocation d'actifs.")
+        
+    with col3:
+        st.warning("**💻 Data & Tech**\n\nDéveloppement d'outils actuariels modernes en Python, automatisation et visualisation de données.")
 
-    st.info("👈 **Utilisez le menu latéral pour naviguer à travers les différents modules de modélisation.**")
+    st.divider()
+    
+    st.markdown("""
+    ### 🤝 Prêt à échanger ?
+    
+    Je suis actuellement **disponible pour un entretien** afin de discuter de la manière dont je pourrais apporter de la valeur à votre organisation.
+    
+    N'hésitez pas à explorer les modules via le menu latéral 👈 ou à me contacter directement.
+    """)
 
     st.markdown("""
     ---
@@ -47,7 +69,6 @@ def show_home():
         st.link_button("Mon GitHub", "https://github.com/nicolasrivollet")
 
         # Bouton de téléchargement du CV
-        import os
         cv_file = "cv_RivolletNicolas_v2602-5.pdf"
         if os.path.exists(cv_file):
             with open(cv_file, "rb") as pdf:
