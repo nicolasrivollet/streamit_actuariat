@@ -41,10 +41,11 @@ def show_home():
 
     # Ajout d'une section contact dans la sidebar pour le recrutement
     with st.sidebar:
+        st.markdown("---")
         st.header("📬 Contact & Profil")
         st.markdown("Si ce profil vous intéresse pour une opportunité :")
         st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
-        st.link_button("Code Source (GitHub)", "https://github.com/nicolasrivollet")
+        st.link_button("Mon GitHub", "https://github.com/nicolasrivollet")
 
         # Bouton de téléchargement du CV
         import os
