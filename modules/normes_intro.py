@@ -17,7 +17,7 @@ Un même portefeuille peut avoir trois valeurs différentes selon l'objectif rec
 st.divider()
 
 # Onglets pour structurer l'explication
-tab1, tab2, tab3 = st.tabs(["🇫🇷 French GAAP (Social)", "🇪🇺 Solvabilité II (Prudentiel)", "🌍 IFRS 17 (Consolidé)"])
+tab1, tab2, tab3, tab4 = st.tabs(["🇫🇷 French GAAP (Social)", "🇪🇺 Solvabilité II (Prudentiel)", "🌍 IFRS 17 (Passif)", "📉 IFRS 9 (Actif)"])
 
 with tab1:
     st.header("1. Normes Françaises (Code des Assurances)")
@@ -101,6 +101,26 @@ with tab3:
     """)
     st.warning("💡 **Révolution :** Le Chiffre d'Affaires (Primes Émises) disparaît du compte de résultat au profit du 'Revenu d'Assurance'.")
 
+with tab4:
+    st.header("4. IFRS 9 (Instruments Financiers)")
+    st.markdown("""
+    ### 📉 La Vision Actif (Risque de Crédit)
+    Norme internationale pour la comptabilisation des instruments financiers, entrée en vigueur en 2018 (mais appliquée en 2023 pour les assureurs, en même temps qu'IFRS 17).
+    
+    #### 🏷️ Classification & Mesure
+    La manière dont un actif est valorisé dépend de son **Business Model** et de ses caractéristiques contractuelles (Test SPPI) :
+    1.  **Coût Amorti :** Pour les prêts simples détenus jusqu'à l'échéance.
+    2.  **FVOCI (Fair Value through OCI) :** Juste valeur au bilan, mais les variations vont en Capitaux Propres (OCI). Idéal pour les obligations des assureurs (évite la volatilité du P&L).
+    3.  **FVTPL (Fair Value through P&L) :** Juste valeur au bilan, variations en Résultat. Obligatoire pour les actions et dérivés.
+    
+    #### 🔮 Dépréciation (Impairment)
+    Passage d'un modèle de "pertes avérées" à un modèle de **"pertes attendues" (ECL - Expected Credit Loss)**.
+    *   **Stage 1 (Sain) :** Provisionnement des pertes attendues à 12 mois.
+    *   **Stage 2 (Dégradation significative) :** Provisionnement des pertes attendues à maturité (Lifetime ECL).
+    *   **Stage 3 (Défaut) :** Actif déprécié.
+    """)
+    st.info("💡 **Interaction Actif/Passif :** L'option 'OCI' d'IFRS 9 permet de limiter la volatilité du résultat net, en miroir de l'option OCI d'IFRS 17 pour le passif.")
+
 st.divider()
 
 # Tableau Comparatif
@@ -110,7 +130,8 @@ data = {
     "Critère": ["Objectif Principal", "Valorisation Actif", "Valorisation Passif", "Actualisation", "Indicateur Clé"],
     "French GAAP": ["Prudence & Impôt", "Coût Historique (amorti)", "Taux Technique Garanti", "Taux historique (fixe)", "Résultat Net Comptable"],
     "Solvabilité II": ["Protection Assuré (Faillite)", "Valeur de Marché", "Best Estimate (Flux probables)", "Courbe Taux Sans Risque", "Ratio de Solvabilité (SCR)"],
-    "IFRS 17": ["Information Financière", "Valeur de Marché", "FCF (Flux + RA) + CSM", "Taux ajusté (Illiquidité)", "Marge de Service (CSM)"]
+    "IFRS 17": ["Information Financière", "Valeur de Marché", "FCF (Flux + RA) + CSM", "Taux ajusté (Illiquidité)", "Marge de Service (CSM)"],
+    "IFRS 9": ["Information Financière", "Juste Valeur (Majorité)", "N/A (Concerne l'Actif)", "N/A", "Coût du Risque (ECL)"]
 }
 
 df = pd.DataFrame(data)
