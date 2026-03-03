@@ -106,7 +106,7 @@ pages = {
 search_query = st.sidebar.text_input(
     "Filtrer les modules...",
     label_visibility="collapsed",
-    placeholder="🔍 (Ex: SCR, IFRS, Taux...)"
+    placeholder="🔍 Ex: SCR, IFRS, Taux..."
 )
 
 # Logique de filtrage dynamique
