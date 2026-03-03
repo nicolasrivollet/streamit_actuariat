@@ -38,12 +38,11 @@ with tab1:
     """)
     
     st.warning("#### Nouveaux Ratios de Liquidité")
-    st.markdown(r"""
-    *   **LCR (Liquidity Coverage Ratio) :** Vise à assurer la survie à court terme (30 jours) en cas de crise de liquidité.
-        $$ LCR = \frac{\text{Stock d'actifs liquides de haute qualité (HQLA)}}{\text{Sorties de trésorerie nettes sur 30 jours}} \ge 100\% $$
-    *   **NSFR (Net Stable Funding Ratio) :** Vise à assurer la stabilité du financement à long terme (1 an).
-        $$ NSFR = \frac{\text{Financement stable disponible}}{\text{Financement stable requis}} \ge 100\% $$
-    """)
+    st.markdown("**LCR (Liquidity Coverage Ratio) :** Vise à assurer la survie à court terme (30 jours) en cas de crise de liquidité.")
+    st.latex(r"LCR = \frac{\text{Stock d'actifs liquides de haute qualité (HQLA)}}{\text{Sorties de trésorerie nettes sur 30 jours}} \ge 100\%")
+    
+    st.markdown("**NSFR (Net Stable Funding Ratio) :** Vise à assurer la stabilité du financement à long terme (1 an).")
+    st.latex(r"NSFR = \frac{\text{Financement stable disponible}}{\text{Financement stable requis}} \ge 100\%")
     
     st.error("#### Ratio de Levier (Leverage Ratio)")
     st.markdown("Un filet de sécurité non basé sur les risques. Il mesure le capital Tier 1 par rapport à l'exposition totale (non pondérée). Seuil min : **3%**.")
