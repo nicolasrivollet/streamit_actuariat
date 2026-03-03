@@ -6,12 +6,12 @@ from scipy.stats import norm
 
 st.set_page_config(page_title="Modèles Risque de Marché", layout="wide")
 
-st.title("📉 Modèles de Risque de Marché (Trading Book)")
-st.subheader("De Bâle II.5 à FRTB : VaR, SVaR, IRC, CRM")
+st.title("📉 Modèles Avancés de Risque de Marché")
+st.subheader("Mesures de Risque : VaR, SVaR, IRC, CRM")
 
 st.markdown("""
-Cette page détaille les mesures de risque de marché utilisées pour le calcul des exigences de fonds propres des banques pour leurs activités de marché (Trading Book).
-Ces mesures ont été renforcées suite à la crise de 2008 (Bâle 2.5) et évoluent avec la **Fundamental Review of the Trading Book (FRTB)**.
+Cette page détaille les mesures de risque de marché utilisées pour le calcul des exigences de fonds propres pour les activités de marché (Trading Book).
+Ces mesures ont été renforcées suite à la crise de 2008 pour mieux capturer les risques extrêmes et de liquidité.
 """)
 
 st.divider()
@@ -32,7 +32,7 @@ with col1:
 with col2:
     st.warning("### ⚡ Stressed VaR (SVaR)")
     st.markdown("""
-    Introduite par Bâle 2.5 pour corriger la procyclicité de la VaR.
+    Introduite pour corriger la procyclicité de la VaR.
     *   **Calibrage :** Sur une période de 12 mois de **stress financier significatif** (ex: 2008).
     *   **Objectif :** Assurer un niveau de capital plancher même en période calme.
     """)
