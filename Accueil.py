@@ -103,7 +103,6 @@ pages = {
 }
 
 # Ajout de la barre de recherche dans la sidebar
-st.markdown("---")
 search_query = st.sidebar.text_input(
     "Filtrer les modules...",
     label_visibility="collapsed",
