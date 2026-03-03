@@ -110,7 +110,7 @@ with tab4:
     #### 🏷️ Classification & Mesure
     La manière dont un actif est valorisé dépend de son **Business Model** et de ses caractéristiques contractuelles (Test SPPI) :
     1.  **Coût Amorti :** Pour les prêts simples détenus jusqu'à l'échéance.
-    2.  **FVOCI (Fair Value through OCI) :** Juste valeur au bilan, mais les variations vont en Capitaux Propres (OCI). Idéal pour les obligations des assureurs (évite la volatilité du P&L).
+    2.  **FVOCI (Fair Value through OCI) :** Juste valeur au bilan, mais les variations vont en Capitaux Propres (OCI - Other Comprehensive Income). Idéal pour les obligations des assureurs (évite la volatilité du P&L).
     3.  **FVTPL (Fair Value through P&L) :** Juste valeur au bilan, variations en Résultat. Obligatoire pour les actions et dérivés.
     
     #### 🔮 Dépréciation (Impairment)

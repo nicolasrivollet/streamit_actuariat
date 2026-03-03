@@ -66,7 +66,7 @@ with tab_class1:
 with tab_class2:
     st.warning("### Juste Valeur par OCI (Fair Value through OCI)")
     st.write("**Condition :** SPPI OK + Business Model = Hold to Collect and Sell.")
-    st.write("**Traitement :** L'actif est au bilan à sa juste valeur. Les variations de juste valeur sont enregistrées en **OCI (Autres Éléments du Résultat Global)**, sans impacter le P&L, jusqu'à la cession de l'actif.")
+    st.write("**Traitement :** L'actif est au bilan à sa juste valeur. Les variations de juste valeur sont enregistrées en **OCI (Other Comprehensive Income / Autres Éléments du Résultat Global)**, sans impacter le P&L, jusqu'à la cession de l'actif.")
     st.caption("Exemple typique : Portefeuille obligataire de liquidité d'un assureur.")
 
 with tab_class3:
