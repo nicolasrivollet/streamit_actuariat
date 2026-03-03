@@ -133,32 +133,25 @@ for t in range(horizon):
 # --- 3. VISUALISATION ---
 st.header("2. Résultats de la Projection")
 
-# Graphique Taux
-fig_rates = go.Figure()
-fig_rates.add_trace(go.Scatter(x=years, y=np.array(res_yield_asset)*100, name="Rendement Actif", line=dict(color='blue')))
-fig_rates.add_trace(go.Scatter(x=years, y=np.array(res_rate_served)*100, name="Taux Servi (Net)", line=dict(color='green', width=3)))
-fig_rates.add_hline(y=target_rate*100, line_dash="dash", line_color="gray", annotation_text="Cible Concurrents")
-fig_rates.add_hline(y=tmg*100, line_dash="dot", line_color="red", annotation_text="TMG")
+col_res1, col_res2 = st.columns(2)
 
-fig_rates.update_layout(title="Pilotage du Taux Servi vs Rendement Actif", xaxis_title="Année", yaxis_title="Taux (%)")
-st.plotly_chart(fig_rates, use_container_width=True)
+with col_res1:
+    # Graphique Taux
+    fig_rates = go.Figure()
+    fig_rates.add_trace(go.Scatter(x=years, y=np.array(res_yield_asset)*100, name="Rendement Actif", line=dict(color='blue')))
+    fig_rates.add_trace(go.Scatter(x=years, y=np.array(res_rate_served)*100, name="Taux Servi (Net)", line=dict(color='green', width=3)))
+    fig_rates.add_hline(y=target_rate*100, line_dash="dash", line_color="gray", annotation_text="Cible Concurrents")
+    fig_rates.add_hline(y=tmg*100, line_dash="dot", line_color="red", annotation_text="TMG")
 
-col_g1, col_g2 = st.columns(2)
+    fig_rates.update_layout(title="Pilotage du Taux Servi vs Rendement Actif", xaxis_title="Année", yaxis_title="Taux (%)")
+    st.plotly_chart(fig_rates, use_container_width=True)
 
-with col_g1:
+with col_res2:
     # Graphique PPB
     fig_ppb = go.Figure()
     fig_ppb.add_trace(go.Bar(x=years, y=res_ppb_stock, name="Stock PPB", marker_color='orange'))
     fig_ppb.update_layout(title="Évolution de la Provision pour Participation aux Bénéfices (PPB)", xaxis_title="Année", yaxis_title="Montant (M€)")
     st.plotly_chart(fig_ppb, use_container_width=True)
-
-with col_g2:
-    # Graphique Solvabilité
-    fig_solv = go.Figure()
-    fig_solv.add_trace(go.Scatter(x=years, y=np.array(res_solvency)*100, name="Ratio S2 (Est.)", line=dict(color='purple')))
-    fig_solv.add_hline(y=100, line_color="red", line_width=2, annotation_text="Seuil 100%")
-    fig_solv.update_layout(title="Ratio de Solvabilité Estimé", xaxis_title="Année", yaxis_title="Ratio (%)")
-    st.plotly_chart(fig_solv, use_container_width=True)
 
 st.info("""
 **Mécanique ALM :**
