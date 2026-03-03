@@ -52,7 +52,6 @@ def show_home():
     with col3:
         st.warning("**💻 Data & Tech**\n\nDéveloppement d'outils actuariels modernes en Python, automatisation et visualisation de données.")
 
-    st.divider()
     
 
     st.markdown("""
