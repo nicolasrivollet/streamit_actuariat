@@ -24,6 +24,15 @@ with col_f2:
     st.latex(r"d_1 = \frac{\ln(S_t/K) + (r + \sigma^2/2)(T-t)}{\sigma \sqrt{T-t}}")
     st.latex(r"d_2 = d_1 - \sigma \sqrt{T-t}")
 
+with st.expander("📜 Un peu d'Histoire"):
+    st.markdown("""
+    Le modèle a été publié en **1973** par **Fischer Black** et **Myron Scholes** dans l'article *"The Pricing of Options and Corporate Liabilities"*. 
+    **Robert Merton** a également contribué de manière significative à son développement.
+    
+    *   **Impact :** Sa publication a coïncidé avec l'ouverture du **CBOE** (Chicago Board Options Exchange), fournissant aux traders le premier outil scientifique pour valoriser les options.
+    *   **Reconnaissance :** Myron Scholes et Robert Merton ont reçu le **Prix Nobel d'Économie en 1997** (Fischer Black étant décédé en 1995).
+    """)
+
 st.divider()
 
 # --- 1. PARAMÈTRES ---
@@ -136,3 +145,37 @@ fig_3d.update_layout(scene=dict(
 ), height=600)
 
 st.plotly_chart(fig_3d, use_container_width=True)
+
+st.divider()
+
+# --- 5. LIMITES ---
+st.header("4. Limites du Modèle")
+st.markdown("Bien que révolutionnaire, le modèle repose sur des hypothèses simplificatrices souvent démenties par la réalité des marchés.")
+
+col_lim1, col_lim2 = st.columns(2)
+
+with col_lim1:
+    st.warning("### 📉 Volatilité Constante")
+    st.write("""
+    Le modèle suppose que la volatilité $\sigma$ est constante quelle que soit la maturité ou le strike.
+    **Réalité :** On observe un **Smile de Volatilité**. Les options hors de la monnaie (OTM) ont souvent une volatilité implicite plus élevée (crainte des krachs).
+    """)
+    
+    st.warning("### 🔔 Distribution Log-Normale")
+    st.write("""
+    Le modèle suppose que les rendements suivent une loi Normale.
+    **Réalité :** Les marchés présentent des **queues de distribution épaisses** (Fat Tails) et de l'asymétrie (Skew). Les événements extrêmes sont plus fréquents que ne le prédit la loi Normale.
+    """)
+
+with col_lim2:
+    st.warning("### 🔄 Couverture Continue")
+    st.write("""
+    Le modèle suppose qu'on peut ajuster son portefeuille de couverture (Delta Hedging) en continu et sans frais.
+    **Réalité :** Il existe des **coûts de transaction** (Bid-Ask spread) et des contraintes de liquidité qui rendent la réplication parfaite impossible.
+    """)
+    
+    st.warning("### 🛑 Taux Constant")
+    st.write("""
+    Le taux sans risque $r$ est supposé constant et connu.
+    **Réalité :** Les taux sont stochastiques (d'où l'intérêt des modèles de taux comme Hull-White pour les options longues).
+    """)
