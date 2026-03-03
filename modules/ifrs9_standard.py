@@ -26,7 +26,34 @@ La classification d'un actif financier dépend de deux tests :
 """)
 
 # Simple diagram
-st.image("https://www.ey.com/en_gl/ifrs-technical-resources/a-practical-guide-to-ifrs-9-s-financial-instrument-classification-and-measurement-requirements/_jcr_content/image.coreimg.82.1280.png/1627568400490.png", caption="Arbre de décision IFRS 9 (Source: EY)")
+st.graphviz_chart("""
+    digraph IFRS9 {
+        rankdir=TB;
+        node [shape=box, style=filled, fillcolor="#E3F2FD", fontname="Arial"];
+        edge [fontname="Arial", fontsize=10];
+        
+        Start [label="Instrument Financier", shape=oval, fillcolor="#BBDEFB"];
+        Debt [label="Instrument de Dette ?", shape=diamond, fillcolor="#FFCC80"];
+        SPPI [label="Test SPPI\n(Flux simples) ?", shape=diamond, fillcolor="#FFCC80"];
+        BM [label="Business Model ?", shape=diamond, fillcolor="#FFCC80"];
+        
+        FVTPL [label="FVTPL\n(Juste Valeur par Résultat)", fillcolor="#FFCDD2"];
+        FVOCI [label="FVOCI\n(Juste Valeur par OCI)", fillcolor="#FFF9C4"];
+        AC [label="Coût Amorti", fillcolor="#C8E6C9"];
+        
+        Start -> Debt;
+        
+        Debt -> FVTPL [label="Non (Actions/Dérivés)"];
+        Debt -> SPPI [label="Oui"];
+        
+        SPPI -> FVTPL [label="Échec"];
+        SPPI -> BM [label="Réussite"];
+        
+        BM -> AC [label="Hold to Collect"];
+        BM -> FVOCI [label="Collect & Sell"];
+        BM -> FVTPL [label="Trading / Autre"];
+    }
+""")
 
 tab_class1, tab_class2, tab_class3 = st.tabs(["Amortised Cost (AC)", "FVOCI", "FVTPL"])
 
