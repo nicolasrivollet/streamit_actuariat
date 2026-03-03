@@ -15,9 +15,9 @@ Il inclut les risques juridiques mais exclut les risques stratégiques et de ré
 
 st.divider()
 
-# --- 1. CATALOGUE DES RISQUES (TAXONOMIE BÂLE II) ---
-st.header("1. Catalogue des Risques (Taxonomie Bâle II)")
-st.markdown("Classification standard des événements de risques opérationnels en 7 catégories.")
+# --- 1. CATALOGUE DES RISQUES (TAXONOMIE STANDARD) ---
+st.header("1. Catalogue des Risques (Taxonomie Standard)")
+st.markdown("Classification standard des événements de risques opérationnels en 7 catégories (inspirée des standards de place).")
 
 tabs = st.tabs(["Fraude Interne", "Fraude Externe", "RH & Sécurité", "Clients & Produits", "Dommages Actifs", "Interruption Activité", "Exécution & Process"])
 
@@ -39,7 +39,7 @@ with tabs[2]:
 with tabs[3]:
     st.warning("### 🤝 Clients, Produits & Pratiques Commerciales")
     st.write("**Définition :** Manquement involontaire ou par négligence à une obligation professionnelle envers des clients.")
-    st.markdown("- Défaut de conseil\n- Produits mal conçus (Mis-selling)\n- Blanchiment d'argent (AML)\n- Violation du secret bancaire")
+    st.markdown("- Défaut de conseil\n- Produits mal conçus (Mis-selling)\n- Blanchiment d'argent (AML)\n- Violation du secret professionnel / RGPD")
 
 with tabs[4]:
     st.info("### 🏢 Dommages aux Actifs Physiques")
@@ -142,4 +142,3 @@ with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)",
     
     En Modèle Interne, le **SCR Opérationnel** correspond à la VaR 99.5% de cette distribution agrégée des pertes annuelles.
     """)
-

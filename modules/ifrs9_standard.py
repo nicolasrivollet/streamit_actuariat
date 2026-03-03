@@ -61,7 +61,7 @@ with tab_class1:
     st.info("### Coût Amorti (Amortised Cost)")
     st.write("**Condition :** SPPI OK + Business Model = Hold to Collect.")
     st.write("**Traitement :** L'actif est valorisé à son coût initial, ajusté des remboursements et d'un amortissement de la prime/décote (méthode du Taux d'Intérêt Effectif - TIE). Les variations de juste valeur sont ignorées.")
-    st.caption("Exemple typique : Portefeuille de prêts bancaires classiques.")
+    st.caption("Exemple typique : Prêts, dépôts ou obligations détenus jusqu'à l'échéance.")
 
 with tab_class2:
     st.warning("### Juste Valeur par OCI (Fair Value through OCI)")
