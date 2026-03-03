@@ -28,7 +28,7 @@ La classification d'un actif financier dépend de deux tests :
 # Simple diagram
 st.graphviz_chart("""
     digraph IFRS9 {
-        rankdir=TB;
+        rankdir=LR;
         node [shape=box, style=filled, fillcolor="#E3F2FD", fontname="Arial"];
         edge [fontname="Arial", fontsize=10];
         
