@@ -16,7 +16,11 @@ def show_home():
     st.title("Bienvenue sur mon Portfolio")
     st.subheader("Nicolas RIVOLLET | Actuaire & Expert Risques")
     
-    col_text, col_video = st.columns(2)
+    col_video, col_text = st.columns(2)
+
+    with col_video:
+        # Vidéo de présentation depuis YouTube
+        st.video("https://www.youtube.com/watch?v=your_video_id_here") # Remplacez par le lien de votre vidéo
 
     with col_text:
         st.markdown("""
@@ -25,10 +29,6 @@ def show_home():
         Ce site est une vitrine interactive de mes compétences techniques et métiers. 
         Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
         """)
-
-    with col_video:
-        # Vidéo de présentation depuis YouTube
-        st.video("https://www.youtube.com/watch?v=your_video_id_here") # Remplacez par le lien de votre vidéo
     
     st.divider()
     
