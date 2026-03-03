@@ -217,7 +217,7 @@ with st.expander("🔬 De la VaR à l'Expected Shortfall (ES)", expanded=True):
 
 with st.expander("🧱 Du IRC/CRM au Default Risk Charge (DRC)", expanded=True):
     st.markdown("""
-    Le **DRC** remplace l'IRC et le CRM. Il couvre le risque de saut au défaut (Jump-to-Default) pour toutes les positions sensibles au crédit (y compris les actions).
+    Le **DRC** remplace l'IRC et le CRM. Il couvre le risque de saut au défaut (Jump-to-Default) pour toutes les positions exposées au risque d'émetteur, **y compris les actions** (en cas de faillite, l'action vaut 0).
     
     *   **Horizon :** 1 an.
     *   **Confiance :** 99.9%.
