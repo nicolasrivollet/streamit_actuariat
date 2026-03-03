@@ -8,3 +8,4 @@ seaborn
 scipy
 streamlit-pdf-viewer
 matplotlib
+scikit-learn
