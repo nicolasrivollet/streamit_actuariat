@@ -94,12 +94,38 @@ market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Ma
 
 # --- 3. NAVIGATION ---
 
-pg = st.navigation({
+# Dictionnaire complet des pages
+pages = {
     "🏠 Présentation & Cadre": [home, normes, ifrs9, s2_piliers, bale3, archi_s2, pdf_reader],
     "⚖️ Focus Réglementaire & ESG": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
     "📈 Finance & Actif": [risk_dash, asset_class, market_risk, gse, black_scholes, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, ifrs17, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
-})
+}
+
+# Ajout de la barre de recherche dans la sidebar
+st.sidebar.divider()
+st.sidebar.markdown("### 🔍 Recherche")
+search_query = st.sidebar.text_input(
+    "Filtrer les modules...",
+    label_visibility="collapsed",
+    placeholder="Ex: SCR, IFRS, Taux..."
+)
+
+# Logique de filtrage dynamique
+if search_query:
+    # On crée un nouveau dictionnaire pour les résultats
+    filtered_pages = {}
+    # On parcourt chaque catégorie et sa liste de pages
+    for category, page_list in pages.items():
+        # On ne garde que les pages dont le titre contient la recherche (insensible à la casse)
+        matching_pages = [page for page in page_list if search_query.lower() in page.title.lower()]
+        # Si on a trouvé des pages, on ajoute la catégorie et les pages correspondantes
+        if matching_pages:
+            filtered_pages[category] = matching_pages
+    pg = st.navigation(filtered_pages)
+else:
+    # Si la barre de recherche est vide, on affiche le menu complet par défaut
+    pg = st.navigation(pages)
 
 # --- 4. EXÉCUTION ---
 # pg.run() s'occupe de tout : 
