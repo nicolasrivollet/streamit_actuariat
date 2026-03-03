@@ -38,7 +38,7 @@ with tab1:
     """)
     
     st.warning("#### Nouveaux Ratios de Liquidité")
-    st.markdown("""
+    st.markdown(r"""
     *   **LCR (Liquidity Coverage Ratio) :** Vise à assurer la survie à court terme (30 jours) en cas de crise de liquidité.
         $$ LCR = \frac{\text{Stock d'actifs liquides de haute qualité (HQLA)}}{\text{Sorties de trésorerie nettes sur 30 jours}} \ge 100\% $$
     *   **NSFR (Net Stable Funding Ratio) :** Vise à assurer la stabilité du financement à long terme (1 an).
@@ -72,7 +72,7 @@ st.markdown("""
 Pour restaurer la crédibilité et la comparabilité des ratios, les réformes finales de Bâle III (applicables à partir de 2025) introduisent une mesure phare : l'**Output Floor**.
 """)
 
-st.success("""
+st.success(r"""
 ### Plancher de Capital (Output Floor)
 Les banques utilisant des modèles internes (IRB) pour calculer leurs RWA ne pourront plus obtenir un avantage en capital illimité.
 
