@@ -70,29 +70,31 @@ for t in range(horizon):
     # On vise le Taux Cible pour rester compétitif.
     # Le besoin de PB additionnelle = (Taux Cible - TMG) * PM
     
-    pb_need = max(0, (target_rate - tmg) * curr_pm)
+    pb_target = max(0, (target_rate - tmg) * curr_pm)
     
-    # Capacité de distribution = Marge de l'année + Reprise PPB (max 1/8e du stock)
-    distributable = gross_margin + curr_ppb / 8
+    # Solde de l'exercice (Marge disponible pour financer la cible)
+    solde = gross_margin - pb_target
     
-    if distributable >= pb_need:
-        # Cas favorable : On sert la cible et on dote le reste en PPB
-        pb_distributed = pb_need
-        dotation_ppb = distributable - pb_need
+    if solde >= 0:
+        # Cas favorable : On a assez de marge pour servir la cible
+        pb_distributed = pb_target
+        dotation_ppb = solde
+        reprise_ppb = 0
         
-        # Plafond de PPB : si > 6% des PM, on distribue le surplus (Bonus)
-        if (curr_ppb + dotation_ppb) > 0.06 * curr_pm:
-             surplus = (curr_ppb + dotation_ppb) - 0.06 * curr_pm
+        # Plafond de PPB (ex: 8% des PM) : si on a trop de réserves, on distribue le surplus
+        max_ppb = 0.08 * curr_pm
+        if (curr_ppb + dotation_ppb) > max_ppb:
+             surplus = (curr_ppb + dotation_ppb) - max_ppb
              pb_distributed += surplus
              dotation_ppb -= surplus
-        
-        reprise_ppb = 0
     else:
-        # Cas défavorable : On ne peut pas servir la cible, on prend tout ce qu'on a
-        # On tape dans la PPB pour essayer d'atteindre la cible
-        reprise_ppb = min(curr_ppb, pb_need - gross_margin) 
-        pb_distributed = max(0, gross_margin + reprise_ppb) # Floor à 0 si perte massive
+        # Cas défavorable : On manque de marge pour atteindre la cible
+        besoin = -solde
+        # On reprend de la PPB pour combler le trou (limité au stock disponible)
+        reprise_ppb = min(curr_ppb, besoin)
         dotation_ppb = 0
+        # Ce qu'on distribue = Marge de l'année + Reprise
+        pb_distributed = max(0, gross_margin + reprise_ppb)
 
     # Taux servi final
     rate_served = tmg + (pb_distributed / curr_pm) if curr_pm > 0 else 0
@@ -100,12 +102,14 @@ for t in range(horizon):
     # Mise à jour des stocks
     curr_ppb = curr_ppb + dotation_ppb - reprise_ppb
     
-    # Evolution PM (Capitalisation des intérêts nets)
-    curr_pm = curr_pm * (1 + rate_served - fees) 
+    # Evolution PM (Capitalisation des intérêts versés aux assurés)
+    # Le taux servi est net de frais, donc la PM grossit de ce taux.
+    curr_pm = curr_pm * (1 + rate_served)
     
     # Evolution Aum (Simplifié : suit le rendement financier)
     # Hypothèse : Pas de rachats ni de nouvelles primes pour isoler l'effet rendement
-    curr_aum = curr_aum + fin_result - fees * curr_pm # Les frais sortent du bilan
+    # Les frais de gestion sont prélevés sur l'actif (cash out pour l'assureur)
+    curr_aum = curr_aum + fin_result - fees
     
     # Stockage
     res_yield_asset.append((fin_result / curr_aum) if curr_aum > 0 else 0)
