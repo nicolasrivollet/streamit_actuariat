@@ -77,10 +77,6 @@ col_sim1, col_sim2 = st.columns([1, 2])
 
 with col_sim1:
     st.subheader("Paramètres de Simulation")
-    dist_choice = st.selectbox("Type de Phénomène", ["Poisson (Fréquence)", "Gamma (Coût Moyen)"])
-    sample_size = st.slider("Nombre d'observations", 50, 1000, 200)
-    
-    st.markdown("**Vraie relation sous-jacente :**")
     st.latex(r"Y = \exp(\beta_0 + \beta_1 X)")
     beta_0 = st.slider("Niveau de base (Intercept)", 0.0, 3.0, 1.0, 0.1)
     beta_1 = st.slider("Sensibilité à X (Pente)", 0.0, 0.5, 0.2, 0.01)
