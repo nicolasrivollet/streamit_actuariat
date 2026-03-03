@@ -141,7 +141,7 @@ col_res1, col_res2 = st.columns(2)
 
 with col_res1:
     st.markdown("### 🔍 Pourquoi le GLM gagne ?")
-    st.write("""
+    st.markdown(r"""
     1.  **Courbure :** Le GLM (courbe verte) épouse la forme exponentielle des données. L'OLS (droite rouge) est trop rigide.
     2.  **Positivité :** Si vous baissez l'intercept ($\beta_0$), la droite rouge peut prédire des valeurs négatives pour $X$ faible. Le GLM tendra vers 0 sans jamais le traverser.
     3.  **Coefficients Multiplicatifs :**
