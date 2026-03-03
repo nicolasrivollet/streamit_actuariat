@@ -89,12 +89,13 @@ scr_lux     = st.Page("modules/scr_luxembourg.py", title="SCR Lux (Réassurance)
 pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 bale3       = st.Page("modules/bale3_regulation.py", title="Réglementation Bâle III", icon="🏦")
 black_scholes = st.Page("modules/black_scholes.py", title="Modèle Black-Scholes", icon="📉")
+ifrs9       = st.Page("modules/ifrs9_standard.py", title="Norme IFRS 9", icon="📉")
 market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Marché (VaR/IRC)", icon="📉")
 
 # --- 3. NAVIGATION ---
 
 pg = st.navigation({
-    "🏠 Présentation & Cadre": [home, normes, s2_piliers, bale3, archi_s2, pdf_reader],
+    "🏠 Présentation & Cadre": [home, normes, ifrs9, s2_piliers, bale3, archi_s2, pdf_reader],
     "⚖️ Focus Réglementaire & ESG": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
     "📈 Finance & Actif": [risk_dash, asset_class, market_risk, gse, black_scholes, scr_screen, scr_taux, volat_adj, comparat, nelson, smith],
     "🛡️ Passif & Solvabilité": [best_estim, ifrs17, lee_carter, lux_vie, scr_lux, chain_lad, reass_pilot, scr_global],
