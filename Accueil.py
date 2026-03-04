@@ -114,13 +114,14 @@ market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Ma
 glm_theory  = st.Page("modules/glm_theory.py", title="Théorie GLM", icon="📈")
 alm_sim     = st.Page("modules/alm_simulator.py", title="Simulateur ALM (Fonds Euros)", icon="🏦")
 pricing     = st.Page("modules/pricing_glm_xgb.py", title="Tarification (GLM vs ML)", icon="🤖")
+proba_dist  = st.Page("modules/proba_distributions.py", title="Lois de Probabilités", icon="🎲")
 
 # --- 3. NAVIGATION ---
 
 # Dictionnaire complet des pages
 pages = {
     "Accueil & Cadre Général": [home, normes, s2_piliers, archi_s2, lux_vie],
-    "Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk, glm_theory],
+    "Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk, glm_theory, proba_dist],
     "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, scr_screen, scr_lux],
     "Passif & Normes Comptables": [best_estim, alm_sim, pricing, ifrs17, ifrs9, reass_pilot],
     "Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
