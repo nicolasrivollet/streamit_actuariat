@@ -67,7 +67,6 @@ def show_home():
         st.header("📬 Contact & Profil")
         st.markdown("Si ce profil vous intéresse pour une opportunité :")
         st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
-        st.link_button("Mon GitHub", "https://github.com/nicolasrivollet")
 
         # Bouton de téléchargement du CV
         cv_file = "cv_RivolletNicolas_v2602-5.pdf"
