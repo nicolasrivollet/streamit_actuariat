@@ -106,7 +106,6 @@ risk_app    = st.Page("modules/risk_appetite.py", title="Appétence au Risque (R
 op_risk     = st.Page("modules/operational_risks.py", title="Risques Opérationnels", icon="🛠️")
 orsa        = st.Page("modules/orsa_process.py", title="Processus ORSA", icon="🔄")
 scr_lux     = st.Page("modules/scr_luxembourg.py", title="SCR Lux (Réassurance)", icon="🤝")
-pdf_reader  = st.Page("modules/pdf_reader.py", title="Mon CV", icon="📄")
 black_scholes = st.Page("modules/black_scholes.py", title="Modèle Black-Scholes", icon="📉")
 ifrs9       = st.Page("modules/ifrs9_standard.py", title="Norme IFRS 9", icon="📉")
 market_risk = st.Page("modules/market_risk_models.py", title="Modèles Risque Marché (VaR/IRC)", icon="📉")
