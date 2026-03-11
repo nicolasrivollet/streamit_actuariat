@@ -15,27 +15,10 @@ Il combine des **critères d'exclusion (Hard Limits)** et un **scoring multicrit
 
 st.divider()
 
-# --- SIDEBAR : FICHE D'IDENTITÉ DU FONDS ---
-st.sidebar.header("📝 Fiche Fonds")
-
-fund_name = st.sidebar.text_input("Nom du Fonds", "Carmignac Patrimoine A")
-isin = st.sidebar.text_input("Code ISIN", "FR0010135103")
-category = st.sidebar.selectbox("Classe d'Actifs", 
-                                ["Actions Monde", "Actions Europe", "Obligations Euro", "Diversifié", "Immobilier (SCI/OPCI/SCPI)", "Produit Structuré"])
-
-st.sidebar.subheader("Données Quantitatives")
-aum = st.sidebar.number_input("Encours du fonds (M€)", 0, 50000, 450)
-track_record = st.sidebar.slider("Historique (Années)", 0, 30, 8)
-volatility = st.sidebar.slider("Volatilité 3 ans (%)", 0.0, 40.0, 12.5)
-sri = st.sidebar.slider("SRI (Indicateur Risque 1-7)", 1, 7, 3)
-
-st.sidebar.subheader("Données Qualitatives & ESG")
-sfdr = st.sidebar.selectbox("Classification SFDR", ["Article 6 (Standard)", "Article 8 (Light Green)", "Article 9 (Dark Green)"], index=1)
-fees_mgt = st.sidebar.number_input("Frais de Gestion Max (%)", 0.0, 5.0, 1.80, 0.05)
-retrocession = st.sidebar.number_input("Rétrocessions (%)", 0.0, 2.0, 0.85, 0.05)
-
+st.header("1. Saisie des Caractéristiques du Support")
 
 # --- CORPS DE LA PAGE ---
+col_input1, col_input2, col_input3 = st.columns(3)
 
 # --- CONFIGURATION DYNAMIQUE DES SEUILS (NOUVEAU) ---
 with st.expander("⚙️ Configurer les Seuils de la Politique Risque (Hard Limits)", expanded=True):
@@ -45,12 +28,33 @@ with st.expander("⚙️ Configurer les Seuils de la Politique Risque (Hard Limi
     limit_sri = col_conf3.slider("Max SRI (Risque)", 1, 7, 5)
     limit_fees = col_conf4.number_input("Max Frais (%)", 0.0, 5.0, 2.5, 0.1)
     exclude_art6 = st.checkbox("Exclure systématiquement Article 6 (ESG)", value=True)
+with col_input1:
+    st.subheader("📝 Identité")
+    fund_name = st.text_input("Nom du Fonds", "Carmignac Patrimoine A")
+    isin = st.text_input("Code ISIN", "FR0010135103")
+    category = st.selectbox("Classe d'Actifs", 
+                            ["Actions Monde", "Actions Europe", "Obligations Euro", "Diversifié", "Immobilier (SCI/OPCI/SCPI)", "Produit Structuré"])
+
+with col_input2:
+    st.subheader("📊 Quantitatif")
+    aum = st.number_input("Encours du fonds (M€)", 0, 50000, 450)
+    track_record = st.number_input("Historique (Années)", 0, 50, 8)
+    volatility = st.number_input("Volatilité 3 ans (%)", 0.0, 100.0, 12.5, 0.1)
+
+with col_input3:
+    st.subheader("🌿 ESG & Frais")
+    sri = st.slider("SRI (Indicateur Risque 1-7)", 1, 7, 3)
+    sfdr = st.selectbox("Classification SFDR", ["Article 6 (Standard)", "Article 8 (Light Green)", "Article 9 (Dark Green)"], index=1)
+    fees_mgt = st.number_input("Frais de Gestion Max (%)", 0.0, 5.0, 1.80, 0.05)
+    retrocession = st.number_input("Rétrocessions (%)", 0.0, 2.0, 0.85, 0.05)
+
+st.divider()
 
 col1, col2 = st.columns([1.5, 1])
 
 with col1:
-    st.header("1. Filtres d'Éligibilité (Hard Limits)")
-    st.caption("Critères bloquants issus de la **Politique de Souscription** (ajustables ci-dessus).")
+    st.header("2. Analyse d'Éligibilité (Hard Limits)")
+    st.caption("Conformité par rapport à la **Politique de Souscription** (paramétrable ci-dessus).")
 
     # Définition des règles
     rules = {
