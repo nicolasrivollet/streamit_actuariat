@@ -37,19 +37,28 @@ retrocession = st.sidebar.number_input("Rétrocessions (%)", 0.0, 2.0, 0.85, 0.0
 
 # --- CORPS DE LA PAGE ---
 
+# --- CONFIGURATION DYNAMIQUE DES SEUILS (NOUVEAU) ---
+with st.expander("⚙️ Configurer les Seuils de la Politique Risque (Hard Limits)", expanded=True):
+    col_conf1, col_conf2, col_conf3, col_conf4 = st.columns(4)
+    limit_aum = col_conf1.number_input("Min AUM (M€)", 0, 1000, 50, help="Seuil de liquidité")
+    limit_track = col_conf2.number_input("Min Historique (Ans)", 0, 10, 3)
+    limit_sri = col_conf3.slider("Max SRI (Risque)", 1, 7, 5)
+    limit_fees = col_conf4.number_input("Max Frais (%)", 0.0, 5.0, 2.5, 0.1)
+    exclude_art6 = st.checkbox("Exclure systématiquement Article 6 (ESG)", value=True)
+
 col1, col2 = st.columns([1.5, 1])
 
 with col1:
     st.header("1. Filtres d'Éligibilité (Hard Limits)")
-    st.info("Critères bloquants issus de la **Politique de Souscription et d'Investissement**.")
+    st.caption("Critères bloquants issus de la **Politique de Souscription** (ajustables ci-dessus).")
 
     # Définition des règles
     rules = {
-        "Liquidité & Profondeur": {"Seuil": "AUM > 50 M€", "Check": aum >= 50, "Explication": "Éviter le risque de liquidité en cas de rachat massif."},
-        "Stabilité de Gestion": {"Seuil": "Historique > 3 ans", "Check": track_record >= 3, "Explication": "Nécessité d'évaluer la performance sur un cycle complet."},
-        "Plafond de Risque (Retail)": {"Seuil": "SRI <= 5", "Check": sri <= 5, "Explication": "Limitation du risque de marché pour la clientèle standard."},
-        "Ambition ESG": {"Seuil": "Pas d'Article 6", "Check": "Article 6" not in sfdr, "Explication": "Alignement avec la trajectoire Net Zero du Groupe."},
-        "Compétitivité Prix": {"Seuil": "Frais Gestion < 2.5%", "Check": fees_mgt < 2.5, "Explication": "Protection de la performance nette pour l'assuré."}
+        "Liquidité & Profondeur": {"Seuil": f"AUM > {limit_aum} M€", "Check": aum >= limit_aum, "Explication": "Éviter le risque de liquidité en cas de rachat massif."},
+        "Stabilité de Gestion": {"Seuil": f"Historique > {limit_track} ans", "Check": track_record >= limit_track, "Explication": "Nécessité d'évaluer la performance sur un cycle complet."},
+        "Plafond de Risque (Retail)": {"Seuil": f"SRI <= {limit_sri}", "Check": sri <= limit_sri, "Explication": "Limitation du risque de marché pour la clientèle standard."},
+        "Ambition ESG": {"Seuil": "Pas d'Article 6" if exclude_art6 else "Aucun", "Check": ("Article 6" not in sfdr) if exclude_art6 else True, "Explication": "Alignement avec la trajectoire Net Zero du Groupe."},
+        "Compétitivité Prix": {"Seuil": f"Frais Gestion < {limit_fees}%", "Check": fees_mgt < limit_fees, "Explication": "Protection de la performance nette pour l'assuré."}
     }
 
     # Affichage des résultats
@@ -108,11 +117,16 @@ with col2:
     # Radar Chart Détails
     categories = ['Robustesse Financière', 'ESG & Durabilité', 'Profil Rendement/Risque', 'Structure de Frais']
     scores = [score_fin, score_esg, score_perf, score_frais]
+    
+    # Benchmark (Moyenne catégorie fictive)
+    scores_bench = [60, 50, 60, 70] # Valeurs moyennes fixes pour l'exemple
 
     fig_radar = go.Figure()
     fig_radar.add_trace(go.Scatterpolar(r=scores, theta=categories, fill='toself', name=fund_name))
-    fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=False, 
-                            title="Profil du Support", height=300, margin=dict(t=30, b=20))
+    fig_radar.add_trace(go.Scatterpolar(r=scores_bench, theta=categories, name='Moyenne Marché', line=dict(dash='dot', color='gray')))
+    
+    fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 100])), showlegend=True, 
+                            legend=dict(orientation="h", y=-0.2), title="Profil du Support vs Marché", height=350, margin=dict(t=30, b=20))
     st.plotly_chart(fig_radar, use_container_width=True)
 
-st.info("💡 **Note pour l'entretien :** Ce module illustre la déclinaison opérationnelle des normes d'actifs risques (Politique de Souscription) en un outil d'aide à la décision pour le référencement.")
+st.info("💡 **Note pour l'entretien :** Ce module est désormais paramétrable. Il démontre ma capacité à créer des outils flexibles où le Risk Management peut ajuster ses seuils d'appétence (Hard Limits) sans toucher au code.")
