@@ -122,7 +122,7 @@ proba_dist  = st.Page("modules/proba_distributions.py", title="Lois de Probabili
 pages = {
     "Accueil & Cadre Général": [home, normes, s2_piliers, archi_s2, lux_vie],
     "Modélisation Financière": [comparat, nelson, smith, gse, black_scholes, market_risk, glm_theory, proba_dist],
-    "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, scr_screen, 
+    "Risques & Allocation de Capital": [risk_dash, asset_class, scr_global, scr_taux, scr_screen, uc_select, scr_lux],
     "Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
 }
 
