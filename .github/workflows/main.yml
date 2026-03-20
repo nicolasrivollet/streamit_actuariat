@@ -1,0 +1,25 @@
+name: Wake Up Streamlit
+
+on:
+  schedule:
+    # S'exécute toutes les 6 heures (UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Permet de le lancer manuellement pour tester
+
+jobs:
+  ping-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run ping script
+        run: python keep_alive.py
