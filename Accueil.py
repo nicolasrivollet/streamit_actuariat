@@ -62,11 +62,11 @@ def show_home():
     """)
     
 
-    # Ajout d'une section contact dans la sidebar pour le recrutement
-    with st.sidebar:
-        st.header("📬 Contact & Profil")
-        st.markdown("Si ce profil vous intéresse pour une opportunité :")
-        st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
+    # # Ajout d'une section contact dans la sidebar pour le recrutement
+    # with st.sidebar:
+    #     st.header("📬 Contact & Profil")
+    #     st.markdown("Si ce profil vous intéresse pour une opportunité :")
+    #     st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
 
         # # Bouton de téléchargement du CV
         # cv_file = "cv_RivolletNicolas_v2603_V5_FR-4.pdf"
