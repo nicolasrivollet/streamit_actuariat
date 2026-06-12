@@ -68,11 +68,11 @@ def show_home():
         st.markdown("Si ce profil vous intéresse pour une opportunité :")
         st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
 
-        # Bouton de téléchargement du CV
-        cv_file = "cv_RivolletNicolas_v2603_V5_FR-4.pdf"
-        if os.path.exists(cv_file):
-            with open(cv_file, "rb") as pdf:
-                st.download_button(label="📄 Télécharger mon CV", data=pdf, file_name="cv_RivolletNicolas_v2603_V5_FR-4.pdf", mime="application/pdf")
+        # # Bouton de téléchargement du CV
+        # cv_file = "cv_RivolletNicolas_v2603_V5_FR-4.pdf"
+        # if os.path.exists(cv_file):
+        #     with open(cv_file, "rb") as pdf:
+        #         st.download_button(label="📄 Télécharger mon CV", data=pdf, file_name="cv_RivolletNicolas_v2603_V5_FR-4.pdf", mime="application/pdf")
 
 # Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
