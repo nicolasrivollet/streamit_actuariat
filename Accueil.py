@@ -15,21 +15,12 @@ st.set_page_config(
 def show_home():
     st.title("Bienvenue sur mon Portfolio")
     st.subheader("Nicolas RIVOLLET | Expert en Gestion des Risques et en Actuariat")
+    st.markdown("""
+    ### 👋 À propos de ce site
     
-    col_video, col_text = st.columns(2)
-
-    with col_video:
-        # Vidéo de présentation depuis YouTube
-        st.video("https://www.youtube.com/watch?v=your_video_id_here") # Remplacez par le lien de votre vidéo
-
-    with col_text:
-        st.markdown("""
-        ### 👋 À propos de ce site
-        
-        Ce site est une vitrine interactive de mes compétences techniques et métiers. 
-        Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
-        """)
-    
+    Ce site est une vitrine interactive de mes compétences techniques et métiers. 
+    Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
+    """)
     st.markdown("""
     ### 🤝 Prêt à échanger ?
     
