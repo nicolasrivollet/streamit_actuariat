@@ -116,28 +116,7 @@ pages = {
     "Gouvernance & Prospective": [reform_s2, orsa, risk_app, op_risk, dora, csrd, data_qual, esg_invest, cat_climat],
 }
 
-# Ajout de la barre de recherche dans la sidebar
-search_query = st.sidebar.text_input(
-    "Filtrer les modules...",
-    label_visibility="collapsed",
-    placeholder="🔍 Ex: SCR, IFRS, Taux..."
-)
-
-# Logique de filtrage dynamique
-if search_query:
-    # On crée un nouveau dictionnaire pour les résultats
-    filtered_pages = {}
-    # On parcourt chaque catégorie et sa liste de pages
-    for category, page_list in pages.items():
-        # On ne garde que les pages dont le titre contient la recherche (insensible à la casse)
-        matching_pages = [page for page in page_list if search_query.lower() in page.title.lower()]
-        # Si on a trouvé des pages, on ajoute la catégorie et les pages correspondantes
-        if matching_pages:
-            filtered_pages[category] = matching_pages
-    pg = st.navigation(filtered_pages)
-else:
-    # Si la barre de recherche est vide, on affiche le menu complet par défaut
-    pg = st.navigation(pages)
+pg = st.navigation(pages)
 
 # --- 4. EXÉCUTION ---
 # pg.run() s'occupe de tout : 
