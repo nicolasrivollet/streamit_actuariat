@@ -110,7 +110,7 @@ df_portfolio['Risque_Score'] = df_portfolio['Base_Score'] * factors['freq']
 df_portfolio['Perte_Attendue'] = df_portfolio['TIV'] * (df_portfolio['Risque_Score'] / 1000) * factors['cost']
 
 # Carte interactive
-fig_map = px.scatter_mapbox(
+fig_map = px.scatter_map(
     df_portfolio, 
     lat="lat", 
     lon="lon", 
@@ -120,7 +120,7 @@ fig_map = px.scatter_mapbox(
     range_color=[0, 10000], # Échelle fixe pour visualiser l'aggravation
     size_max=15, 
     zoom=4,
-    mapbox_style="open-street-map",
+    map_style="open-street-map",
     title="Exposition Géographique et Intensité des Pertes (Simulé)",
     hover_data={"lat": False, "lon": False, "Type": True, "TIV": ":.0f€"}
 )
