@@ -1,61 +1,94 @@
-# 📊 Portfolio Actuariat & Data Science
+# 📊 Portfolio Actuariat & Gestion des Risques
 
 **Auteur :** Nicolas Rivollet  
-**Stack :** Python, Streamlit, Plotly, NumPy, Pandas
+**Stack :** Python, Streamlit, Plotly, NumPy, Pandas, SciPy, scikit-learn
 
 ## 🎯 Objectif du Projet
 
-Ce projet est une application web interactive démontrant l'application de techniques de **Data Science** et de **développement logiciel** aux problématiques actuarielles modernes.
+Cette application web interactive montre comment la **Data Science** et le **développement logiciel** s'appliquent aux problématiques actuarielles et de gestion des risques.
 
-Il sert de support de démonstration pour des compétences en :
-*   **Modélisation Financière :** Courbes de taux, GSE, Allocation d'actifs.
+Elle sert de vitrine pour des compétences en :
+*   **Modélisation Financière :** Courbes de taux, GSE, valorisation d'options, mesures de risque de marché.
 *   **Solvabilité II :** Piliers 1, 2 et 3 (SCR, ORSA, Qualité des données).
-*   **Assurance Vie & Non-Vie :** Provisionnement, Tarification, IFRS 17.
+*   **Gestion des Risques :** Appétence au risque, risques opérationnels, allocation d'actifs.
 *   **Réglementation & ESG :** DORA, CSRD, Risque Climatique.
+
+Chaque module combine un rappel théorique (formules, cadre réglementaire), des paramètres ajustables et des visualisations Plotly. Les données utilisées sont simulées ou intégrées au code.
 
 ## 🗂 Structure de l'Application
 
-L'application est structurée en 4 pôles métiers accessibles via la navigation :
+L'application compte 4 sections, accessibles depuis le menu latéral :
 
-### 1. 🏠 Présentation & Cadre
-*   **Panorama des Normes :** Comparatif French GAAP / S2 / IFRS 17.
-*   **Les 3 Piliers S2 :** Vision globale de la directive.
-*   **Architecture Réglementaire :** Hiérarchie des normes (Lamfalussy).
+### 1. 🏠 Accueil & Cadre Général
+*   **Présentation :** Page d'accueil du portfolio.
+*   **Panorama des Normes Comptables :** Comparatif French GAAP / Solvabilité II / IFRS 17.
+*   **Les 3 Piliers Solvabilité II :** Vision globale de la directive.
+*   **Architecture Réglementaire :** Hiérarchie des normes (processus Lamfalussy).
+*   **Assurance Vie Luxembourg :** Triangle de sécurité, FID/FAS, gestion de fortune.
 
-### 2. ⚖️ Focus Réglementaire & ESG
-*   **Réforme S2 :** Impacts de la revue 2020.
+### 2. 📈 Modélisation Financière
+*   **Modélisation Courbe de Taux (intro) :** Comparatif des méthodologies de construction de courbe.
+*   **Modèle Nelson-Siegel :** Calibration d'une courbe de taux.
+*   **Modèle Smith-Wilson :** Extrapolation de la courbe (UFR).
+*   **Générateur de Scénarios Économiques (GSE) :** Simulation stochastique.
+*   **Modèle Black-Scholes :** Valorisation d'options européennes et calcul des grecques.
+*   **Modèles Risque de Marché :** VaR, SVaR, IRC, CRM.
+*   **Théorie GLM :** Modèles linéaires généralisés appliqués à la tarification.
+*   **Lois de Probabilités :** Principales distributions utilisées en actuariat.
+
+### 3. 🛡️ Risques & Allocation de Capital
+*   **Tableau de Bord Risques Financiers :** Suivi de l'allocation et des risques de marché.
+*   **Classes d'Actifs & Risques :** Cartographie Rendement / Risque.
+*   **SCR Global (Agrégation) :** Agrégation des modules de risque via matrice de corrélation.
+*   **SCR Taux (Standard) :** Choc de taux (Up/Down) sur la NAV.
+*   **SCR Asset Screener :** Impact en capital d'un nouvel investissement.
+*   **Sélection Supports UC :** Critères de référencement des unités de compte.
+*   **SCR Lux (Réassurance) :** Filiale luxembourgeoise réassurée à 100 % en intra-groupe.
+
+### 4. ⚖️ Gouvernance & Prospective
+*   **Réforme Solvabilité II :** Impacts de la revue 2020.
 *   **Processus ORSA :** Simulation de trajectoires de solvabilité.
 *   **Appétence au Risque (RAF) :** Cockpit des indicateurs clés (KRI).
 *   **Risques Opérationnels :** Cartographie et auto-évaluation (RCSA).
-*   **DORA :** Résilience opérationnelle numérique.
-*   **CSRD :** Reporting extra-financier et double matérialité.
-*   **Qualité des Données :** Gouvernance et critères ACA.
+*   **Réglementation DORA :** Résilience opérationnelle numérique.
+*   **Reporting CSRD :** Reporting extra-financier et double matérialité.
+*   **Qualité des Données S2 :** Gouvernance et critères d'exhaustivité, d'exactitude et de pertinence.
 *   **ESG & Investissements :** Stratégies durables et simulation d'impact.
-*   **Risque Climatique :** Cartographie des impacts Cat Nat.
+*   **Risque Climatique (Cat Nat) :** Cartographie des impacts.
 
-### 3. 📈 Finance & Actif
-*   **Tableau de Bord Risques :** Suivi de l'allocation et des risques de marché.
-*   **Classes d'Actifs :** Cartographie Rendement / Risque.
-*   **Générateur Scénarios Eco (GSE) :** Modélisation stochastique (Black-Scholes).
-*   **SCR Asset Screener :** Analyse d'impact en capital d'un nouvel investissement.
-*   **SCR Taux :** Calcul du choc de taux (Up/Down) sur la NAV.
-*   **Volatility Adjustment :** Simulation de l'impact sur le bilan.
-*   **Modèles de Taux :** Nelson-Siegel (Calibration) et Smith-Wilson (Extrapolation).
+### 🚧 Modules non référencés dans le menu
 
-### 4. 🛡️ Passif & Solvabilité
-*   **Best Estimate Vie :** Projection des flux de trésorerie (Cash Flows).
-*   **Moteur IFRS 17 :** Simulation de la CSM (GMM).
-*   **Mortalité (Lee-Carter) :** Projection stochastique de l'espérance de vie.
-*   **Assurance Vie Luxembourg :** Spécificités (Triangle de sécurité, FID/FAS).
-*   **SCR Lux (Réassurance) :** Modèle de filiale réassurée à 100%.
-*   **Provisionnement (Chain-Ladder) :** Estimation des IBNR Non-Vie.
-*   **Pilotage Réassurance :** Optimisation de la structure XL.
-*   **SCR Global :** Agrégation des risques et matrice de corrélation.
+Les modules suivants sont présents dans le dossier `modules/` mais ne figurent pas dans la navigation :
+
+| Fichier | Sujet |
+|---|---|
+| `best_estimate_vie.py` | Best Estimate Vie : projection des flux de trésorerie |
+| `ifrs17_csm.py` | Moteur IFRS 17 : simulation de la CSM (GMM) |
+| `ifrs9_standard.py` | IFRS 9 : instruments financiers et provisionnement du risque de crédit |
+| `mortalite_lee_carter.py` | Mortalité : projection stochastique Lee-Carter |
+| `provisionnement_IARD.py` | Provisionnement Non-Vie : Chain-Ladder et IBNR |
+| `pilotage_reassu.py` | Pilotage Réassurance : optimisation d'une structure XL |
+| `volatility_adjustment.py` | Volatility Adjustment : impact sur le bilan |
+| `alm_simulator.py` | Simulateur ALM : projection d'un fonds euros et participation aux bénéfices |
+| `pricing_glm_xgb.py` | Tarification Non-Vie : GLM vs Machine Learning |
+| `bale3_regulation.py` | Bâle III : réglementation prudentielle bancaire |
+
+## 📁 Organisation du Code
+
+```
+.
+├── Accueil.py          # Point d'entrée : page d'accueil et navigation (st.navigation)
+├── modules/            # Une page Streamlit autonome par fichier
+├── requirements.txt    # Dépendances (versions figées)
+└── .devcontainer/      # Configuration GitHub Codespaces / Dev Containers
+```
+
+Pour ajouter une page : créer un fichier dans `modules/`, déclarer un `st.Page` dans `Accueil.py`, puis l'ajouter à la section voulue du dictionnaire `pages`.
 
 ## 🚀 Installation et Lancement
 
 ### Pré-requis
-*   Python 3.10 ou supérieur
+*   Python 3.11 ou supérieur
 
 ### Installation des dépendances
 ```bash
@@ -67,14 +100,16 @@ pip install -r requirements.txt
 streamlit run Accueil.py
 ```
 
+L'application est ensuite accessible sur http://localhost:8501.
+
 ## 🛠 Bibliothèques Principales
 
-*   `streamlit` : Framework Web UI.
+*   `streamlit` : Framework d'interface web et navigation multi-pages.
 *   `plotly` : Visualisations interactives.
 *   `numpy` / `pandas` : Calcul matriciel et manipulation de données.
-*   `scipy` : Optimisation (Calibration Nelson-Siegel).
-*   `chainladder` : Algorithmes de provisionnement.
+*   `scipy` : Optimisation (calibration Nelson-Siegel) et lois statistiques.
 *   `smithwilson` : Moteur d'extrapolation des taux.
+*   `scikit-learn` / `statsmodels` : GLM et modèles de Machine Learning pour la tarification.
 
 ---
 *Ce projet a été développé dans un but pédagogique et de démonstration professionnelle.*
