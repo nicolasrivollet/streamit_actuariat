@@ -120,6 +120,7 @@ fig_map = px.scatter_map(
     range_color=[0, 10000], # Échelle fixe pour visualiser l'aggravation
     size_max=15, 
     zoom=4,
+    center={"lat": 46.6, "lon": 2.4}, # Centre de la France métropolitaine
     map_style="open-street-map",
     title="Exposition Géographique et Intensité des Pertes (Simulé)",
     hover_data={"lat": False, "lon": False, "Type": True, "TIV": ":.0f€"}
