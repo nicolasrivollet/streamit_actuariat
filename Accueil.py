@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+from modules.ui_theme import apply_theme
 
 # --- 1. CONFIGURATION DE LA PAGE ---
 st.set_page_config(
@@ -8,64 +9,76 @@ st.set_page_config(
     layout="wide"
 )
 
+# Application globale de la charte graphique institutionnelle
+apply_theme()
+
 # --- 2. DÉFINITION DES PAGES ---
 
 # La page d'accueil pointe vers une fonction interne ou le fichier lui-même
-# Pour éviter la répétition, nous allons définir une fonction pour le contenu de l'accueil
 def show_home():
-    st.title("Bienvenue sur mon Portfolio")
-    st.subheader("Nicolas Rivollet | Expert en Gestion des Risques et en Actuariat")
+    st.title("Nicolas Rivollet")
+    st.subheader("Actuariat, Modélisation Financière et Gestion des Risques")
+    
     st.markdown("""
-    ### 👋 À propos de ce site
-    
-    Ce site est une vitrine interactive de mes compétences techniques et métiers. 
-    Il regroupe des outils de modélisation, des analyses réglementaires et des tableaux de bord que j'ai développés pour illustrer mon savoir-faire en **Actuariat**, **Gestion des Risques** et **Data Science**.
-    """)
-    st.markdown("""
-    ### 🤝 Prêt à échanger ?
-    
-    Je suis actuellement **disponible pour un entretien** afin de discuter de la manière dont je pourrais apporter de la valeur à votre organisation.
-    
-    N'hésitez pas à explorer les modules via le menu latéral 👈 ou à me contacter directement.
+    Bienvenue sur ce portail professionnel. Cet espace interactif regroupe des outils de modélisation quantitative, 
+    des simulateurs prudentiels et des tableaux de bord conçus pour illustrer la mise en pratique de compétences avancées en 
+    **actuariat**, **gestion des risques** et **data science**.
     """)
     
-    
-    st.markdown("### 🚀 Domaines d'Expertise")
+    st.markdown("### Domaines d'Expertise")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.info("**🛡️ Solvabilité & Risques**\n\nMaîtrise approfondie de Solvabilité II (Piliers 1, 2, 3), ORSA, et des modèles de capital (SCR).")
+        st.markdown("""
+        <div class="exec-card">
+            <div class="exec-card-title">Solvabilité & Réglementation</div>
+            <div class="exec-card-text">
+                Maîtrise approfondie des cadres prudentiels : Solvabilité II (Piliers 1, 2 et 3), modélisation et calcul du SCR (formule standard et chocs), processus ORSA, revue 2020 et normes comptables (IFRS 17, IFRS 9, French GAAP).
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
     with col2:
-        st.success("**📈 Finance & ALM**\n\nModélisation des actifs, couverture des risques financiers et optimisation de l'allocation d'actifs.")
+        st.markdown("""
+        <div class="exec-card">
+            <div class="exec-card-title">Finance & Gestion Actif-Passif</div>
+            <div class="exec-card-text">
+                Modélisation des taux d'intérêt (Nelson-Siegel, Smith-Wilson), valorisation d'options financières (Black-Scholes), Générateur de Scénarios Économiques (GSE), simulation ALM (fonds en euros) et optimisation de l'allocation d'actifs.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
     with col3:
-        st.warning("**💻 Data & Tech**\n\nDéveloppement d'outils actuariels modernes en Python, automatisation et visualisation de données.")
+        st.markdown("""
+        <div class="exec-card">
+            <div class="exec-card-title">Passif, Data Science & Tech</div>
+            <div class="exec-card-text">
+                Méthodes de provisionnement IARD (Chain-Ladder, IBNR), tables de mortalité stochastiques (Lee-Carter), tarification actuarielle (GLM vs Machine Learning) et gouvernance des risques émergents (DORA, CSRD, Cat Nat).
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
+    st.markdown("### Environnement Technique")
     st.markdown("""
-    ---
-    #### 🛠 Stack Technique
-    *   **Langage :** Python 3.10+
-    *   **Interface :** Streamlit
-    *   **Calculs :** NumPy, Pandas, Scipy
-    *   **Visualisation :** Plotly Interactive
+    <div style="margin-top: 0.5rem; margin-bottom: 1.5rem;">
+        <span class="badge-pill">Python 3.11</span>
+        <span class="badge-pill">Streamlit</span>
+        <span class="badge-pill">NumPy & Pandas</span>
+        <span class="badge-pill">SciPy Optimization</span>
+        <span class="badge-pill">Plotly Interactive</span>
+        <span class="badge-pill">Scikit-Learn</span>
+        <span class="badge-pill">ChainLadder</span>
+        <span class="badge-pill">Smith-Wilson Engine</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("### Contact & Échange")
+    st.markdown("""
+    Disponible pour échanger sur des opportunités professionnelles ou des missions de conseil dans les domaines de l'actuariat, de la modélisation financière et du risk management.
     """)
-    
+    st.link_button("Consulter mon profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/")
 
-    # # Ajout d'une section contact dans la sidebar pour le recrutement
-    # with st.sidebar:
-    #     st.header("📬 Contact & Profil")
-    #     st.markdown("Si ce profil vous intéresse pour une opportunité :")
-    #     st.link_button("Mon Profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/") # Remplacez par votre vrai lien si besoin
-
-        # # Bouton de téléchargement du CV
-        # cv_file = "cv_RivolletNicolas_v2603_V5_FR-4.pdf"
-        # if os.path.exists(cv_file):
-        #     with open(cv_file, "rb") as pdf:
-        #         st.download_button(label="📄 Télécharger mon CV", data=pdf, file_name="cv_RivolletNicolas_v2603_V5_FR-4.pdf", mime="application/pdf")
-
-# Définition des objets pages
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
 home        = st.Page(show_home, title="Présentation", default=True,  icon="🏠")
 normes      = st.Page("modules/normes_intro.py", title="Panorama des Normes Comptables", icon="📖")
