@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Sélection & Due Diligence UC", layout="wide")
 
-st.title("✅ Critères de Sélection & Référencement UC")
+st.title("Critères de Sélection & Référencement UC")
 st.subheader("Operationalisation de la Politique de Souscription")
 
 st.markdown("""
@@ -29,20 +29,20 @@ with st.expander("⚙️ Configurer les Seuils de la Politique Risque (Hard Limi
     limit_fees = col_conf4.number_input("Max Frais (%)", 0.0, 5.0, 2.5, 0.1)
     exclude_art6 = st.checkbox("Exclure systématiquement Article 6 (ESG)", value=True)
 with col_input1:
-    st.subheader("📝 Identité")
+    st.subheader("Identité")
     fund_name = st.text_input("Nom du Fonds", "Carmignac Patrimoine A")
     isin = st.text_input("Code ISIN", "FR0010135103")
     category = st.selectbox("Classe d'Actifs", 
                             ["Actions Monde", "Actions Europe", "Obligations Euro", "Diversifié", "Immobilier (SCI/OPCI/SCPI)", "Produit Structuré"])
 
 with col_input2:
-    st.subheader("📊 Quantitatif")
+    st.subheader("Quantitatif")
     aum = st.number_input("Encours du fonds (M€)", 0, 50000, 450)
     track_record = st.number_input("Historique (Années)", 0, 50, 8)
     volatility = st.number_input("Volatilité 3 ans (%)", 0.0, 100.0, 12.5, 0.1)
 
 with col_input3:
-    st.subheader("🌿 ESG & Frais")
+    st.subheader("ESG & Frais")
     sri = st.slider("SRI (Indicateur Risque 1-7)", 1, 7, 3)
     sfdr = st.selectbox("Classification SFDR", ["Article 6 (Standard)", "Article 8 (Light Green)", "Article 9 (Dark Green)"], index=1)
     fees_mgt = st.number_input("Frais de Gestion Max (%)", 0.0, 5.0, 1.80, 0.05)
@@ -112,11 +112,11 @@ with col2:
     st.subheader("Avis du Risk Manager")
     if compliance_status:
         if global_score > 70:
-            st.success("### ✅ AVIS FAVORABLE\nLe support peut être référencé.")
+            st.success("### AVIS FAVORABLE\nLe support peut être référencé.")
         else:
-            st.warning("### ⚠️ SOUS SURVEILLANCE\nConforme mais score faible (Watchlist).")
+            st.warning("### SOUS SURVEILLANCE\nConforme mais score faible (Watchlist).")
     else:
-        st.error("### ⛔ REJETÉ (VETO)\nNon respect des critères bloquants.")
+        st.error("### REJETÉ (VETO)\nNon respect des critères bloquants.")
 
     # Radar Chart Détails
     categories = ['Robustesse Financière', 'ESG & Durabilité', 'Profil Rendement/Risque', 'Structure de Frais']
@@ -133,4 +133,4 @@ with col2:
                             legend=dict(orientation="h", y=-0.2), title="Profil du Support vs Marché", height=350, margin=dict(t=30, b=20))
     st.plotly_chart(fig_radar, use_container_width=True)
 
-st.info("💡 **Note pour l'entretien :** Ce module est désormais paramétrable. Il démontre ma capacité à créer des outils flexibles où le Risk Management peut ajuster ses seuils d'appétence (Hard Limits) sans toucher au code.")
+st.info("**Note pour l'entretien :** Ce module est désormais paramétrable. Il démontre ma capacité à créer des outils flexibles où le Risk Management peut ajuster ses seuils d'appétence (Hard Limits) sans toucher au code.")

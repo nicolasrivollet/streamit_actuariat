@@ -5,7 +5,7 @@ import plotly.express as px
 
 st.set_page_config(page_title="Risque Climatique & Cat Nat", layout="wide")
 
-st.title("🌍 Risque Climatique & Catastrophes Naturelles")
+st.title("Risque Climatique & Catastrophes Naturelles")
 st.subheader("Modélisation de l'impact du changement climatique sur le portefeuille")
 
 st.markdown("""

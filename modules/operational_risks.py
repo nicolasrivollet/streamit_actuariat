@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Gestion des Risques Opérationnels", layout="wide")
 
-st.title("🛠️ Gestion des Risques Opérationnels")
+st.title("Gestion des Risques Opérationnels")
 st.subheader("Identification, Évaluation et Atténuation")
 
 st.markdown("""
@@ -22,37 +22,37 @@ st.markdown("Classification standard des événements de risques opérationnels 
 tabs = st.tabs(["Fraude Interne", "Fraude Externe", "RH & Sécurité", "Clients & Produits", "Dommages Actifs", "Interruption Activité", "Exécution & Process"])
 
 with tabs[0]:
-    st.error("### 🕵️ Fraude Interne")
+    st.error("### Fraude Interne")
     st.write("**Définition :** Pertes dues à des actes visant à frauder, détourner des biens ou contourner la loi, impliquant au moins une partie interne.")
     st.markdown("- Détournement d'actifs\n- Falsification de documents\n- Délit d'initié\n- Vol par un employé")
 
 with tabs[1]:
-    st.error("### 🎭 Fraude Externe")
+    st.error("### Fraude Externe")
     st.write("**Définition :** Pertes dues à des actes visant à frauder, détourner des biens ou contourner la loi, par un tiers.")
     st.markdown("- Cyberattaque (Ransomware)\n- Vol de données clients\n- Falsification de chèques\n- Usurpation d'identité")
 
 with tabs[2]:
-    st.warning("### 👷 Emploi & Sécurité du Travail")
+    st.warning("### Emploi & Sécurité du Travail")
     st.write("**Définition :** Actes incompatibles avec la législation sur l'emploi ou la santé/sécurité.")
     st.markdown("- Discrimination / Harcèlement\n- Non-respect des règles de sécurité\n- Conflits sociaux\n- Erreurs de paie")
 
 with tabs[3]:
-    st.warning("### 🤝 Clients, Produits & Pratiques Commerciales")
+    st.warning("### Clients, Produits & Pratiques Commerciales")
     st.write("**Définition :** Manquement involontaire ou par négligence à une obligation professionnelle envers des clients.")
     st.markdown("- Défaut de conseil\n- Produits mal conçus (Mis-selling)\n- Blanchiment d'argent (AML)\n- Violation du secret professionnel / RGPD")
 
 with tabs[4]:
-    st.info("### 🏢 Dommages aux Actifs Physiques")
+    st.info("### Dommages aux Actifs Physiques")
     st.write("**Définition :** Pertes dues à des dommages ou à la destruction d'actifs physiques.")
     st.markdown("- Incendie / Inondation (locaux)\n- Terrorisme\n- Vandalisme")
 
 with tabs[5]:
-    st.info("### 🛑 Interruption d'Activité & Systèmes")
+    st.info("### Interruption d'Activité & Systèmes")
     st.write("**Définition :** Pertes dues à une interruption de l'activité ou à une panne des systèmes.")
     st.markdown("- Panne matérielle / logicielle\n- Coupure télécom / énergie\n- Indisponibilité du Cloud")
 
 with tabs[6]:
-    st.success("### ⚙️ Exécution, Livraison & Gestion des Processus")
+    st.success("### Exécution, Livraison & Gestion des Processus")
     st.write("**Définition :** Échecs dans le traitement des transactions ou la gestion des processus.")
     st.markdown("- Erreur de saisie (Fat finger)\n- Échec de reporting réglementaire\n- Litiges fournisseurs\n- Données incomplètes")
 
@@ -127,7 +127,7 @@ data_incidents = pd.DataFrame({
 
 st.dataframe(data_incidents)
 
-st.info("💡 **Lien avec le SCR Opérationnel :** Bien que la Formule Standard soit forfaitaire (basée sur les primes/provisions), la collecte des pertes historiques est obligatoire pour valider la pertinence de cette formule standard par rapport au profil de risque réel.")
+st.info("**Lien avec le SCR Opérationnel :** Bien que la Formule Standard soit forfaitaire (basée sur les primes/provisions), la collecte des pertes historiques est obligatoire pour valider la pertinence de cette formule standard par rapport au profil de risque réel.")
 
 with st.expander("📚 Comprendre la méthode LDA (Loss Distribution Approach)", expanded=True):
     st.markdown("""

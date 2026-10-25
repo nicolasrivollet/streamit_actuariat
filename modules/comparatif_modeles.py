@@ -7,7 +7,7 @@ from scipy.interpolate import CubicSpline
 
 st.set_page_config(page_title="Expertise Modèles de Taux", layout="wide")
 
-st.title("🔬 Analyse des Méthodologies de Courbe")
+st.title("Analyse des Méthodologies de Courbe")
 st.markdown("""
 En actuariat, la courbe des taux n'est pas qu'une simple ligne ; c'est le socle de la valorisation du bilan. 
 Chaque modèle repose sur une hypothèse différente concernant la structure du marché.
@@ -88,7 +88,7 @@ with st.expander("4. Modèles Dynamiques : Hull-White & Vasicek", expanded=True)
 st.divider()
 
 # --- SYNTHÈSE DES IMPACTS BILANTIELS ---
-st.header("🎯 Synthèse de l'Impact Actuariel")
+st.header("Synthèse de l'Impact Actuariel")
 st.table(pd.DataFrame({
     "Critère": ["Précision Marché", "Interprétabilité", "Réglementation", "Stabilité"],
     "Nelson-Siegel": ["Moyenne", "Maximale", "Interne uniquement", "Élevée"],
@@ -96,7 +96,7 @@ st.table(pd.DataFrame({
     "Splines": ["Parfaite", "Nulle", "Non recommandée", "Faible"]
 }))
 
-st.info("💡 **Conseil du Risk Manager :** Pour un pilotage efficace, il est souvent recommandé de suivre Nelson-Siegel pour comprendre les tendances de fond, tout en produisant les chiffres officiels en Smith-Wilson.")
+st.info("**Conseil du Risk Manager :** Pour un pilotage efficace, il est souvent recommandé de suivre Nelson-Siegel pour comprendre les tendances de fond, tout en produisant les chiffres officiels en Smith-Wilson.")
 
 st.divider()
 

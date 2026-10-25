@@ -5,11 +5,11 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Moteur IFRS 17 (CSM)", layout="wide")
 
-st.title("📊 Moteur IFRS 17 : Modèle Général (GMM)")
+st.title("Moteur IFRS 17 : Modèle Général (GMM)")
 st.subheader("Simulation de la Marge de Service Contractuelle (CSM)")
 
 st.markdown("""
-### 💡 Comprendre la philosophie IFRS 17
+### Comprendre la philosophie IFRS 17
 La norme IFRS 17 (entrée en vigueur en 2023) révolutionne la comptabilité des assurances en passant d'une logique de "Primes encaissées" à une logique de **"Service rendu"**.
 
 Le **Modèle Général (GMM)**, aussi appelé BBA (*Building Block Approach*), repose sur l'agrégation de 4 blocs pour valoriser le passif :

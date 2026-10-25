@@ -6,7 +6,7 @@ import plotly.express as px
 
 st.set_page_config(page_title="Provisionnement Chain-Ladder", layout="wide")
 
-st.title("🔺 Provisionnement Non-Vie : Méthode Chain-Ladder")
+st.title("Provisionnement Non-Vie : Méthode Chain-Ladder")
 st.subheader("Estimation des provisions pour sinistres à payer (IBNR)")
 
 st.markdown("""

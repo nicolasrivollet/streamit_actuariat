@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Les 3 Piliers Solvabilité II", layout="wide")
 
-st.title("🏛️ Solvabilité II : Les 3 Piliers")
+st.title("Solvabilité II : Les 3 Piliers")
 st.subheader("Une approche fondée sur les risques (Risk-Based Approach)")
 
 st.markdown("""
@@ -14,7 +14,7 @@ Elle ne se limite pas à des calculs de capital (Pilier 1), mais impose égaleme
 st.divider()
 
 # --- NAVIGATION ---
-tab1, tab2, tab3 = st.tabs(["📊 Pilier 1 : Quantitatif", "⚖️ Pilier 2 : Gouvernance", "📢 Pilier 3 : Reporting"])
+tab1, tab2, tab3 = st.tabs(["Pilier 1 : Quantitatif", "Pilier 2 : Gouvernance", "Pilier 3 : Reporting"])
 
 # --- PILIER 1 ---
 with tab1:
@@ -106,7 +106,7 @@ with tab3:
         "Contenu": ["Chiffres clés, Gouvernance, Profil de risque, Gestion du capital.", "Détails stratégiques confidentiels, Analyse approfondie.", "Tableaux de données standardisés (centaines de cellules XML)."]
     }))
     
-    st.info("💡 **Enjeu Data :** La production des QRT (états S.06.02 sur les actifs, S.23.01 sur les fonds propres...) est un défi industriel pour les assureurs, nécessitant des outils de Data Quality puissants.")
+    st.info("**Enjeu Data :** La production des QRT (états S.06.02 sur les actifs, S.23.01 sur les fonds propres...) est un défi industriel pour les assureurs, nécessitant des outils de Data Quality puissants.")
 
 st.divider()
 st.caption("Référence : Directive 2009/138/CE (Solvabilité II)")

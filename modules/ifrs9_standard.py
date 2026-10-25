@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Norme IFRS 9", layout="wide")
 
-st.title("📉 IFRS 9 : Instruments Financiers")
+st.title("IFRS 9 : Instruments Financiers")
 st.subheader("La révolution du provisionnement pour risque de crédit")
 
 st.markdown("""
@@ -139,4 +139,4 @@ data_comp_s2 = {
 }
 st.table(pd.DataFrame(data_comp_s2))
 
-st.info("💡 **Interaction IFRS 9 / IFRS 17 :** Pour les actifs qui backent des passifs d'assurance avec participation, IFRS 9 permet de passer les variations de juste valeur en OCI pour éviter la volatilité dans le P&L (option 'OCI').")
+st.info("**Interaction IFRS 9 / IFRS 17 :** Pour les actifs qui backent des passifs d'assurance avec participation, IFRS 9 permet de passer les variations de juste valeur en OCI pour éviter la volatilité dans le P&L (option 'OCI').")

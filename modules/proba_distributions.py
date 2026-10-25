@@ -6,7 +6,7 @@ from scipy.stats import poisson, nbinom, binom, norm, lognorm, gamma, pareto
 
 st.set_page_config(page_title="Lois de Probabilités", layout="wide")
 
-st.title("🎲 Principales Lois de Probabilités en Actuariat")
+st.title("Principales Lois de Probabilités en Actuariat")
 st.subheader("Fondamentaux pour la modélisation des risques")
 
 st.markdown("""

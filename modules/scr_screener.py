@@ -30,7 +30,7 @@ def calculate_diversified_scr(scr_dict):
 
 # --- INTERFACE UTILISATEUR STREAMLIT ---
 
-st.title("🛡️ SCR Asset Screener & Analyse de Rentabilité")
+st.title("SCR Asset Screener & Analyse de Rentabilité")
 st.markdown("""
 Cet outil simule l'impact d'un nouvel investissement sur le **Capital de Solvabilité Requis (SCR)** du GACM. 
 Il permet d'évaluer l'efficacité de l'investissement en termes de consommation de capital et son impact sur le ratio de solvabilité.
@@ -39,7 +39,7 @@ Il permet d'évaluer l'efficacité de l'investissement en termes de consommation
 st.divider()
 
 # --- SECTION 1 : SAISIE DES CARACTÉRISTIQUES ---
-st.header("1️⃣ Caractéristiques de l'Investissement")
+st.header("1⃣ Caractéristiques de l'Investissement")
 col_a, col_b = st.columns(2)
 
 with col_a:
@@ -59,7 +59,7 @@ with col_b:
 st.divider()
 
 # --- SECTION 2 : CALCUL DU SCR MARGINAL ---
-st.header("2️⃣ Évaluation du Risque (Formule Standard)")
+st.header("2⃣ Évaluation du Risque (Formule Standard)")
 
 scr_results = {}
 st.markdown("### Détail des chocs réglementaires")
@@ -93,7 +93,7 @@ diversification_gain = sum(scr_results.values()) - scr_div
 
 # --- SECTION 3 : EFFICACITÉ DU CAPITAL (Vision Horizon) ---
 st.divider()
-st.header("3️⃣ Efficacité du Capital (Vision Horizon)")
+st.header("3⃣ Efficacité du Capital (Vision Horizon)")
 
 # Analyse : Génération Totale vs Consommation de Capital
 # On regarde si l'investissement génère plus de FP sur sa durée de vie qu'il n'en consomme en SCR instantané.
@@ -145,7 +145,7 @@ with col_analysis:
     st.markdown(f"""
     **Indicateurs de décision :**
     *   ⏳ **Payback SCR :** **{payback:.1f} ans** pour amortir le coût en capital.
-    *   📉 **Yield Breakeven :** Il faudrait un rendement min. de **{breakeven_yield*100:.2f}%** pour être à l'équilibre sur la période.
+    *   **Yield Breakeven :** Il faudrait un rendement min. de **{breakeven_yield*100:.2f}%** pour être à l'équilibre sur la période.
     """)
     
     if ratio_recouvrement > 1.0:

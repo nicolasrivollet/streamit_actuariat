@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="SCR Luxembourg (Réassurance Intra-Groupe)", layout="wide")
 
-st.title("🇱🇺 SCR Luxembourg : Modèle 100% Réassuré")
+st.title("SCR Luxembourg : Modèle 100% Réassuré")
 st.subheader("Impact de la Réassurance Intra-Groupe sur le Capital")
 
 st.markdown("""

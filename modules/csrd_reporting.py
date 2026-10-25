@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Reporting CSRD", layout="wide")
 
-st.title("🌱 CSRD : Corporate Sustainability Reporting Directive")
+st.title("CSRD : Corporate Sustainability Reporting Directive")
 st.subheader("La révolution du reporting extra-financier")
 
 st.markdown("""
@@ -20,7 +20,7 @@ st.markdown("C'est la pierre angulaire de la CSRD. Une entreprise doit reporter 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("### 🌍 Matérialité d'Impact (Inside-Out)")
+    st.info("### Matérialité d'Impact (Inside-Out)")
     st.markdown("""
     **L'impact de l'entreprise sur le monde.**
     *   Quels sont les impacts (positifs ou négatifs) de mes activités sur l'environnement et la société ?
@@ -28,7 +28,7 @@ with col1:
     """)
 
 with col2:
-    st.warning("### 💰 Matérialité Financière (Outside-In)")
+    st.warning("### Matérialité Financière (Outside-In)")
     st.markdown("""
     **L'impact du monde sur l'entreprise.**
     *   Comment les enjeux de durabilité influencent-ils ma performance financière, mes flux de trésorerie ou mon accès au capital ?

@@ -6,7 +6,7 @@ from scipy.stats import norm
 
 st.set_page_config(page_title="Modèle Black-Scholes", layout="wide")
 
-st.title("📉 Modèle de Black-Scholes-Merton")
+st.title("Modèle de Black-Scholes-Merton")
 st.subheader("Valorisation d'Options Européennes & Calcul des Grecques")
 
 st.markdown("""
@@ -155,26 +155,26 @@ st.markdown("Bien que révolutionnaire, le modèle repose sur des hypothèses si
 col_lim1, col_lim2 = st.columns(2)
 
 with col_lim1:
-    st.warning("### 📉 Volatilité Constante")
+    st.warning("### Volatilité Constante")
     st.write("""
     Le modèle suppose que la volatilité $\sigma$ est constante quelle que soit la maturité ou le strike.
     **Réalité :** On observe un **Smile de Volatilité**. Les options hors de la monnaie (OTM) ont souvent une volatilité implicite plus élevée (crainte des krachs).
     """)
     
-    st.warning("### 🔔 Distribution Log-Normale")
+    st.warning("### Distribution Log-Normale")
     st.write("""
     Le modèle suppose que les rendements suivent une loi Normale.
     **Réalité :** Les marchés présentent des **queues de distribution épaisses** (Fat Tails) et de l'asymétrie (Skew). Les événements extrêmes sont plus fréquents que ne le prédit la loi Normale.
     """)
 
 with col_lim2:
-    st.warning("### 🔄 Couverture Continue")
+    st.warning("### Couverture Continue")
     st.write("""
     Le modèle suppose qu'on peut ajuster son portefeuille de couverture (Delta Hedging) en continu et sans frais.
     **Réalité :** Il existe des **coûts de transaction** (Bid-Ask spread) et des contraintes de liquidité qui rendent la réplication parfaite impossible.
     """)
     
-    st.warning("### 🛑 Taux Constant")
+    st.warning("### Taux Constant")
     st.write("""
     Le taux sans risque $r$ est supposé constant et connu.
     **Réalité :** Les taux sont stochastiques (d'où l'intérêt des modèles de taux comme Hull-White pour les options longues).

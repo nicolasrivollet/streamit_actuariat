@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Réglementation Bâle III", layout="wide")
 
-st.title("🏦 Bâle III : La Réglementation Prudentielle Bancaire")
+st.title("Bâle III : La Réglementation Prudentielle Bancaire")
 st.subheader("Renforcer la résilience du système bancaire mondial")
 
 st.markdown("""
@@ -21,7 +21,7 @@ st.divider()
 st.header("1. L'Architecture en 3 Piliers")
 st.markdown("Comme Solvabilité II, Bâle III est structuré en trois piliers complémentaires.")
 
-tab1, tab2, tab3 = st.tabs(["📊 Pilier 1 : Exigences Minimales", "⚖️ Pilier 2 : Surveillance Prudentielle", "📢 Pilier 3 : Discipline de Marché"])
+tab1, tab2, tab3 = st.tabs(["Pilier 1 : Exigences Minimales", "Pilier 2 : Surveillance Prudentielle", "Pilier 3 : Discipline de Marché"])
 
 with tab1:
     st.subheader("Pilier 1 : Exigences Quantitatives")
@@ -112,7 +112,7 @@ col_b4_1, col_b4_2 = st.columns(2)
 
 with col_b4_1:
     st.success(r"""
-    ### 🛡️ Output Floor (Plancher)
+    ### Output Floor (Plancher)
     Les banques utilisant des modèles internes ne pourront plus bénéficier d'un allègement de capital illimité.
     
     $$ \text{RWA}_{\text{Interne}} \ge 72.5\% \times \text{RWA}_{\text{Standard}} $$
@@ -121,7 +121,7 @@ with col_b4_1:
     """)
     
     st.warning("""
-    ### 📉 Risque de Marché (FRTB)
+    ### Risque de Marché (FRTB)
     **Fundamental Review of the Trading Book**
     *   Passage de la VaR à l'**Expected Shortfall (ES)** pour les modèles internes (meilleure capture des risques extrêmes).
     *   Frontière plus stricte entre Trading Book et Banking Book.
@@ -129,7 +129,7 @@ with col_b4_1:
 
 with col_b4_2:
     st.info("""
-    ### 🛠️ Risque Opérationnel
+    ### Risque Opérationnel
     **Suppression des modèles internes (AMA).**
     Remplacement par une approche standard unique (SMA) basée sur :
     1.  La taille de la banque (Business Indicator).
@@ -137,7 +137,7 @@ with col_b4_2:
     """)
     
     st.error("""
-    ### ⚠️ CVA (Credit Valuation Adj.)
+    ### CVA (Credit Valuation Adj.)
     Révision du cadre pour le risque de contrepartie sur dérivés.
     Suppression de l'approche interne pour la CVA, remplacée par des approches standardisées.
     """)
@@ -166,4 +166,4 @@ data_comp = {
 df_comp = pd.DataFrame(data_comp)
 st.table(df_comp)
 
-st.info("💡 **Point Clé :** La principale différence réside dans la nature du passif. Une banque a un passif exigible à court terme (dépôts), d'où l'importance du LCR. Un assureur a un passif long et prévisible (rentes, sinistres), d'où l'importance de l'actualisation et de l'ALM.")
+st.info("**Point Clé :** La principale différence réside dans la nature du passif. Une banque a un passif exigible à court terme (dépôts), d'où l'importance du LCR. Un assureur a un passif long et prévisible (rentes, sinistres), d'où l'importance de l'actualisation et de l'ALM.")

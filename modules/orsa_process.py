@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Processus ORSA", layout="wide")
 
-st.title("🔄 Processus ORSA (Own Risk and Solvency Assessment)")
+st.title("Processus ORSA (Own Risk and Solvency Assessment)")
 st.subheader("L'évaluation interne des risques et de la solvabilité (Pilier 2)")
 
 st.markdown("""
@@ -55,7 +55,7 @@ with col_scen1:
     st.markdown("**Paramétrage des Chocs**")
     
     # Scénario 1 : Financier
-    st.write("📉 **Scénario Krach Financier**")
+    st.write("**Scénario Krach Financier**")
     shock_fin_year = st.selectbox("Année du choc", years, index=1)
     shock_fin_impact = st.slider("Impact sur le Ratio S2 (pts)", 10, 100, 40, help="Perte de solvabilité immédiate suite au krach.")
     

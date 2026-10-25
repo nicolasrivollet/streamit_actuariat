@@ -16,8 +16,8 @@ apply_theme()
 
 # La page d'accueil pointe vers une fonction interne ou le fichier lui-même
 def show_home():
-    st.title("Nicolas Rivollet")
-    st.subheader("Actuariat, Modélisation Financière et Gestion des Risques")
+    st.title("Portfolio Actuariat & Modélisation")
+    st.subheader("Outils quantitatifs, gestion des risques et cadre prudentiel")
     
     st.markdown("""
     Bienvenue sur ce portail professionnel. Cet espace interactif regroupe des outils de modélisation quantitative, 
@@ -75,9 +75,10 @@ def show_home():
 
     st.markdown("### Contact & Échange")
     st.markdown("""
+    **Nicolas Rivollet**  
+    Expert en Gestion des Risques & Actuariat  
     Disponible pour échanger sur des opportunités professionnelles ou des missions de conseil dans les domaines de l'actuariat, de la modélisation financière et du risk management.
     """)
-    st.link_button("Consulter mon profil LinkedIn", "https://www.linkedin.com/in/nicolasrivollet/")
 
 # Note : Pour l'accueil, on passe la fonction show_home au lieu du nom du fichier
 home        = st.Page(show_home, title="Présentation", default=True,  icon="🏠")

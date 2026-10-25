@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Tableau de Bord Risques Financiers", layout="wide")
 
-st.title("📊 Tableau de Bord des Risques Financiers")
+st.title("Tableau de Bord des Risques Financiers")
 st.subheader("Suivi de l'Allocation d'Actifs et des Indicateurs de Risque de Marché")
 
 st.markdown("""

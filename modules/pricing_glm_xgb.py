@@ -12,7 +12,7 @@ from sklearn.pipeline import make_pipeline
 
 st.set_page_config(page_title="Tarification Auto : GLM vs ML", layout="wide")
 
-st.title("🤖 Tarification Non-Vie : GLM vs Machine Learning")
+st.title("Tarification Non-Vie : GLM vs Machine Learning")
 st.subheader("Comparaison des approches pour la fréquence de sinistres")
 
 st.markdown("""
@@ -83,7 +83,7 @@ st.header("2. Entraînement des Modèles")
 col_m1, col_m2 = st.columns(2)
 
 with col_m1:
-    st.subheader("🔵 GLM (Poisson)")
+    st.subheader("GLM (Poisson)")
     st.write("Régression de Poisson standard.")
     # Pipeline GLM
     preprocessor = ColumnTransformer(
@@ -98,7 +98,7 @@ with col_m1:
     st.success("Modèle GLM calibré.")
 
 with col_m2:
-    st.subheader("🟢 Machine Learning (GBM)")
+    st.subheader("Machine Learning (GBM)")
     st.write("Histogram Gradient Boosting (similaire à XGBoost/LightGBM).")
     # Pipeline GBM (Gère nativement les catégories et non-linéarités)
     # On doit juste encoder les catégories proprement pour sklearn

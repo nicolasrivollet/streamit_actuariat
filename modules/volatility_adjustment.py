@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Volatility Adjustment", layout="wide")
 
-st.title("🛡️ Ajustement pour Volatilité (Volatility Adjustment)")
+st.title("Ajustement pour Volatilité (Volatility Adjustment)")
 st.subheader("Mécanisme contracyclique de Solvabilité II")
 
 st.markdown(r"""
@@ -95,7 +95,7 @@ delta_bel = - duration * va_value_pct * bel_initial
 col_res1, col_res2 = st.columns(2)
 
 with col_res1:
-    st.info("📉 **Impact sur le Best Estimate**")
+    st.info("**Impact sur le Best Estimate**")
     st.metric("Variation du BEL", f"{delta_bel:.1f} M€", delta_color="inverse")
     st.caption(f"Pour un passif théorique de {bel_initial} M€")
 

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # Configuration de la page
 st.set_page_config(page_title="Actuarial Strategy Dashboard", layout="wide")
 
-st.title("📊 Pilotage Stratégique : Optimisation Solvabilité & Réassurance")
+st.title("Pilotage Stratégique : Optimisation Solvabilité & Réassurance")
 st.markdown("---")
 
 # --- INPUTS STRATÉGIQUES ---

@@ -5,14 +5,14 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="SCR Formule Standard", layout="wide")
 
-st.title("🧮 SCR Global - Formule Standard")
+st.title("SCR Global - Formule Standard")
 st.subheader("Agrégation des Risques et Diversification")
 
 st.markdown("""
 Le **Capital de Solvabilité Requis (SCR)** est calculé par une approche modulaire "Bottom-Up". 
 Les risques sont calculés individuellement, puis agrégés via des **matrices de corrélation** pour tenir compte de la diversification (le fait que tous les risques ne se réalisent pas simultanément).
 
-### 📐 La Formule d'Agrégation
+### La Formule d'Agrégation
 $$ SCR_{Global} = \sqrt{\sum_{i,j} Corr_{i,j} \cdot SCR_i \cdot SCR_j} - Adj + SCR_{Op} $$
 
 1.  **BSCR (Basic SCR) :** C'est la somme vectorielle des risques, tenant compte des corrélations.
@@ -129,4 +129,4 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.success(f"📉 **Gain de Diversification :** L'agrégation permet d'économiser **{diversification/sum_scr_brut:.1%}** du capital par rapport à une somme simple des risques. C'est l'avantage d'être un assureur diversifié.")
+st.success(f"**Gain de Diversification :** L'agrégation permet d'économiser **{diversification/sum_scr_brut:.1%}** du capital par rapport à une somme simple des risques. C'est l'avantage d'être un assureur diversifié.")

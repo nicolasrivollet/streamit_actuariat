@@ -5,7 +5,7 @@ import plotly.express as px
 
 st.set_page_config(page_title="Cadre d'Appétence au Risque", layout="wide")
 
-st.title("🎯 Cadre d'Appétence au Risque (Risk Appetite Framework)")
+st.title("Cadre d'Appétence au Risque (Risk Appetite Framework)")
 st.subheader("Définir, Mesurer et Piloter la prise de risque")
 
 st.markdown("""
@@ -43,7 +43,7 @@ st.header("2. Cockpit des Indicateurs Clés (KRI)")
 st.markdown("Simulez la position actuelle de la compagnie pour visualiser le statut des indicateurs par rapport aux seuils définis.")
 
 # KRI 1 : Solvabilité
-st.subheader("🛡️ Solvabilité (Ratio S2)")
+st.subheader("Solvabilité (Ratio S2)")
 col_s1, col_s2 = st.columns([1, 2])
 
 with col_s1:
@@ -88,7 +88,7 @@ with col_s2:
 col_kri1, col_kri2 = st.columns(2)
 
 with col_kri1:
-    st.subheader("💧 Liquidité")
+    st.subheader("Liquidité")
     liq_ratio = st.slider("Ratio Actifs Liquides / Passifs Exigibles (%)", 0, 100, 45, step=5)
     limit_liq = 20
     target_liq = 40
@@ -102,7 +102,7 @@ with col_kri1:
         st.progress(min(liq_ratio / 100 * 1.5, 1.0)) # Scaling visuel
 
 with col_kri2:
-    st.subheader("💰 Rentabilité (ROE)")
+    st.subheader("Rentabilité (ROE)")
     roe = st.slider("Return on Equity (%)", -5.0, 20.0, 8.0, 0.5)
     limit_roe = 5.0
     target_roe = 10.0
@@ -147,4 +147,4 @@ fig_map.update_layout(
 )
 st.plotly_chart(fig_map, use_container_width=True)
 
-st.info("💡 **Lecture :** Les risques situés dans la zone rouge (Haut/Droite) sont hors appétence et nécessitent des plans d'action (Mitigation).")
+st.info("**Lecture :** Les risques situés dans la zone rouge (Haut/Droite) sont hors appétence et nécessitent des plans d'action (Mitigation).")

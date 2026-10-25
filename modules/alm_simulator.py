@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Simulateur ALM Fonds Euros", layout="wide")
 
-st.title("🏦 Simulateur ALM : Projection Fonds Euros")
+st.title("Simulateur ALM : Projection Fonds Euros")
 st.subheader("Pilotage de la Participation aux Bénéfices et de la Solvabilité")
 
 st.markdown("""

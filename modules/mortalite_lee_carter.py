@@ -6,15 +6,15 @@ import plotly.express as px
 
 st.set_page_config(page_title="Modèle Lee-Carter", layout="wide")
 
-st.title("💀 Modélisation de la Mortalité : Lee-Carter")
+st.title("Modélisation de la Mortalité : Lee-Carter")
 st.subheader("Projection stochastique de l'espérance de vie")
 
 st.markdown("""
-### 💡 Pourquoi ce modèle est-il crucial ?
+### Pourquoi ce modèle est-il crucial ?
 Le risque de **longévité** (le fait que les assurés vivent plus longtemps que prévu) est un enjeu majeur pour les régimes de retraite et les assureurs versant des rentes viagères. 
 Le modèle de **Lee-Carter (1992)** est devenu le standard de marché car il permet de transformer des données historiques en une projection probabiliste cohérente.
 
-### 📐 La mécanique du modèle
+### La mécanique du modèle
 Il décompose le logarithme des taux de mortalité $m_{x,t}$ (à l'âge $x$ et l'année $t$) en trois composantes interprétables :
 
 $$ \ln(m_{x,t}) = a_x + b_x k_t + \epsilon_{x,t} $$
@@ -162,7 +162,7 @@ fig_e0.add_trace(go.Scatter(x=future_years, y=e0_proj, name="Projection Lee-Cart
 fig_e0.update_layout(title="Projection de l'Espérance de Vie à la naissance (e0)", xaxis_title="Année", yaxis_title="Espérance de vie (ans)")
 st.plotly_chart(fig_e0, use_container_width=True)
 
-st.success(f"📈 **Résultat :** Le modèle projette un gain d'espérance de vie de **+{e0_proj[-1] - e0_hist[-1]:.1f} ans** sur les {horizon} prochaines années.")
+st.success(f"**Résultat :** Le modèle projette un gain d'espérance de vie de **+{e0_proj[-1] - e0_hist[-1]:.1f} ans** sur les {horizon} prochaines années.")
 
 st.info("""
 **Impact Bilan :** Pour un assureur, cette augmentation mécanique de l'espérance de vie signifie que les rentes devront être versées plus longtemps. 

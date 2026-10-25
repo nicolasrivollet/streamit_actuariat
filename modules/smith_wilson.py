@@ -11,7 +11,7 @@ import smithwilson as sw
 
 # --- INTERFACE UTILISATEUR ---
 
-st.title("📏 Calculateur Réel Smith-Wilson")
+st.title("Calculateur Réel Smith-Wilson")
 st.markdown("""
 Cette page implémente l'algorithme d'extrapolation de la courbe des taux tel que prescrit par la réglementation **Solvabilité II**. 
 Contrairement aux modèles de lissage, Smith-Wilson garantit une **interpolation exacte** des points de marché liquides.
@@ -23,7 +23,7 @@ st.divider()
 col_in1, col_in2 = st.columns([1, 2])
 
 with col_in1:
-    st.subheader("📊 Données de Marché")
+    st.subheader("Données de Marché")
     st.write("Modifiez les taux pour recalculer la courbe :")
     df_market = pd.DataFrame({
         'Maturité': [1.0, 2.0, 5.0, 10.0, 20.0],
@@ -31,13 +31,13 @@ with col_in1:
     })
     edited_df = st.data_editor(df_market, num_rows="dynamic")
     
-    st.subheader("⚙️ Paramètres EIOPA")
+    st.subheader("Paramètres EIOPA")
     ufr_val = st.slider("Ultimate Forward Rate (UFR) %", 2.0, 5.0, 3.45, step=0.05) / 100
     alpha_val = st.slider("Vitesse de Convergence (Alpha)", 0.05, 0.50, 0.15, step=0.01)
     llp = edited_df['Maturité'].max()
 
 with col_in2:
-    st.subheader("📈 Visualisation de l'Extrapolation")
+    st.subheader("Visualisation de l'Extrapolation")
     
     t_market = edited_df['Maturité'].values
     r_market = edited_df['Taux (%)'].values / 100
@@ -86,7 +86,7 @@ st.markdown(f"""
 st.divider()
 
 # --- ANALYSE DE ROBUSTESSE ---
-st.header("🔬 Analyse de la Calibration")
+st.header("Analyse de la Calibration")
 
 check_col1, check_col2, check_col3 = st.columns(3)
 
@@ -140,4 +140,4 @@ with tab2:
     """)
 
 
-st.info("💡 **Conformité S2** : Pour les assureurs européens, cette courbe est fournie mensuellement par l'EIOPA. L'enjeu pour l'actuaire n'est pas de la recréer, mais de comprendre sa sensibilité aux changements de paramètres réglementaires.")
+st.info("**Conformité S2** : Pour les assureurs européens, cette courbe est fournie mensuellement par l'EIOPA. L'enjeu pour l'actuaire n'est pas de la recréer, mais de comprendre sa sensibilité aux changements de paramètres réglementaires.")

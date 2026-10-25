@@ -8,7 +8,7 @@ import statsmodels.formula.api as smf
 
 st.set_page_config(page_title="Théorie GLM", layout="wide")
 
-st.title("📈 Modèles Linéaires Généralisés (GLM)")
+st.title("Modèles Linéaires Généralisés (GLM)")
 st.subheader("Le couteau suisse de l'actuaire pour la Tarification")
 
 st.markdown("""

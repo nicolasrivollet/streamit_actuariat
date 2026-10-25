@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="ESG & Investissements", layout="wide")
 
-st.title("🌿 Intégration ESG dans la Gestion d'Actifs")
+st.title("Intégration ESG dans la Gestion d'Actifs")
 st.subheader("Stratégies d'Investissement Durable & Réglementation SFDR")
 
 st.markdown("""
@@ -23,17 +23,17 @@ st.markdown("Il n'y a pas une seule façon de faire de l'ESG. Voici les principa
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("### 🚫 Exclusion (Negative Screening)")
+    st.info("### Exclusion (Negative Screening)")
     st.write("Exclure les secteurs controversés (Tabac, Armement, Charbon) ou les entreprises ne respectant pas les normes internationales (UN Global Compact).")
     
-    st.success("### 🏆 Best-in-Class")
+    st.success("### Best-in-Class")
     st.write("Sélectionner les émetteurs les mieux notés sur les critères ESG au sein de leur secteur d'activité, sans exclure de secteur a priori.")
 
 with col2:
-    st.warning("### 🌍 Thématique")
+    st.warning("### Thématique")
     st.write("Investir dans des secteurs liés au développement durable (Énergies renouvelables, Eau, Gestion des déchets).")
     
-    st.error("### 🎯 Impact Investing")
+    st.error("### Impact Investing")
     st.write("Investissements réalisés avec l'intention de générer un impact social ou environnemental positif et mesurable, en plus d'un rendement financier.")
 
 st.divider()
@@ -120,4 +120,4 @@ with col_sfdr3:
     st.markdown("### 🌳 Article 9\n**Produits 'Dark Green'**")
     st.write("Produits ayant un **objectif d'investissement durable** concret (ex: fonds climat aligné Accord de Paris).")
 
-st.info("💡 **Taxonomie Européenne :** En plus de SFDR, les assureurs doivent reporter la part de leurs investissements éligibles et alignés avec la Taxonomie verte (activités durables).")
+st.info("**Taxonomie Européenne :** En plus de SFDR, les assureurs doivent reporter la part de leurs investissements éligibles et alignés avec la Taxonomie verte (activités durables).")

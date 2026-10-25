@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="SCR Taux - Formule Standard", layout="wide")
 
-st.title("📉 SCR Marché : Risque de Taux d'Intérêt")
+st.title("SCR Marché : Risque de Taux d'Intérêt")
 st.subheader("Calcul selon la Formule Standard (Solvabilité II)")
 
 st.markdown("""

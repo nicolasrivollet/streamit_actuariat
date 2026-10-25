@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Classes d'Actifs & Risques", layout="wide")
 
-st.title("💎 Classes d'Actifs & Cartographie des Risques")
+st.title("Classes d'Actifs & Cartographie des Risques")
 st.subheader("Comprendre le couple Rendement / Risque par typologie d'investissement")
 
 st.markdown("""
@@ -18,7 +18,7 @@ st.divider()
 # --- 1. ANALYSE PAR CLASSE D'ACTIF ---
 st.header("1. Analyse détaillée par Classe d'Actif")
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📈 Actions", "💶 Obligations", "🏢 Immobilier", "💰 Trésorerie", "🚀 Alternatifs"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Actions", "Obligations", "Immobilier", "Trésorerie", "Alternatifs"])
 
 with tab1:
     st.subheader("Actions (Equities)")
@@ -175,7 +175,7 @@ C'est le principe du **Liability Driven Investment (LDI)**.
 col_alm1, col_alm2 = st.columns(2)
 
 with col_alm1:
-    st.subheader("🛡️ Contraintes de Passif")
+    st.subheader("Contraintes de Passif")
     st.write("""
     *   **Duration :** L'actif doit avoir une sensibilité aux taux proche du passif pour immuniser le bilan.
     *   **Liquidité :** Il faut assez de cash pour payer les sinistres (rachats, décès).
@@ -183,7 +183,7 @@ with col_alm1:
     """)
 
 with col_alm2:
-    st.subheader("⚖️ Contraintes Réglementaires")
+    st.subheader("Contraintes Réglementaires")
     st.write("""
     *   **Principe de la Personne Prudente (PPP) :** N'investir que dans ce que l'on comprend et maîtrise.
     *   **Diversification :** Éviter la concentration sur un seul émetteur.

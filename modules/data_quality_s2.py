@@ -4,7 +4,7 @@ import plotly.express as px
 
 st.set_page_config(page_title="Qualité des Données S2", layout="wide")
 
-st.title("🗃️ Qualité des Données (Data Quality) - Solvabilité II")
+st.title("Qualité des Données (Data Quality) - Solvabilité II")
 st.subheader("Le carburant du moteur Solvabilité II")
 
 st.markdown("""
@@ -21,7 +21,7 @@ st.markdown("Pour être utilisables dans le calcul des provisions techniques et 
 c1, c2, c3 = st.columns(3)
 
 with c1:
-    st.info("### ✅ Exactitude (Accuracy)")
+    st.info("### Exactitude (Accuracy)")
     st.write("""
     La donnée doit refléter la réalité sans erreur.
     *   *Exemple :* La date de naissance de l'assuré est correcte.
@@ -29,7 +29,7 @@ with c1:
     """)
 
 with c2:
-    st.warning("### 📚 Exhaustivité (Completeness)")
+    st.warning("### Exhaustivité (Completeness)")
     st.write("""
     Toutes les données nécessaires sont présentes. Pas de trous.
     *   *Exemple :* Tous les sinistres survenus sont enregistrés.
@@ -37,7 +37,7 @@ with c2:
     """)
 
 with c3:
-    st.success("### 🎯 Pertinence (Appropriateness)")
+    st.success("### Pertinence (Appropriateness)")
     st.write("""
     La donnée est adaptée au modèle utilisé.
     *   *Exemple :* Utiliser une table de mortalité "Cadres" pour une population "Ouvriers" n'est pas approprié.

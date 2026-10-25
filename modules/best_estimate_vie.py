@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Best Estimate Vie", layout="wide")
 
-st.title("💰 Best Estimate Liabilities (BEL) - Vie")
+st.title("Best Estimate Liabilities (BEL) - Vie")
 st.subheader("Projection des Flux de Trésorerie (Cash Flows)")
 
 st.markdown("""

@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Assurance Vie Luxembourg", layout="wide")
 
-st.title("🇱🇺 Assurance Vie Luxembourg : Spécificités & Risques")
+st.title("Assurance Vie Luxembourg : Spécificités & Risques")
 st.subheader("Le Triangle de Sécurité et la Gestion de Fortune (Wealth Insurance)")
 
 st.markdown("""
@@ -20,7 +20,7 @@ st.markdown("Le Luxembourg offre le niveau de protection des souscripteurs le pl
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("### 📐 Le Triangle de Sécurité")
+    st.info("### Le Triangle de Sécurité")
     st.markdown("""
     Mécanisme de contrôle strict imposé par le **Commissariat aux Assurances (CAA)**.
     Il impose la signature d'une convention tripartite entre :
@@ -32,7 +32,7 @@ with col1:
     """)
 
 with col2:
-    st.success("### 🥇 Le Super Privilège")
+    st.success("### Le Super Privilège")
     st.markdown("""
     En cas de défaillance de l'assureur, la loi luxembourgeoise accorde aux souscripteurs un **privilège absolu de premier rang**.
     

@@ -6,7 +6,7 @@ from scipy.stats import norm
 
 st.set_page_config(page_title="Modèles Risque de Marché", layout="wide")
 
-st.title("📉 Modèles Avancés de Risque de Marché")
+st.title("Modèles Avancés de Risque de Marché")
 st.subheader("Mesures de Risque : VaR, SVaR, IRC, CRM")
 
 st.markdown("""
@@ -22,7 +22,7 @@ st.header("1. Value-at-Risk (VaR) & Stressed VaR (SVaR)")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("### 📊 Value-at-Risk (VaR)")
+    st.info("### Value-at-Risk (VaR)")
     st.markdown("""
     La perte maximale potentielle sur un horizon donné (ex: 10 jours) avec un niveau de confiance donné (ex: 99%).
     *   **Calibrage :** Sur les 12 derniers mois (période courante).
@@ -30,7 +30,7 @@ with col1:
     """)
 
 with col2:
-    st.warning("### ⚡ Stressed VaR (SVaR)")
+    st.warning("### Stressed VaR (SVaR)")
     st.markdown("""
     Introduite pour corriger la procyclicité de la VaR.
     *   **Calibrage :** Sur une période de 12 mois de **stress financier significatif** (ex: 2008).
@@ -139,7 +139,7 @@ Il doit capturer des risques complexes que l'IRC ne couvre pas assez bien pour c
 col_crm1, col_crm2 = st.columns(2)
 
 with col_crm1:
-    st.error("### 🕸️ Risques Couverts")
+    st.error("### Risques Couverts")
     st.markdown("""
     *   **Risque de Corrélation :** Impact du changement de corrélation entre les actifs sous-jacents.
     *   **Risque de Base :** Différence entre le CDS de l'indice et les CDS des composants.
@@ -147,7 +147,7 @@ with col_crm1:
     """)
 
 with col_crm2:
-    st.warning("### 🛡️ Le Plancher (Floor)")
+    st.warning("### Le Plancher (Floor)")
     st.markdown(r"""
     Pour éviter une sous-estimation par les modèles internes, le régulateur impose un plancher.
     

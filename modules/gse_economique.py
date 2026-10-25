@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Générateur de Scénarios Économiques", layout="wide")
 
-st.title("🎲 Générateur de Scénarios Économiques (GSE)")
+st.title("Générateur de Scénarios Économiques (GSE)")
 st.subheader("Modélisation stochastique des actifs financiers")
 
 st.markdown("""

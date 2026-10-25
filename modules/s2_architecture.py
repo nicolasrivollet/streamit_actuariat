@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Architecture Solvabilité II", layout="wide")
 
-st.title("🏛️ Architecture Réglementaire Solvabilité II")
+st.title("Architecture Réglementaire Solvabilité II")
 st.subheader("Comprendre la hiérarchie des normes (Processus Lamfalussy)")
 
 st.markdown("""
@@ -102,4 +102,4 @@ with col_res2:
     })
     st.table(df_refs)
 
-st.info("💡 **Astuce Pro :** En cas de doute, le Règlement Délégué (Niveau 2) prime sur le Code des Assurances pour les calculs techniques, car il est d'application directe.")
+st.info("**Astuce Pro :** En cas de doute, le Règlement Délégué (Niveau 2) prime sur le Code des Assurances pour les calculs techniques, car il est d'application directe.")

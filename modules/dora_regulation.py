@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Réglementation DORA", layout="wide")
 
-st.title("🛡️ DORA : Digital Operational Resilience Act")
+st.title("DORA : Digital Operational Resilience Act")
 st.subheader("Règlement (UE) 2022/2554 sur la résilience opérationnelle numérique")
 
 st.markdown("""
@@ -36,7 +36,7 @@ with tab1:
     *   **Cadre de gestion :** Identification, Protection, Détection, Réponse et Rétablissement (proche du framework NIST).
     *   **Actifs :** Cartographie précise et à jour des actifs informatiques critiques.
     """)
-    st.info("💡 **Changement de paradigme :** Le risque cyber n'est plus un sujet 'IT' délégué au DSI, mais un sujet 'Stratégique' piloté par la Direction Générale.")
+    st.info("**Changement de paradigme :** Le risque cyber n'est plus un sujet 'IT' délégué au DSI, mais un sujet 'Stratégique' piloté par la Direction Générale.")
 
 with tab2:
     st.subheader("2. Gestion et Notification des Incidents")
@@ -81,7 +81,7 @@ with tab5:
 st.divider()
 
 # --- IMPACT ACTUARIEL ---
-st.header("🎯 Pourquoi cela concerne l'Actuaire / Risk Manager ?")
+st.header("Pourquoi cela concerne l'Actuaire / Risk Manager ?")
 
 col_a, col_b = st.columns(2)
 

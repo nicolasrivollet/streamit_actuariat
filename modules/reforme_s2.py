@@ -5,7 +5,7 @@ import plotly.express as px
 st.set_page_config(page_title="Réforme Solvabilité II | Analyse Globale", layout="wide")
 
 # --- HEADER ---
-st.title("⚖️ Révision de la Directive Solvabilité II")
+st.title("Révision de la Directive Solvabilité II")
 st.markdown("""
 La révision de la directive (souvent appelée 'Solvency II Review') constitue l'évolution la plus importante du cadre réglementaire depuis son entrée en vigueur en 2016. 
 L'objectif est de recalibrer le système pour mieux refléter l'environnement de taux bas (à l'époque du lancement), encourager le financement de l'économie et intégrer les risques émergents.
@@ -72,13 +72,13 @@ st.write("""
 Au-delà de la solvabilité individuelle, les autorités de contrôle (ACPR, EIOPA) reçoivent de nouveaux mandats pour surveiller le risque systémique.
 """)
 
-st.subheader("🔹 Gestion de la liquidité")
+st.subheader("Gestion de la liquidité")
 st.markdown("Les superviseurs pourront exiger des plans de gestion de la liquidité plus stricts et, dans des cas extrêmes, suspendre temporairement les droits de rachat des assurés.")
 
-st.subheader("🔹 Principe de proportionnalité")
+st.subheader("Principe de proportionnalité")
 st.markdown("Création d'une catégorie d'entreprises à 'faible profil de risque' bénéficiant d'allègements automatiques sur le reporting et la gouvernance, réduisant les coûts de conformité.")
 
-st.subheader("🔹 Reporting (Pilier 3)")
+st.subheader("Reporting (Pilier 3)")
 st.markdown("Révision des QRT (Quantitative Reporting Templates) pour rationaliser les informations demandées et améliorer la comparabilité des rapports publics (SFCR).")
 
 st.divider()
